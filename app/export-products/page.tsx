@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -17,7 +17,7 @@ import { getAllCategories, Category } from '@/lib/firebase/categories';
 import { useCartStore } from '@/lib/store/cart-store';
 import toast from 'react-hot-toast';
 
-export default function ExportProductsPage() {
+function ExportProductsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
   
@@ -339,5 +339,17 @@ export default function ExportProductsPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ExportProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    }>
+      <ExportProductsContent />
+    </Suspense>
   );
 }
