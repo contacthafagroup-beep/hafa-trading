@@ -49,7 +49,7 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
                   Contact Us
                 </Button>
               </Link>
@@ -122,84 +122,137 @@ export default function HomePage() {
       </section>
 
       {/* Product Categories */}
-      <section className="py-16">
+      <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Product Range</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌿 Our Product Range</h2>
+            <p className="text-lg text-muted-foreground mb-2">Premium Quality • Ethically Sourced • Export-Ready</p>
+            <p className="text-base text-muted-foreground max-w-4xl mx-auto">
+              Hafa Trading PLC proudly supplies a diverse portfolio of high-quality agricultural products, fresh produce, 
+              livestock, herbs, and spices, sourced directly from trusted Ethiopian farmers, cooperatives, and pastoralist communities.
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <Link href="/export-products?category=agricultural">
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="bg-green-600 text-white p-8">
-                  <h3 className="text-2xl font-bold mb-4">Agricultural Products</h3>
-                  <ul className="space-y-2 mb-6">
-                    {[
-                      'Fresh Vegetables & Fruits',
-                      'Coffee (Arabica)',
-                      'Pulses & Legumes',
-                      'Spices & Seeds'
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="bg-white text-green-600 hover:bg-green-50">
-                    View Products
-                  </Button>
-                </div>
-              </Card>
-            </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {/* Fresh Vegetables */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-green-600">🥬 Fresh Vegetables</h3>
+                <p className="text-sm text-muted-foreground mb-3">Premium & Commercial Grade</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Tomatoes, Onions, Cabbage</li>
+                  <li>• Carrots, Potatoes, Green Beans</li>
+                  <li>• Peppers, Eggplant, Beetroots</li>
+                  <li>• Lettuce, Spinach, Kale, Garlic</li>
+                  <li>• Ginger, Okra, Celery, Leeks</li>
+                </ul>
+              </CardContent>
+            </Card>
 
-            <Link href="/export-products?category=livestock">
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="bg-blue-600 text-white p-8">
-                  <h3 className="text-2xl font-bold mb-4">Livestock</h3>
-                  <ul className="space-y-2 mb-6">
-                    {[
-                      'Goats & Sheep',
-                      'Cattle & Oxen',
-                      'Camels',
-                      'Live Poultry'
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="bg-white text-blue-600 hover:bg-blue-50">
-                    View Livestock
-                  </Button>
-                </div>
-              </Card>
-            </Link>
+            {/* Fresh Fruits */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-orange-600">🍊 Fresh Fruits</h3>
+                <p className="text-sm text-muted-foreground mb-3">Naturally Grown & Export Ready</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Avocado (Hass & Ettinger)</li>
+                  <li>• Bananas, Mangoes, Papaya</li>
+                  <li>• Pineapple, Oranges, Lemons</li>
+                  <li>• Watermelon, Guava, Grapes</li>
+                  <li>• Strawberries, Pomegranate</li>
+                </ul>
+              </CardContent>
+            </Card>
 
-            <Link href="/export-products?category=herbs">
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="bg-purple-600 text-white p-8">
-                  <h3 className="text-2xl font-bold mb-4">Herbs & Spices</h3>
-                  <ul className="space-y-2 mb-6">
-                    {[
-                      'Medicinal Plants',
-                      'Culinary Herbs',
-                      'Organic Spices',
-                      'Essential Oils'
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="bg-white text-purple-600 hover:bg-purple-50">
-                    View Herbs
-                  </Button>
-                </div>
-              </Card>
-            </Link>
+            {/* Herbs & Spices */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-purple-600">🌿 Herbs & Spices</h3>
+                <p className="text-sm text-muted-foreground mb-3">Fresh & Dried</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Rosemary, Basil, Mint, Thyme</li>
+                  <li>• Black Cumin, Turmeric, Ginger</li>
+                  <li>• Cardamom, Black Pepper, Cloves</li>
+                  <li>• Cinnamon, Fenugreek, Bay Leaves</li>
+                  <li>• Chili Powder & Paprika</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Grains & Legumes */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-amber-600">🌾 Grains & Legumes</h3>
+                <p className="text-sm text-muted-foreground mb-3">Bulk Export Quality</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Teff (White, Red, Mixed)</li>
+                  <li>• Maize, Wheat, Barley, Sorghum</li>
+                  <li>• Chickpeas, Lentils, Peas, Beans</li>
+                  <li>• Sesame Seeds, Soybeans</li>
+                  <li>• Niger Seed, Peanuts</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Livestock & Meat */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-red-600">🐑 Livestock & Meat</h3>
+                <p className="text-sm text-muted-foreground mb-3">Export-Standard & Halal Certified</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Live: Goats, Sheep, Cattle</li>
+                  <li>• Oxen, Calves, Camels</li>
+                  <li>• Fresh/Frozen: Goat Meat</li>
+                  <li>• Mutton, Beef</li>
+                  <li>• Liver, Kidney, Tripe</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Specialty Products */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-yellow-600">⭐ Specialty Products</h3>
+                <p className="text-sm text-muted-foreground mb-3">High-Demand Items</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Honey (White, Red, Forest)</li>
+                  <li>• Coffee Beans (Washed/Unwashed)</li>
+                  <li>• Aloe Vera Leaves</li>
+                  <li>• Moringa Leaves & Powder</li>
+                  <li>• Sesame & Niger Seed Oil</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-8">
+            <h3 className="text-2xl font-bold mb-4 text-center">🌍 Why Choose Hafa Trading PLC?</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                <span className="text-sm">Direct farm sourcing for consistent quality</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                <span className="text-sm">Global logistics support (air, sea, road)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                <span className="text-sm">Customized packaging options</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                <span className="text-sm">Competitive wholesale pricing</span>
+              </div>
+            </div>
+            <div className="text-center mt-6">
+              <Link href="/export-products">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                  View All Products
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -219,8 +272,8 @@ export default function HomePage() {
                 Request Quote
               </Button>
             </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Link href="/partnership">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
                 Become a Partner
               </Button>
             </Link>
