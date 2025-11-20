@@ -85,4 +85,22 @@ export async function createCustomer(data: Omit<Customer, 'id' | 'createdAt' | '
 export async function updateCustomer(id: string, data: Partial<Customer>): Promise<void> {
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
-    await 
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    throw error;
+  }
+}
+
+export async function deleteCustomer(id: string): Promise<void> {
+  try {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting customer:', error);
+    throw error;
+  }
+}
