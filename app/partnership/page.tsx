@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Handshake, Globe, TrendingUp, Users, CheckCircle, Send } from 'lucide-react';
+import { HandshakeIcon, Globe, TrendingUp, Users, CheckCircle, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function PartnershipPage() {
@@ -80,7 +80,7 @@ export default function PartnershipPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl mx-auto text-center"
           >
-            <Handshake className="h-16 w-16 mx-auto mb-4" />
+            <HandshakeIcon className="h-16 w-16 mx-auto mb-4" />
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Become a Partner</h1>
             <p className="text-xl text-blue-100">
               Join our global network of distributors and importers
