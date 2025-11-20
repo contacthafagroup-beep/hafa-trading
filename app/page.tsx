@@ -49,7 +49,7 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white bg-transparent text-white hover:bg-white hover:text-blue-600">
+                <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-blue-600">
                   Contact Us
                 </Button>
               </Link>
@@ -168,7 +168,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/partnership">
-              <Button size="lg" variant="outline" className="border-white bg-transparent text-white hover:bg-white hover:text-green-600">
+              <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
                 Become a Partner
               </Button>
             </Link>
