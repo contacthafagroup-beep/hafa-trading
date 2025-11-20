@@ -24,6 +24,7 @@ export interface Product {
   unit: string;
   minOrder: number;
   origin: string;
+  hsCode?: string;
   certifications: string[];
   specifications: Record<string, string>;
   images: string[];
