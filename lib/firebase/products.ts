@@ -29,10 +29,23 @@ export interface Product {
   certifications: string[];
   specifications: Record<string, string>;
   images: string[];
+  videos?: string[];
+  audios?: string[];
+  pdfs?: string[];
+  originMapLink?: string;
+  packagingOffers?: PackagingOffer[];
   inStock: boolean;
   featured?: boolean;
   createdAt?: any;
   updatedAt?: any;
+}
+
+export interface PackagingOffer {
+  name: string;
+  description: string;
+  minQuantity: number;
+  pricePerUnit: number;
+  unit: string;
 }
 
 const PRODUCTS_COLLECTION = 'products';
