@@ -25,6 +25,7 @@ export interface Product {
   minOrder: number;
   origin: string;
   hsCode?: string;
+  type?: 'export' | 'import';
   certifications: string[];
   specifications: Record<string, string>;
   images: string[];

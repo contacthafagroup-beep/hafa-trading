@@ -85,8 +85,8 @@ export default function ProductDetailsPage() {
       price: product.price,
       quantity: quantity,
       unit: product.unit,
-      type: product.type,
-      image: product.image
+      type: product.type || 'export',
+      image: product.images?.[0] || ''
     });
     toast.success(`Added ${quantity} ${product.unit} to cart!`);
   };
@@ -102,8 +102,8 @@ export default function ProductDetailsPage() {
       price: product.price,
       quantity: quantity,
       unit: product.unit,
-      type: product.type,
-      image: product.image
+      type: product.type || 'export',
+      image: product.images?.[0] || ''
     });
     router.push('/checkout');
   };
