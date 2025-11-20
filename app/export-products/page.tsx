@@ -79,13 +79,18 @@ export default function ExportProductsPage() {
     });
 
   const handleAddToCart = (product: Product) => {
+    if (!product.id) {
+      toast.error('Product ID is missing');
+      return;
+    }
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       quantity: product.minOrder,
       image: product.images?.[0] || '',
-      unit: product.unit
+      unit: product.unit,
+      type: 'export'
     });
     toast.success(`${product.name} added to cart!`);
   };

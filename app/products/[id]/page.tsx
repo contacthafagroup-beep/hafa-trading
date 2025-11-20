@@ -75,6 +75,10 @@ export default function ProductDetailsPage() {
   }
 
   const handleAddToCart = () => {
+    if (!product.id) {
+      toast.error('Product ID is missing');
+      return;
+    }
     addItem({
       id: product.id,
       name: product.name,
@@ -88,6 +92,10 @@ export default function ProductDetailsPage() {
   };
   
   const handleBuyNow = () => {
+    if (!product.id) {
+      toast.error('Product ID is missing');
+      return;
+    }
     addItem({
       id: product.id,
       name: product.name,
