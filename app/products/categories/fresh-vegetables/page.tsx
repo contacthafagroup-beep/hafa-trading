@@ -350,12 +350,28 @@ export default function FreshVegetablesPage() {
           </motion.div>
 
           <div className="max-w-5xl mx-auto">
-            <div className="bg-green-50 dark:bg-green-950 rounded-2xl p-8 mb-8">
-              <div className="aspect-video bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 rounded-lg flex items-center justify-center text-6xl">
-                🗺️
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-green-50 dark:bg-green-950 rounded-2xl p-4 md:p-8 mb-8"
+            >
+              <div className="aspect-video rounded-lg overflow-hidden shadow-xl">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d35.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
+                />
               </div>
-              <p className="text-center mt-4 text-sm text-muted-foreground">Interactive map showing vegetable growing regions</p>
-            </div>
+              <p className="text-center mt-4 text-sm text-muted-foreground">
+                📍 Interactive map showing Ethiopia's vegetable growing regions
+              </p>
+            </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {originRegions.map((region, index) => (
