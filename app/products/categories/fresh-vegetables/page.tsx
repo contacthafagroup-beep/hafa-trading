@@ -452,18 +452,10 @@ export default function FreshVegetablesPage() {
                             <p className="text-xs text-green-600 dark:text-green-400 font-semibold mb-1">
                               {region.product}
                             </p>
-                            <p className="text-xs text-muted-foreground">{region.coordinates}</p>
-                            {selectedRegion === index && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                className="mt-2 pt-2 border-t"
-                              >
-                                <p className="text-xs font-semibold text-green-600 dark:text-green-400">
-                                  ✓ Showing on map above
-                                </p>
-                              </motion.div>
-                            )}
+                            <p className="text-xs text-muted-foreground mb-2">{region.coordinates}</p>
+                            <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                              {selectedRegion === index ? '✓ Showing on map above' : '👆 Click to view on map'}
+                            </p>
                           </div>
                         </div>
                       </CardContent>
