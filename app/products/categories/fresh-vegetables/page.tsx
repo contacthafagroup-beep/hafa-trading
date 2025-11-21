@@ -30,11 +30,32 @@ export default function FreshVegetablesPage() {
     { emoji: '🟠', name: 'Ginger', desc: 'Fresh young ginger or dried', animation: 'rotate' }
   ];
 
+  // Admin can replace these with actual video URLs (YouTube, Vimeo, or direct video links)
   const videos = [
-    { title: 'Sorting & Packing Process', desc: 'See how we sort and pack vegetables', thumbnail: '🎥' },
-    { title: 'Farm Harvesting', desc: 'Fresh from Ethiopian farms', thumbnail: '🌾' },
-    { title: 'Quality Control', desc: 'Our rigorous inspection process', thumbnail: '✅' },
-    { title: 'Cold Chain Transport', desc: 'Temperature-controlled delivery', thumbnail: '❄️' }
+    { 
+      title: 'Sorting & Packing Process', 
+      desc: 'See how we sort and pack vegetables', 
+      thumbnail: '🎥',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Replace with actual video
+    },
+    { 
+      title: 'Farm Harvesting', 
+      desc: 'Fresh from Ethiopian farms', 
+      thumbnail: '🌾',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Replace with actual video
+    },
+    { 
+      title: 'Quality Control', 
+      desc: 'Our rigorous inspection process', 
+      thumbnail: '✅',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Replace with actual video
+    },
+    { 
+      title: 'Cold Chain Transport', 
+      desc: 'Temperature-controlled delivery', 
+      thumbnail: '❄️',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Replace with actual video
+    }
   ];
 
   const certifications = [
@@ -182,25 +203,50 @@ export default function FreshVegetablesPage() {
             <p className="text-lg text-muted-foreground">Watch how we ensure quality from farm to export</p>
           </motion.div>
 
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-6">
+          <div className="max-w-6xl mx-auto">
+            {/* Main Video Player */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <Card className="overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-black">
+                    <iframe
+                      src={videos[activeVideo].videoUrl}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold mb-2">{videos[activeVideo].title}</h3>
+                    <p className="text-muted-foreground">{videos[activeVideo].desc}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Video Thumbnails */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {videos.map((video, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  onClick={() => setActiveVideo(index)}
                 >
-                  <Card className="hover:shadow-xl transition-all cursor-pointer group">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="text-5xl group-hover:scale-110 transition-transform">{video.thumbnail}</div>
-                        <div className="flex-1">
-                          <h3 className="font-bold mb-1">{video.title}</h3>
-                          <p className="text-sm text-muted-foreground">{video.desc}</p>
-                        </div>
-                        <Play className="h-8 w-8 text-green-600" />
+                  <Card className={`hover:shadow-xl transition-all cursor-pointer ${activeVideo === index ? 'ring-2 ring-green-600' : ''}`}>
+                    <CardContent className="p-4">
+                      <div className="text-4xl mb-2 text-center">{video.thumbnail}</div>
+                      <h4 className="font-semibold text-sm text-center mb-1">{video.title}</h4>
+                      <div className="flex items-center justify-center gap-1 text-green-600">
+                        <Play className="h-4 w-4" />
+                        <span className="text-xs">Play</span>
                       </div>
                     </CardContent>
                   </Card>
