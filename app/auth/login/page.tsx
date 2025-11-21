@@ -31,9 +31,16 @@ export default function LoginPage() {
     } catch (error: any) {
       console.error('Login error:', error);
       if (error.code === 'auth/user-not-found') {
-        toast.error('No account found with this email');
+        toast.error('Please sign up first to continue.', {
+          duration: 4000,
+          icon: '🔔',
+        });
       } else if (error.code === 'auth/wrong-password') {
-        toast.error('Incorrect password');
+        toast.error('Incorrect password. Please try again.');
+      } else if (error.code === 'auth/invalid-email') {
+        toast.error('Invalid email address.');
+      } else if (error.code === 'auth/invalid-credential') {
+        toast.error('Invalid credentials. Please check your email and password or sign up first.');
       } else {
         toast.error('Login failed. Please try again.');
       }
@@ -51,7 +58,13 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (error: any) {
       console.error('Google login error:', error);
-      toast.error('Google login failed. Please try again.');
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign in cancelled.');
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        toast.error('An account already exists with this email using a different sign-in method.');
+      } else {
+        toast.error('Google login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
