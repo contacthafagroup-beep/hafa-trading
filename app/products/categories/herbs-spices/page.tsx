@@ -118,6 +118,14 @@ export default function HerbsSpicesPage() {
     }
   ];
 
+  const carouselImages = [
+    { title: 'Herb Harvesting', emoji: '🌿' },
+    { title: 'Sun Drying', emoji: '☀️' },
+    { title: 'Grinding Process', emoji: '⚙️' },
+    { title: 'Quality Testing', emoji: '🧪' },
+    { title: 'Packaging', emoji: '📦' }
+  ];
+
   const downloadables = [
     { icon: '📄', name: 'Herbs & Spices Catalog', size: '2.5 MB' },
     { icon: '💰', name: 'Price List', size: '780 KB' },
@@ -317,6 +325,41 @@ export default function HerbsSpicesPage() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Carousel */}
+      <section className="py-16 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">📸 Our Facilities</h2>
+            <p className="text-lg text-muted-foreground">From harvest to export</p>
+          </motion.div>
+
+          <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory">
+            {carouselImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex-shrink-0 w-64 snap-center"
+              >
+                <Card className="hover:shadow-xl transition-all">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-7xl mb-4">{image.emoji}</div>
+                    <h3 className="font-bold">{image.title}</h3>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
