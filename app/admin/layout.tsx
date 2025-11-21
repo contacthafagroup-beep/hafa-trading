@@ -18,7 +18,8 @@ import {
   Truck,
   MessageSquare,
   BarChart3,
-  FolderTree
+  FolderTree,
+  Video
 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -29,6 +30,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: FolderTree },
+    { name: 'Category Content', href: '/admin/category-content', icon: Video },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { name: 'RFQs', href: '/admin/rfqs', icon: FileText },
     { name: 'Shipments', href: '/admin/shipments', icon: Truck },
