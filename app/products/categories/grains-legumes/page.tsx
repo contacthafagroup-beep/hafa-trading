@@ -194,9 +194,31 @@ export default function GrainsLegumesPage() {
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-white py-20">
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Floating Icons */}
+      <section className="relative bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          {['🌾', '🫘', '🌻', '🥜', '🌰', '🫛', '🌽', '🍚', '🫘'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-6xl"
+              initial={{ x: Math.random() * 100 + '%', y: Math.random() * 100 + '%' }}
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{
+                duration: 3 + i,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              style={{ left: `${i * 11}%`, top: `${(i * 13) % 80}%` }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <Link href="/">
             <Button variant="ghost" className="mb-6 text-white hover:bg-white/20">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -210,7 +232,7 @@ export default function GrainsLegumesPage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <div className="text-5xl mb-4">🌾</div>
+            <div className="text-6xl mb-4">🌾</div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4">Grains, Cereals & Legumes</h1>
             <p className="text-2xl mb-6">Clean • Sorted • Moisture-Controlled</p>
             <p className="text-xl text-amber-50 leading-relaxed">
