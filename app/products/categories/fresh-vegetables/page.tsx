@@ -68,11 +68,51 @@ export default function FreshVegetablesPage() {
   ];
 
   const originRegions = [
-    { name: 'Upper Rift Valley', product: 'Tomatoes', coordinates: '8.0°N, 38.7°E', lat: 8.0, lng: 38.7, color: '#ef4444' },
-    { name: 'Arsi & Bale', product: 'Potatoes', coordinates: '7.5°N, 39.5°E', lat: 7.5, lng: 39.5, color: '#f59e0b' },
-    { name: 'Wollo', product: 'Red Onions', coordinates: '11.0°N, 39.5°E', lat: 11.0, lng: 39.5, color: '#8b5cf6' },
-    { name: 'Afar', product: 'White Onions', coordinates: '11.5°N, 41.0°E', lat: 11.5, lng: 41.0, color: '#06b6d4' },
-    { name: 'Jimma', product: 'Cabbage & Leafy Vegetables', coordinates: '7.7°N, 36.8°E', lat: 7.7, lng: 36.8, color: '#10b981' }
+    { 
+      name: 'Upper Rift Valley', 
+      product: 'Tomatoes', 
+      coordinates: '8.0°N, 38.7°E', 
+      lat: 8.0, 
+      lng: 38.7, 
+      color: '#ef4444',
+      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1008126.5!2d38.7!3d8.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMDAnMDAuMCJOIDM4wrA0MicwMC4wIkU!5e0!3m2!1sen!2s!4v1234567890'
+    },
+    { 
+      name: 'Arsi & Bale', 
+      product: 'Potatoes', 
+      coordinates: '7.5°N, 39.5°E', 
+      lat: 7.5, 
+      lng: 39.5, 
+      color: '#f59e0b',
+      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1008126.5!2d39.5!3d7.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzAnMDAuMCJOIDM5wrAzMCcwMC4wIkU!5e0!3m2!1sen!2s!4v1234567890'
+    },
+    { 
+      name: 'Wollo', 
+      product: 'Red Onions', 
+      coordinates: '11.0°N, 39.5°E', 
+      lat: 11.0, 
+      lng: 39.5, 
+      color: '#8b5cf6',
+      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1008126.5!2d39.5!3d11.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzAwLjAiTiAzOcKwMzAnMDAuMCJF!5e0!3m2!1sen!2s!4v1234567890'
+    },
+    { 
+      name: 'Afar', 
+      product: 'White Onions', 
+      coordinates: '11.5°N, 41.0°E', 
+      lat: 11.5, 
+      lng: 41.0, 
+      color: '#06b6d4',
+      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1008126.5!2d41.0!3d11.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDMwJzAwLjAiTiA0McKwMDAnMDAuMCJF!5e0!3m2!1sen!2s!4v1234567890'
+    },
+    { 
+      name: 'Jimma', 
+      product: 'Cabbage & Leafy Vegetables', 
+      coordinates: '7.7°N, 36.8°E', 
+      lat: 7.7, 
+      lng: 36.8, 
+      color: '#10b981',
+      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1008126.5!2d36.8!3d7.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDInMDAuMCJOIDM2wrA0OCcwMC4wIkU!5e0!3m2!1sen!2s!4v1234567890'
+    }
   ];
 
   const downloadables = [
@@ -357,9 +397,15 @@ export default function FreshVegetablesPage() {
               viewport={{ once: true }}
               className="bg-green-50 dark:bg-green-950 rounded-2xl p-4 md:p-8 mb-8"
             >
-              <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800">
+              <motion.div 
+                className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800"
+                key={selectedRegion ?? 'default'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d36.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"
+                  src={selectedRegion !== null ? originRegions[selectedRegion].mapUrl : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d36.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -368,9 +414,11 @@ export default function FreshVegetablesPage() {
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full"
                 />
-              </div>
+              </motion.div>
               <p className="text-center mt-4 text-sm text-muted-foreground">
-                📍 Interactive map of Ethiopia - Click on region cards below to see details
+                {selectedRegion !== null 
+                  ? `📍 Showing ${originRegions[selectedRegion].name} - ${originRegions[selectedRegion].product}` 
+                  : '📍 Click on region cards below to zoom into specific locations'}
               </p>
               
               {/* Interactive Region Cards */}
@@ -411,8 +459,8 @@ export default function FreshVegetablesPage() {
                                 animate={{ opacity: 1, height: 'auto' }}
                                 className="mt-2 pt-2 border-t"
                               >
-                                <p className="text-xs text-muted-foreground">
-                                  Click to view on map
+                                <p className="text-xs font-semibold text-green-600 dark:text-green-400">
+                                  ✓ Showing on map above
                                 </p>
                               </motion.div>
                             )}
