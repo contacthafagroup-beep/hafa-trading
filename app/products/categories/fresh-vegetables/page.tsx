@@ -509,19 +509,19 @@ export default function FreshVegetablesPage() {
                 Get Quote
               </Button>
             </Link>
-            <Link href="tel:+251">
+            <Link href="tel:+251954742383">
               <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
                 <Phone className="mr-2 h-5 w-5" />
                 Call Us
               </Button>
             </Link>
-            <Link href="mailto:info@hafatrading.com">
+            <Link href="mailto:contact@hafatrading.com">
               <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
                 <Mail className="mr-2 h-5 w-5" />
                 Email
               </Button>
             </Link>
-            <Link href="https://wa.me/251">
+            <Link href="https://wa.me/251954742383">
               <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
                 <MessageCircle className="mr-2 h-5 w-5" />
                 WhatsApp
