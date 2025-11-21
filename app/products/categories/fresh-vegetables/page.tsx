@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 export default function FreshVegetablesPage() {
   const [activeVideo, setActiveVideo] = useState(0);
+  const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
 
   const vegetables = [
     { emoji: '🍅', name: 'Tomatoes', desc: 'Fresh Roma & round tomatoes, firm, juicy, long shelf life', animation: 'spin' },
@@ -356,7 +357,7 @@ export default function FreshVegetablesPage() {
               viewport={{ once: true }}
               className="bg-green-50 dark:bg-green-950 rounded-2xl p-4 md:p-8 mb-8"
             >
-              <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 relative">
+              <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d36.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"
                   width="100%"
@@ -367,58 +368,58 @@ export default function FreshVegetablesPage() {
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full"
                 />
-                {/* Overlay markers */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {originRegions.map((region, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.2, type: 'spring' }}
-                      className="absolute"
-                      style={{
-                        left: `${((region.lng - 33) / (48 - 33)) * 100}%`,
-                        top: `${((15 - region.lat) / (15 - 3)) * 100}%`,
-                        transform: 'translate(-50%, -100%)'
-                      }}
-                    >
-                      <div className="pointer-events-auto group relative">
-                        <motion.div
-                          animate={{ y: [0, -10, 0] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="text-4xl cursor-pointer"
-                        >
-                          📍
-                        </motion.div>
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 p-3 rounded-lg shadow-xl whitespace-nowrap z-10">
-                          <p className="font-bold text-sm">{region.name}</p>
-                          <p className="text-xs text-muted-foreground">{region.product}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
               </div>
               <p className="text-center mt-4 text-sm text-muted-foreground">
-                📍 Hover over pins to see which vegetables are grown in each region
+                📍 Interactive map of Ethiopia - Click on region cards below to see details
               </p>
               
-              {/* Legend */}
+              {/* Interactive Region Cards */}
               <div className="mt-6 grid grid-cols-1 md:grid-cols-5 gap-3">
                 {originRegions.map((region, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex items-center gap-2 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    onClick={() => setSelectedRegion(selectedRegion === index ? null : index)}
+                    className={`cursor-pointer transition-all duration-300 ${
+                      selectedRegion === index 
+                        ? 'ring-2 ring-green-600 shadow-xl scale-105' 
+                        : 'hover:shadow-lg'
+                    }`}
                   >
-                    <div className="text-2xl">📍</div>
-                    <div className="text-xs flex-1">
-                      <p className="font-semibold">{region.name}</p>
-                      <p className="text-muted-foreground">{region.product}</p>
-                    </div>
+                    <Card className="h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <motion.div 
+                            className="text-3xl"
+                            animate={selectedRegion === index ? { scale: [1, 1.2, 1] } : {}}
+                            transition={{ duration: 0.5 }}
+                          >
+                            📍
+                          </motion.div>
+                          <div className="flex-1">
+                            <p className="font-bold text-sm mb-1">{region.name}</p>
+                            <p className="text-xs text-green-600 dark:text-green-400 font-semibold mb-1">
+                              {region.product}
+                            </p>
+                            <p className="text-xs text-muted-foreground">{region.coordinates}</p>
+                            {selectedRegion === index && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                className="mt-2 pt-2 border-t"
+                              >
+                                <p className="text-xs text-muted-foreground">
+                                  Click to view on map
+                                </p>
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </motion.div>
                 ))}
               </div>
