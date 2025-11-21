@@ -515,7 +515,7 @@ export default function FreshVegetablesPage() {
                 Call Us
               </Button>
             </Link>
-            <Link href="mailto:contact@hafatrading.com">
+            <Link href="mailto:contact.hafatrading.com">
               <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
                 <Mail className="mr-2 h-5 w-5" />
                 Email
