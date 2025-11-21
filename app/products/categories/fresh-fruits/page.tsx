@@ -203,7 +203,7 @@ export default function FreshFruitsPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.1, rotate: veg.animation === 'spin' ? 360 : 0 }}
+                whileHover={{ scale: 1.1, rotate: fruit.animation === 'spin' ? 360 : 0 }}
               >
                 <Card className="h-full hover:shadow-2xl transition-all duration-300 border-2 border-orange-100 dark:border-orange-900 cursor-pointer group">
                   <CardContent className="p-6 text-center">
@@ -219,7 +219,7 @@ export default function FreshFruitsPage() {
                       {fruit.emoji}
                     </motion.div>
                     <h3 className="font-bold text-orange-700 dark:text-orange-400 mb-2">{fruit.name}</h3>
-                    <p className="text-xs text-muted-foreground md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    <p className="text-xs text-muted-foreground opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       {fruit.desc}
                     </p>
                   </CardContent>
