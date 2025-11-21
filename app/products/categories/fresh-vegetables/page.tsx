@@ -157,7 +157,7 @@ export default function FreshVegetablesPage() {
                       {veg.emoji}
                     </motion.div>
                     <h3 className="font-bold text-green-700 dark:text-green-400 mb-2">{veg.name}</h3>
-                    <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                    <p className="text-xs text-muted-foreground md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       {veg.desc}
                     </p>
                   </CardContent>
