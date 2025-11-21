@@ -358,12 +358,13 @@ export default function FreshVegetablesPage() {
             >
               <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 relative">
                 <iframe
-                  src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=9.145,40.489673&zoom=6&maptype=terrain`}
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d36.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full"
                 />
                 {/* Overlay markers */}
