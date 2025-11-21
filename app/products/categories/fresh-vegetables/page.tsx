@@ -67,11 +67,11 @@ export default function FreshVegetablesPage() {
   ];
 
   const originRegions = [
-    { name: 'Upper Rift Valley', product: 'Tomatoes', coordinates: '8.0°N, 38.7°E' },
-    { name: 'Arsi & Bale', product: 'Potatoes', coordinates: '7.5°N, 39.5°E' },
-    { name: 'Wollo', product: 'Red Onions', coordinates: '11.0°N, 39.5°E' },
-    { name: 'Afar', product: 'White Onions', coordinates: '11.5°N, 41.0°E' },
-    { name: 'Jimma', product: 'Cabbage & Leafy Vegetables', coordinates: '7.7°N, 36.8°E' }
+    { name: 'Upper Rift Valley', product: 'Tomatoes', coordinates: '8.0°N, 38.7°E', lat: 8.0, lng: 38.7, color: '#ef4444' },
+    { name: 'Arsi & Bale', product: 'Potatoes', coordinates: '7.5°N, 39.5°E', lat: 7.5, lng: 39.5, color: '#f59e0b' },
+    { name: 'Wollo', product: 'Red Onions', coordinates: '11.0°N, 39.5°E', lat: 11.0, lng: 39.5, color: '#8b5cf6' },
+    { name: 'Afar', product: 'White Onions', coordinates: '11.5°N, 41.0°E', lat: 11.5, lng: 41.0, color: '#06b6d4' },
+    { name: 'Jimma', product: 'Cabbage & Leafy Vegetables', coordinates: '7.7°N, 36.8°E', lat: 7.7, lng: 36.8, color: '#10b981' }
   ];
 
   const downloadables = [
@@ -356,21 +356,71 @@ export default function FreshVegetablesPage() {
               viewport={{ once: true }}
               className="bg-green-50 dark:bg-green-950 rounded-2xl p-4 md:p-8 mb-8"
             >
-              <div className="aspect-video rounded-lg overflow-hidden shadow-xl">
+              <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 relative">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4032506.8190193195!2d35.89!3d9.145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1635d0cedd6cfd2b%3A0x7bf6a67f5348c55a!2sEthiopia!5e0!3m2!1sen!2s!4v1234567890"
+                  src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=9.145,40.489673&zoom=6&maptype=terrain`}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full"
                 />
+                {/* Overlay markers */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {originRegions.map((region, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: index * 0.2, type: 'spring' }}
+                      className="absolute"
+                      style={{
+                        left: `${((region.lng - 33) / (48 - 33)) * 100}%`,
+                        top: `${((15 - region.lat) / (15 - 3)) * 100}%`,
+                        transform: 'translate(-50%, -100%)'
+                      }}
+                    >
+                      <div className="pointer-events-auto group relative">
+                        <motion.div
+                          animate={{ y: [0, -10, 0] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="text-4xl cursor-pointer"
+                        >
+                          📍
+                        </motion.div>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 p-3 rounded-lg shadow-xl whitespace-nowrap z-10">
+                          <p className="font-bold text-sm">{region.name}</p>
+                          <p className="text-xs text-muted-foreground">{region.product}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
               <p className="text-center mt-4 text-sm text-muted-foreground">
-                📍 Interactive map showing Ethiopia's vegetable growing regions
+                📍 Hover over pins to see which vegetables are grown in each region
               </p>
+              
+              {/* Legend */}
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-5 gap-3">
+                {originRegions.map((region, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-2 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="text-2xl">📍</div>
+                    <div className="text-xs flex-1">
+                      <p className="font-semibold">{region.name}</p>
+                      <p className="text-muted-foreground">{region.product}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
