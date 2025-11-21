@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2, Save, Video, MapPin, Award, Image, FileText, Loader2 } from 'lucide-react';
 import { saveCategoryContent, getCategoryContent } from '@/lib/firebase/category-content';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const categories = [
   { id: 'fresh-vegetables', name: 'Fresh Vegetables' },

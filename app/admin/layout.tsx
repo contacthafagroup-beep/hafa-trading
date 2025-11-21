@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/toaster';
 import {
   LayoutDashboard,
   Package,
@@ -126,6 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Page content */}
         <main className="p-6">{children}</main>
       </div>
+      <Toaster />
     </div>
   );
 }
