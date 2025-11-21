@@ -14,25 +14,25 @@ export default function HerbsSpicesPage() {
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
 
   const freshHerbs = [
-    { name: 'Fresh Rosemary', emoji: '🌿', animation: 'float' },
-    { name: 'Basil', emoji: '🌿', animation: 'bounce' },
-    { name: 'Mint', emoji: '🌿', animation: 'pulse' },
-    { name: 'Thyme', emoji: '🌿', animation: 'float' },
-    { name: 'Oregano', emoji: '🌿', animation: 'bounce' },
-    { name: 'Parsley & Coriander', emoji: '🌿', animation: 'pulse' }
+    { name: 'Fresh Rosemary', emoji: '🌿', animation: 'float', color: 'from-green-400 to-emerald-600' },
+    { name: 'Basil', emoji: '🍃', animation: 'bounce', color: 'from-lime-400 to-green-600' },
+    { name: 'Mint', emoji: '🌱', animation: 'pulse', color: 'from-teal-400 to-cyan-600' },
+    { name: 'Thyme', emoji: '🌾', animation: 'float', color: 'from-green-500 to-emerald-700' },
+    { name: 'Oregano', emoji: '🍀', animation: 'bounce', color: 'from-lime-500 to-green-700' },
+    { name: 'Parsley & Coriander', emoji: '🌿', animation: 'pulse', color: 'from-emerald-400 to-green-600' }
   ];
 
   const drySpices = [
-    { name: 'Black Cumin', desc: 'Tikur Azmud - Premium quality', emoji: '🌶️', animation: 'spin' },
-    { name: 'Turmeric', desc: 'Whole/powder - Bright yellow', emoji: '🌶️', animation: 'pulse' },
-    { name: 'Ginger', desc: 'Dried/powder - High potency', emoji: '🌶️', animation: 'bounce' },
-    { name: 'Cardamom', desc: 'Green pods - Aromatic', emoji: '🌶️', animation: 'float' },
-    { name: 'Black Pepper', desc: 'Whole peppercorns', emoji: '🌶️', animation: 'spin' },
-    { name: 'Fenugreek', desc: 'Seeds - Rich flavor', emoji: '🌶️', animation: 'pulse' },
-    { name: 'Cloves', desc: 'Whole - Intense aroma', emoji: '🌶️', animation: 'bounce' },
-    { name: 'Cinnamon', desc: 'Sticks/powder - Sweet spice', emoji: '🌶️', animation: 'float' },
-    { name: 'Bay Leaves', desc: 'Dried - Culinary essential', emoji: '🌶️', animation: 'spin' },
-    { name: 'Chili Powder & Paprika', desc: 'Various heat levels', emoji: '🌶️', animation: 'pulse' }
+    { name: 'Black Cumin', desc: 'Tikur Azmud - Premium quality', emoji: '⚫', animation: 'spin', color: 'from-gray-700 to-gray-900' },
+    { name: 'Turmeric', desc: 'Whole/powder - Bright yellow', emoji: '🟡', animation: 'pulse', color: 'from-yellow-400 to-amber-600' },
+    { name: 'Ginger', desc: 'Dried/powder - High potency', emoji: '🫚', animation: 'bounce', color: 'from-amber-400 to-orange-600' },
+    { name: 'Cardamom', desc: 'Green pods - Aromatic', emoji: '🟢', animation: 'float', color: 'from-green-400 to-emerald-600' },
+    { name: 'Black Pepper', desc: 'Whole peppercorns', emoji: '⚫', animation: 'spin', color: 'from-gray-800 to-black' },
+    { name: 'Fenugreek', desc: 'Seeds - Rich flavor', emoji: '🟤', animation: 'pulse', color: 'from-amber-600 to-brown-700' },
+    { name: 'Cloves', desc: 'Whole - Intense aroma', emoji: '🟤', animation: 'bounce', color: 'from-orange-700 to-red-900' },
+    { name: 'Cinnamon', desc: 'Sticks/powder - Sweet spice', emoji: '🟫', animation: 'float', color: 'from-orange-600 to-amber-800' },
+    { name: 'Bay Leaves', desc: 'Dried - Culinary essential', emoji: '🍂', animation: 'spin', color: 'from-green-600 to-olive-700' },
+    { name: 'Chili Powder & Paprika', desc: 'Various heat levels', emoji: '🌶️', animation: 'pulse', color: 'from-red-500 to-red-700' }
   ];
 
   const videos = [
@@ -187,7 +187,7 @@ export default function HerbsSpicesPage() {
       </section>
 
       {/* Fresh Herbs */}
-      <section className="py-16 bg-white dark:bg-gray-950">
+      <section className="py-16 bg-gradient-to-b from-green-50 via-emerald-50 to-white dark:from-gray-900 dark:via-green-950 dark:to-gray-950">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -195,11 +195,14 @@ export default function HerbsSpicesPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌿 Fresh Herbs</h2>
+            <div className="inline-block p-4 bg-green-100 dark:bg-green-900 rounded-full mb-4">
+              <span className="text-5xl">🌿</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Fresh Herbs</h2>
             <p className="text-lg text-muted-foreground">High essential oil content • Refrigerated transport available</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {freshHerbs.map((herb, index) => (
               <motion.div
                 key={index}
@@ -207,24 +210,30 @@ export default function HerbsSpicesPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.08, y: -5 }}
               >
-                <Card className="hover:shadow-xl transition-all duration-300 border-2 border-green-100 dark:border-green-900">
-                  <CardContent className="p-6 flex items-center gap-3">
-                    <motion.div
-                      className="text-4xl"
-                      animate={
-                        herb.animation === 'bounce' ? { y: [0, -10, 0] } :
-                        herb.animation === 'pulse' ? { scale: [1, 1.1, 1] } :
-                        herb.animation === 'float' ? { y: [0, -5, 0] } : {}
-                      }
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      {herb.emoji}
-                    </motion.div>
-                    <div className="flex-1">
-                      <CheckCircle className="h-5 w-5 text-green-600 mb-1" />
-                      <span className="font-medium">{herb.name}</span>
+                <Card className={`h-full hover:shadow-2xl transition-all duration-300 border-2 border-green-200 dark:border-green-800 overflow-hidden relative group`}>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${herb.color} opacity-5 group-hover:opacity-10 transition-opacity`}></div>
+                  <CardContent className="p-6 relative z-10">
+                    <div className="flex items-center gap-4">
+                      <motion.div
+                        className="text-5xl"
+                        animate={
+                          herb.animation === 'bounce' ? { y: [0, -10, 0] } :
+                          herb.animation === 'pulse' ? { scale: [1, 1.15, 1] } :
+                          herb.animation === 'float' ? { y: [0, -8, 0] } : {}
+                        }
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        {herb.emoji}
+                      </motion.div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                          <span className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wide">Fresh</span>
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100">{herb.name}</h3>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -235,7 +244,7 @@ export default function HerbsSpicesPage() {
       </section>
 
       {/* Dry Spices */}
-      <section className="py-16 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950">
+      <section className="py-16 bg-gradient-to-b from-orange-50 via-amber-50 to-white dark:from-gray-900 dark:via-orange-950 dark:to-gray-950">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -243,11 +252,14 @@ export default function HerbsSpicesPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🔥 Dry Spices</h2>
+            <div className="inline-block p-4 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 rounded-full mb-4">
+              <span className="text-5xl">🔥</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Dry Spices</h2>
             <p className="text-lg text-muted-foreground">100% natural • No additives or preservatives</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {drySpices.map((spice, index) => (
               <motion.div
                 key={index}
@@ -255,26 +267,30 @@ export default function HerbsSpicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -8 }}
               >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 border-purple-100 dark:border-purple-900 group">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-3">
+                <Card className={`h-full hover:shadow-2xl transition-all duration-300 border-2 border-orange-200 dark:border-orange-800 overflow-hidden relative group`}>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${spice.color} opacity-5 group-hover:opacity-15 transition-opacity`}></div>
+                  <CardContent className="p-6 relative z-10">
+                    <div className="flex items-start gap-4">
                       <motion.div 
-                        className="text-3xl"
+                        className="text-5xl flex-shrink-0"
                         animate={
-                          spice.animation === 'bounce' ? { y: [0, -10, 0] } :
-                          spice.animation === 'pulse' ? { scale: [1, 1.1, 1] } :
-                          spice.animation === 'float' ? { y: [0, -5, 0] } :
+                          spice.animation === 'bounce' ? { y: [0, -12, 0] } :
+                          spice.animation === 'pulse' ? { scale: [1, 1.2, 1] } :
+                          spice.animation === 'float' ? { y: [0, -8, 0] } :
                           spice.animation === 'spin' ? { rotate: [0, 360] } : {}
                         }
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2.5, repeat: Infinity }}
                       >
                         {spice.emoji}
                       </motion.div>
-                      <div>
-                        <h3 className="text-lg font-bold text-purple-700 dark:text-purple-400 mb-1">{spice.name}</h3>
-                        <p className="text-sm text-muted-foreground opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">{spice.desc}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wide bg-orange-100 dark:bg-orange-900 px-2 py-1 rounded">Dried</span>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">{spice.name}</h3>
+                        <p className="text-sm text-muted-foreground opacity-100 transition-opacity leading-relaxed">{spice.desc}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -282,6 +298,24 @@ export default function HerbsSpicesPage() {
               </motion.div>
             ))}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto"
+          >
+            <div className="bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900 dark:to-amber-900 p-6 rounded-xl text-center shadow-lg">
+              <CheckCircle className="h-10 w-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
+              <p className="font-bold text-lg text-gray-800 dark:text-gray-100">100% Natural</p>
+              <p className="text-sm text-muted-foreground mt-1">Pure and authentic</p>
+            </div>
+            <div className="bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900 dark:to-orange-900 p-6 rounded-xl text-center shadow-lg">
+              <CheckCircle className="h-10 w-10 text-red-600 dark:text-red-400 mx-auto mb-3" />
+              <p className="font-bold text-lg text-gray-800 dark:text-gray-100">No Additives</p>
+              <p className="text-sm text-muted-foreground mt-1">Chemical-free guarantee</p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
