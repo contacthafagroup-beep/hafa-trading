@@ -135,49 +135,58 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {/* Fresh Vegetables */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-green-600">🥬 Fresh Vegetables</h3>
-                <p className="text-sm text-muted-foreground mb-3">Premium & Commercial Grade</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Tomatoes, Onions, Cabbage</li>
-                  <li>• Carrots, Potatoes, Green Beans</li>
-                  <li>• Peppers, Eggplant, Beetroots</li>
-                  <li>• Lettuce, Spinach, Kale, Garlic</li>
-                  <li>• Ginger, Okra, Celery, Leeks</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/fresh-vegetables" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-green-600">🥬 Fresh Vegetables</h3>
+                  <p className="text-sm text-muted-foreground mb-3">Premium & Commercial Grade</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Tomatoes, Onions, Cabbage</li>
+                    <li>• Carrots, Potatoes, Green Beans</li>
+                    <li>• Peppers, Eggplant, Beetroots</li>
+                    <li>• Lettuce, Spinach, Kale, Garlic</li>
+                    <li>• Ginger, Okra, Celery, Leeks</li>
+                  </ul>
+                  <p className="text-sm text-green-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Fresh Fruits */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-orange-600">🍊 Fresh Fruits</h3>
-                <p className="text-sm text-muted-foreground mb-3">Naturally Grown & Export Ready</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Avocado (Hass & Ettinger)</li>
-                  <li>• Bananas, Mangoes, Papaya</li>
-                  <li>• Pineapple, Oranges, Lemons</li>
-                  <li>• Watermelon, Guava, Grapes</li>
-                  <li>• Strawberries, Pomegranate</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/fresh-fruits" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-orange-600">🍊 Fresh Fruits</h3>
+                  <p className="text-sm text-muted-foreground mb-3">Naturally Grown & Export Ready</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Avocado (Hass & Ettinger)</li>
+                    <li>• Bananas, Mangoes, Papaya</li>
+                    <li>• Pineapple, Oranges, Lemons</li>
+                    <li>• Watermelon, Guava, Grapes</li>
+                    <li>• Strawberries, Pomegranate</li>
+                  </ul>
+                  <p className="text-sm text-orange-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Herbs & Spices */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-purple-600">🌿 Herbs & Spices</h3>
-                <p className="text-sm text-muted-foreground mb-3">Fresh & Dried</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Rosemary, Basil, Mint, Thyme</li>
-                  <li>• Black Cumin, Turmeric, Ginger</li>
-                  <li>• Cardamom, Black Pepper, Cloves</li>
-                  <li>• Cinnamon, Fenugreek, Bay Leaves</li>
-                  <li>• Chili Powder & Paprika</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/herbs-spices" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-purple-600">🌿 Herbs & Spices</h3>
+                  <p className="text-sm text-muted-foreground mb-3">Fresh & Dried</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Rosemary, Basil, Mint, Thyme</li>
+                    <li>• Black Cumin, Turmeric, Ginger</li>
+                    <li>• Cardamom, Black Pepper, Cloves</li>
+                    <li>• Cinnamon, Fenugreek, Bay Leaves</li>
+                    <li>• Chili Powder & Paprika</li>
+                  </ul>
+                  <p className="text-sm text-purple-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Grains & Legumes */}
             <Card className="hover:shadow-lg transition-shadow">
