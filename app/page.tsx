@@ -189,49 +189,58 @@ export default function HomePage() {
             </Link>
 
             {/* Grains & Legumes */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-amber-600">🌾 Grains & Legumes</h3>
-                <p className="text-sm text-muted-foreground mb-3">Bulk Export Quality</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Teff (White, Red, Mixed)</li>
-                  <li>• Maize, Wheat, Barley, Sorghum</li>
-                  <li>• Chickpeas, Lentils, Peas, Beans</li>
-                  <li>• Sesame Seeds, Soybeans</li>
-                  <li>• Niger Seed, Peanuts</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/grains-legumes" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-amber-600">🌾 Grains & Legumes</h3>
+                  <p className="text-sm text-muted-foreground mb-3">Bulk Export Quality</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Teff (White, Red, Mixed)</li>
+                    <li>• Maize, Wheat, Barley, Sorghum</li>
+                    <li>• Chickpeas, Lentils, Peas, Beans</li>
+                    <li>• Sesame Seeds, Soybeans</li>
+                    <li>• Niger Seed, Peanuts</li>
+                  </ul>
+                  <p className="text-sm text-amber-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Livestock & Meat */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-red-600">🐑 Livestock & Meat</h3>
-                <p className="text-sm text-muted-foreground mb-3">Export-Standard & Halal Certified</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Live: Goats, Sheep, Cattle</li>
-                  <li>• Oxen, Calves, Camels</li>
-                  <li>• Fresh/Frozen: Goat Meat</li>
-                  <li>• Mutton, Beef</li>
-                  <li>• Liver, Kidney, Tripe</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/livestock-meat" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-red-600">🐑 Livestock & Meat</h3>
+                  <p className="text-sm text-muted-foreground mb-3">Export-Standard & Halal Certified</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Live: Goats, Sheep, Cattle</li>
+                    <li>• Oxen, Calves, Camels</li>
+                    <li>• Fresh/Frozen: Goat Meat</li>
+                    <li>• Mutton, Beef</li>
+                    <li>• Liver, Kidney, Tripe</li>
+                  </ul>
+                  <p className="text-sm text-red-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Specialty Products */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-yellow-600">⭐ Specialty Products</h3>
-                <p className="text-sm text-muted-foreground mb-3">High-Demand Items</p>
-                <ul className="text-sm space-y-1">
-                  <li>• Honey (White, Red, Forest)</li>
-                  <li>• Coffee Beans (Washed/Unwashed)</li>
-                  <li>• Aloe Vera Leaves</li>
-                  <li>• Moringa Leaves & Powder</li>
-                  <li>• Sesame & Niger Seed Oil</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <Link href="/products/categories/specialty-products" className="block">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-yellow-600">⭐ Specialty Products</h3>
+                  <p className="text-sm text-muted-foreground mb-3">High-Demand Items</p>
+                  <ul className="text-sm space-y-1">
+                    <li>• Honey (White, Red, Forest)</li>
+                    <li>• Coffee Beans (Washed/Unwashed)</li>
+                    <li>• Aloe Vera Leaves</li>
+                    <li>• Moringa Leaves & Powder</li>
+                    <li>• Sesame & Niger Seed Oil</li>
+                  </ul>
+                  <p className="text-sm text-yellow-600 font-semibold mt-4">Learn more →</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-8">
