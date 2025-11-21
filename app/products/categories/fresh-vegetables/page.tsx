@@ -4,65 +4,99 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, CheckCircle, Package, Truck, Thermometer } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Package, Truck, Download, Play, MapPin, Award, FileText, Phone, Mail, MessageCircle } from 'lucide-react';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
-import Image from 'next/image';
+import { useState } from 'react';
 
 export default function FreshVegetablesPage() {
+  const [activeVideo, setActiveVideo] = useState(0);
+
   const vegetables = [
-    {
-      name: 'Tomatoes',
-      subtitle: 'Round, Roma & Sauce-Grade',
-      features: ['Firm texture, long shelf life', 'Packed in crates or cartons'],
-      ideal: 'Ideal for supermarkets, processors & exporters'
-    },
-    {
-      name: 'Onions (Red & White)',
-      subtitle: 'Large bulbs, high pungency',
-      features: ['Export-grade cleaning & bagging'],
-      ideal: 'Bulk 25kg/50kg mesh bags available'
-    },
-    {
-      name: 'Potatoes',
-      subtitle: 'Fresh, soil-free, size-graded',
-      features: ['Long storage life'],
-      ideal: 'Cooking, chips, wholesale markets'
-    },
-    {
-      name: 'Carrots',
-      subtitle: 'Crisp, sweet, washed',
-      features: ['Premium bundle packaging available'],
-      ideal: 'Perfect for retail and food service'
-    },
-    {
-      name: 'Green Chili & Peppers',
-      subtitle: 'Hot/sweet varieties',
-      features: ['Perfect for Middle East & EU markets'],
-      ideal: 'Fresh or dried options'
-    },
-    {
-      name: 'Garlic & Ginger',
-      subtitle: 'Available fresh, semi-dried, and fully dried',
-      features: ['High essential oil content'],
-      ideal: 'Culinary and medicinal use'
-    }
+    { emoji: '🍅', name: 'Tomatoes', desc: 'Fresh Roma & round tomatoes, firm, juicy, long shelf life', animation: 'spin' },
+    { emoji: '🧅', name: 'Red Onions', desc: 'Strong aroma, high pungency, perfect for cooking', animation: 'shake' },
+    { emoji: '⚪', name: 'White Onions', desc: 'Soft pungency, sweet, ideal for GCC markets', animation: 'glow' },
+    { emoji: '🥔', name: 'Potatoes', desc: 'Size-graded, soil-free, long storage life', animation: 'rise' },
+    { emoji: '🥕', name: 'Carrots', desc: 'Crisp, sweet, washed, sorted by size', animation: 'bounce' },
+    { emoji: '🫑', name: 'Green Peppers', desc: 'Fresh, crunchy sweet peppers', animation: 'slide' },
+    { emoji: '🌶', name: 'Hot Chili Peppers', desc: 'Spicy varieties for sauces and export', animation: 'wave' },
+    { emoji: '🍆', name: 'Eggplant', desc: 'Shiny, deep purple, low damage', animation: 'fade' },
+    { emoji: '🥬', name: 'Cabbage', desc: 'Tight head, clean outer leaves, export grade', animation: 'glow' },
+    { emoji: '🥗', name: 'Lettuce', desc: 'Fresh, crisp, hydroponic available', animation: 'float' },
+    { emoji: '🥒', name: 'Cucumbers', desc: 'Firm, crisp, evenly sized', animation: 'slide-up' },
+    { emoji: '🌽', name: 'Sweet Corn', desc: 'Golden, tender, ready for retail markets', animation: 'pulse' },
+    { emoji: '🥦', name: 'Broccoli', desc: 'Green heads, fresh, cooled', animation: 'scale' },
+    { emoji: '🧄', name: 'Garlic', desc: 'Fresh or dried, high essential oil', animation: 'glow-shake' },
+    { emoji: '🟠', name: 'Ginger', desc: 'Fresh young ginger or dried', animation: 'rotate' }
   ];
 
-  const packagingOptions = [
-    'Plastic crates',
-    'Cartons',
-    'Ventilated mesh bags',
-    'Vacuum packaging (on special request)'
+  const videos = [
+    { title: 'Sorting & Packing Process', desc: 'See how we sort and pack vegetables', thumbnail: '🎥' },
+    { title: 'Farm Harvesting', desc: 'Fresh from Ethiopian farms', thumbnail: '🌾' },
+    { title: 'Quality Control', desc: 'Our rigorous inspection process', thumbnail: '✅' },
+    { title: 'Cold Chain Transport', desc: 'Temperature-controlled delivery', thumbnail: '❄️' }
+  ];
+
+  const certifications = [
+    { icon: '🔒', name: 'ISO Certified', desc: 'International standards' },
+    { icon: '🌿', name: 'Organic', desc: 'Chemical-free farming' },
+    { icon: '📜', name: 'Phytosanitary', desc: 'Plant health certified' },
+    { icon: '🧪', name: 'Lab Tested', desc: 'Quality assured' },
+    { icon: '🏅', name: 'Export License', desc: 'Authorized exporter' }
+  ];
+
+  const originRegions = [
+    { name: 'Upper Rift Valley', product: 'Tomatoes', coordinates: '8.0°N, 38.7°E' },
+    { name: 'Arsi & Bale', product: 'Potatoes', coordinates: '7.5°N, 39.5°E' },
+    { name: 'Wollo', product: 'Red Onions', coordinates: '11.0°N, 39.5°E' },
+    { name: 'Afar', product: 'White Onions', coordinates: '11.5°N, 41.0°E' },
+    { name: 'Jimma', product: 'Cabbage & Leafy Vegetables', coordinates: '7.7°N, 36.8°E' }
+  ];
+
+  const downloadables = [
+    { icon: '📄', name: 'Vegetable Catalog PDF', size: '2.5 MB' },
+    { icon: '💰', name: 'Price List', size: '850 KB' },
+    { icon: '📋', name: 'Certification Documents', size: '1.2 MB' },
+    { icon: '📦', name: 'Packaging Samples', size: '3.1 MB' }
+  ];
+
+  const carouselImages = [
+    { title: 'Fresh Crates', emoji: '📦' },
+    { title: 'Farm Harvest', emoji: '🌾' },
+    { title: 'Washing Station', emoji: '💧' },
+    { title: 'Quality Check', emoji: '✅' },
+    { title: 'Container Loading', emoji: '🚚' }
   ];
 
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-900 text-white py-20">
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Floating Icons */}
+      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-900 text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          {['🍅', '🧅', '🥔', '🥕', '🌶', '🧄', '🟠', '🥬', '🫑'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-6xl"
+              initial={{ x: Math.random() * 100 + '%', y: Math.random() * 100 + '%' }}
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{
+                duration: 3 + i,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              style={{ left: `${i * 11}%`, top: `${(i * 13) % 80}%` }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <Link href="/">
             <Button variant="ghost" className="mb-6 text-white hover:bg-white/20">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -76,22 +110,17 @@ export default function FreshVegetablesPage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <div className="text-5xl mb-4">🥬</div>
+            <div className="text-6xl mb-4">🥬</div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4">Fresh Vegetables</h1>
-            <div className="flex flex-wrap gap-3 text-lg mb-6">
-              <span className="bg-white/20 px-4 py-2 rounded-full">Farm-Fresh</span>
-              <span className="bg-white/20 px-4 py-2 rounded-full">Sustainably Grown</span>
-              <span className="bg-white/20 px-4 py-2 rounded-full">Export Certified</span>
-            </div>
+            <p className="text-2xl mb-6">Farm-Fresh • Graded • Ready for Export</p>
             <p className="text-xl text-green-50 leading-relaxed">
-              Our fresh vegetable collection is sourced from trusted smallholder farmers and modern commercial farms across Ethiopia. 
-              Every item undergoes hand selection, washing, sorting, and strict quality inspection before packaging.
+              Premium Ethiopian vegetables, carefully harvested, sorted, and packed to maintain freshness for global markets.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Vegetable Categories */}
+      {/* Product Icons Grid */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <motion.div
@@ -100,34 +129,37 @@ export default function FreshVegetablesPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🥬 Our Vegetable Categories</h2>
-            <p className="text-lg text-muted-foreground">Premium quality vegetables for every market need</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌟 Our Vegetable Range</h2>
+            <p className="text-lg text-muted-foreground">Hover over each product to see details</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {vegetables.map((veg, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ scale: 1.1, rotate: veg.animation === 'spin' ? 360 : 0 }}
               >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 border-green-100 dark:border-green-900">
-                  <CardContent className="p-6">
-                    <h3 className="text-2xl font-bold text-green-700 dark:text-green-400 mb-2">{veg.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4 italic">{veg.subtitle}</p>
-                    <div className="space-y-2 mb-4">
-                      {veg.features.map((feature, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="bg-green-50 dark:bg-green-950 p-3 rounded-lg">
-                      <p className="text-sm font-semibold text-green-700 dark:text-green-400">✔ {veg.ideal}</p>
-                    </div>
+                <Card className="h-full hover:shadow-2xl transition-all duration-300 border-2 border-green-100 dark:border-green-900 cursor-pointer group">
+                  <CardContent className="p-6 text-center">
+                    <motion.div 
+                      className="text-6xl mb-3"
+                      animate={
+                        veg.animation === 'bounce' ? { y: [0, -10, 0] } :
+                        veg.animation === 'pulse' ? { scale: [1, 1.1, 1] } :
+                        veg.animation === 'float' ? { y: [0, -5, 0] } : {}
+                      }
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      {veg.emoji}
+                    </motion.div>
+                    <h3 className="font-bold text-green-700 dark:text-green-400 mb-2">{veg.name}</h3>
+                    <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                      {veg.desc}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -136,33 +168,42 @@ export default function FreshVegetablesPage() {
         </div>
       </section>
 
-      {/* Packaging Options */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+      {/* Admin Video Section */}
+      <section className="py-16 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <Package className="h-16 w-16 text-green-600 mx-auto mb-4" />
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">📦 Packaging Options</h2>
-              <p className="text-lg text-muted-foreground">Flexible packaging solutions for your business needs</p>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Play className="h-16 w-16 text-green-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🎥 See Our Process</h2>
+            <p className="text-lg text-muted-foreground">Watch how we ensure quality from farm to export</p>
+          </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              {packagingOptions.map((option, index) => (
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-6">
+              {videos.map((video, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm"
                 >
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0" />
-                  <span className="font-medium">{option}</span>
+                  <Card className="hover:shadow-xl transition-all cursor-pointer group">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-4">
+                        <div className="text-5xl group-hover:scale-110 transition-transform">{video.thumbnail}</div>
+                        <div className="flex-1">
+                          <h3 className="font-bold mb-1">{video.title}</h3>
+                          <p className="text-sm text-muted-foreground">{video.desc}</p>
+                        </div>
+                        <Play className="h-8 w-8 text-green-600" />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </div>
@@ -170,7 +211,7 @@ export default function FreshVegetablesPage() {
         </div>
       </section>
 
-      {/* Shipping & Export */}
+      {/* Photo Carousel */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <motion.div
@@ -179,55 +220,198 @@ export default function FreshVegetablesPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Truck className="h-16 w-16 text-green-600 mx-auto mb-4" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🚚 Shipping & Export</h2>
-            <p className="text-lg text-muted-foreground">Reliable logistics for fresh delivery worldwide</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">📸 Our Facilities</h2>
+            <p className="text-lg text-muted-foreground">From farm to container</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <div className="text-4xl mb-3">✈️</div>
-                <h3 className="font-bold mb-2">Air Freight</h3>
-                <p className="text-sm text-muted-foreground">Urgent orders delivered fast</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <div className="text-4xl mb-3">🚢</div>
-                <h3 className="font-bold mb-2">Sea Freight</h3>
-                <p className="text-sm text-muted-foreground">Refrigerated containers</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <div className="text-4xl mb-3">🚚</div>
-                <h3 className="font-bold mb-2">Door-to-Port</h3>
-                <p className="text-sm text-muted-foreground">Complete delivery service</p>
-              </CardContent>
-            </Card>
+          <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory">
+            {carouselImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex-shrink-0 w-64 snap-center"
+              >
+                <Card className="hover:shadow-xl transition-all">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-7xl mb-4">{image.emoji}</div>
+                    <h3 className="font-bold">{image.title}</h3>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Certifications */}
+      <section className="py-16 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Award className="h-16 w-16 text-green-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🏆 Certifications & Standards</h2>
+            <p className="text-lg text-muted-foreground">Internationally recognized quality</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
+            {certifications.map((cert, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
+                <Card className="text-center hover:shadow-2xl transition-all border-2 border-green-200 dark:border-green-800">
+                  <CardContent className="p-6">
+                    <motion.div 
+                      className="text-5xl mb-3"
+                      animate={{ rotate: [0, 10, -10, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      {cert.icon}
+                    </motion.div>
+                    <h3 className="font-bold mb-1">{cert.name}</h3>
+                    <p className="text-xs text-muted-foreground">{cert.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Origin Map */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <MapPin className="h-16 w-16 text-green-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">📍 Origin Regions</h2>
+            <p className="text-lg text-muted-foreground">Sourced from Ethiopia's best agricultural zones</p>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-green-50 dark:bg-green-950 rounded-2xl p-8 mb-8">
+              <div className="aspect-video bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 rounded-lg flex items-center justify-center text-6xl">
+                🗺️
+              </div>
+              <p className="text-center mt-4 text-sm text-muted-foreground">Interactive map showing vegetable growing regions</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {originRegions.map((region, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card className="hover:shadow-lg transition-all">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <MapPin className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-bold mb-1">{region.name}</h3>
+                          <p className="text-sm text-muted-foreground mb-1">{region.product}</p>
+                          <p className="text-xs text-muted-foreground">{region.coordinates}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Downloadables */}
+      <section className="py-16 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Download className="h-16 w-16 text-green-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">📥 Download Resources</h2>
+            <p className="text-lg text-muted-foreground">Get detailed information about our products</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {downloadables.map((file, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Card className="hover:shadow-xl transition-all cursor-pointer border-2 border-green-100 dark:border-green-900">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-5xl mb-3">{file.icon}</div>
+                    <h3 className="font-bold mb-2">{file.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">{file.size}</p>
+                    <Button size="sm" className="w-full bg-green-600 hover:bg-green-700">
+                      <Download className="mr-2 h-4 w-4" />
+                      Download
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced CTA */}
       <section className="py-16 bg-gradient-to-r from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Order Fresh Vegetables?
+            Ready to Import Premium Ethiopian Vegetables?
           </h2>
           <p className="text-xl mb-8 text-green-100">
-            Get a quote for bulk orders or become a partner
+            Contact us today for quotes, samples, and partnership opportunities
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/rfq">
               <Button size="lg" className="bg-white text-green-600 hover:bg-green-50">
-                Request Quote
+                <FileText className="mr-2 h-5 w-5" />
+                Get Quote
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="tel:+251">
               <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
-                Contact Us
+                <Phone className="mr-2 h-5 w-5" />
+                Call Us
+              </Button>
+            </Link>
+            <Link href="mailto:info@hafatrading.com">
+              <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
+                <Mail className="mr-2 h-5 w-5" />
+                Email
+              </Button>
+            </Link>
+            <Link href="https://wa.me/251">
+              <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-green-600">
+                <MessageCircle className="mr-2 h-5 w-5" />
+                WhatsApp
               </Button>
             </Link>
           </div>
