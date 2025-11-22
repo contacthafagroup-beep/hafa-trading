@@ -156,21 +156,21 @@ export default function LiveChatBox() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-28 right-6 z-50 w-80 md:w-96"
+            className="fixed bottom-24 right-2 left-2 sm:left-auto sm:right-4 z-50 sm:w-72 md:w-80 max-w-[calc(100vw-1rem)] max-h-[calc(100vh-7rem)] overflow-hidden"
           >
             <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-2 border-blue-200 dark:border-blue-800 shadow-2xl">
               <CardContent className="p-0">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-4 rounded-t-lg">
+                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-3 rounded-t-lg">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg">
                         💬
                       </div>
                       <div className="text-white">
-                        <h3 className="font-bold">Live Chat</h3>
+                        <h3 className="font-bold text-sm">Live Chat</h3>
                         <p className="text-xs opacity-90">
-                          {user ? 'Chat with our team' : 'Login to chat'}
+                          {user ? 'Chat with us' : 'Login'}
                         </p>
                       </div>
                     </div>
@@ -178,7 +178,7 @@ export default function LiveChatBox() {
                       size="sm"
                       variant="ghost"
                       onClick={() => setIsOpen(false)}
-                      className="text-white hover:bg-white/20"
+                      className="text-white hover:bg-white/20 h-8 w-8 p-0"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -188,55 +188,55 @@ export default function LiveChatBox() {
                 {/* Chat Content */}
                 {!user ? (
                   // Not logged in - Show login prompt
-                  <div className="p-6 text-center">
+                  <div className="p-3 text-center max-h-[calc(100vh-12rem)] overflow-y-auto">
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.5 }}
-                      className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-100 to-green-100 dark:from-blue-900 dark:to-green-900 flex items-center justify-center"
+                      className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-br from-blue-100 to-green-100 dark:from-blue-900 dark:to-green-900 flex items-center justify-center"
                     >
-                      <User className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+                      <User className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </motion.div>
-                    <h4 className="font-bold text-lg mb-2">Welcome to Hafa Trading!</h4>
-                    <p className="text-sm text-muted-foreground mb-6">
-                      Please login or register to start chatting with our support team
+                    <h4 className="font-bold text-sm mb-1">Welcome!</h4>
+                    <p className="text-xs text-muted-foreground mb-3 leading-tight">
+                      Login to chat with us
                     </p>
-                    <div className="space-y-3 mb-6">
+                    <div className="space-y-2 mb-3">
                       <Link href="/login">
-                        <Button className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
+                        <Button size="sm" className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
                           Login to Chat
                         </Button>
                       </Link>
                       <Link href="/register">
-                        <Button variant="outline" className="w-full">
+                        <Button size="sm" variant="outline" className="w-full">
                           Create Account
                         </Button>
                       </Link>
                     </div>
 
                     {/* Alternative Contact Options */}
-                    <div className="border-t pt-4">
-                      <p className="text-xs font-semibold text-muted-foreground mb-3 text-center">
+                    <div className="border-t pt-2">
+                      <p className="text-xs font-semibold text-muted-foreground mb-2 text-center">
                         Or contact us directly:
                       </p>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {/* WhatsApp */}
                         <a
                           href="https://wa.me/251954742383"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group"
+                          className="flex items-center gap-2 p-2 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group"
                         >
-                          <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-base flex-shrink-0">
                             📱
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-green-700 dark:text-green-400">WhatsApp</p>
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-400">WhatsApp</p>
                             <p className="text-xs text-muted-foreground truncate">+251 954 742 383</p>
                           </div>
                           <motion.div
-                            className="text-green-600 dark:text-green-400"
-                            animate={{ x: [0, 5, 0] }}
+                            className="text-green-600 dark:text-green-400 text-sm"
+                            animate={{ x: [0, 3, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           >
                             →
@@ -248,18 +248,18 @@ export default function LiveChatBox() {
                           href="https://t.me/hafatrading"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+                          className="flex items-center gap-2 p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
                         >
-                          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white text-base flex-shrink-0">
                             ✈️
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">Telegram</p>
+                            <p className="text-xs font-semibold text-blue-700 dark:text-blue-400">Telegram</p>
                             <p className="text-xs text-muted-foreground truncate">@hafatrading</p>
                           </div>
                           <motion.div
-                            className="text-blue-600 dark:text-blue-400"
-                            animate={{ x: [0, 5, 0] }}
+                            className="text-blue-600 dark:text-blue-400 text-sm"
+                            animate={{ x: [0, 3, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           >
                             →
@@ -269,18 +269,18 @@ export default function LiveChatBox() {
                         {/* Email */}
                         <a
                           href="mailto:contact.hafatrading@gmail.com"
-                          className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors group"
+                          className="flex items-center gap-2 p-2 rounded-lg bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors group"
                         >
-                          <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white text-base flex-shrink-0">
                             📧
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-purple-700 dark:text-purple-400">Email</p>
+                            <p className="text-xs font-semibold text-purple-700 dark:text-purple-400">Email</p>
                             <p className="text-xs text-muted-foreground truncate">contact.hafatrading@gmail.com</p>
                           </div>
                           <motion.div
-                            className="text-purple-600 dark:text-purple-400"
-                            animate={{ x: [0, 5, 0] }}
+                            className="text-purple-600 dark:text-purple-400 text-sm"
+                            animate={{ x: [0, 3, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           >
                             →
