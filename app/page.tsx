@@ -62,66 +62,388 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Hafa?</h2>
-            <p className="text-lg text-muted-foreground">
-              Excellence in international trade with decades of experience
-            </p>
-          </div>
+      {/* Why Choose Hafa - Super Attractive Premium Section */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-emerald-50 via-blue-50 to-green-50 dark:from-gray-900 dark:via-emerald-950 dark:to-gray-900">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Gradient Orbs */}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity }}
+            className="absolute -top-24 -left-24 w-96 h-96 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 10, repeat: Infinity, delay: 1 }}
+            className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.25, 0.45, 0.25],
+            }}
+            transition={{ duration: 12, repeat: Infinity, delay: 2 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-emerald-400 to-green-500 rounded-full blur-3xl"
+          />
           
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* Floating Particles */}
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-green-400/30 rounded-full"
+              initial={{
+                x: Math.random() * 100 + '%',
+                y: Math.random() * 100 + '%',
+              }}
+              animate={{
+                y: [null, Math.random() * -200 - 100],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: Math.random() * 5 + 5,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              animate={{
+                rotate: [0, 10, -10, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{ duration: 5, repeat: Infinity }}
+              className="inline-block text-6xl mb-4"
+            >
+              ⭐
+            </motion.div>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 dark:from-green-400 dark:via-emerald-400 dark:to-blue-400 bg-clip-text text-transparent">
+              Why Choose Hafa Trading?
+            </h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Excellence in international trade with <span className="font-bold text-green-600 dark:text-green-400">decades of experience</span> and a commitment to your success
+            </p>
+          </motion.div>
+          
+          {/* Feature Cards Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
               {
                 icon: Globe,
-                title: 'Global Network',
-                description: 'Connected to suppliers and buyers across continents'
+                title: 'Direct From Ethiopian Farms',
+                description: 'We export fresh, authentic, and sustainably sourced Ethiopian agricultural products directly from our partnered farms and cooperatives — ensuring purity, freshness, and full traceability.',
+                color: 'from-green-500 to-emerald-500',
+                bgColor: 'bg-green-50 dark:bg-green-900/20',
+                iconBg: 'bg-green-100 dark:bg-green-900/40',
+                borderColor: 'border-green-200 dark:border-green-800',
+                emoji: '🌿',
+                animation: 'float'
               },
               {
                 icon: Shield,
-                title: 'Quality Assured',
-                description: 'All products meet international standards and certifications'
+                title: 'International-Grade Quality Control',
+                description: 'Every product goes through multi-stage inspection, packaging verification, and export compliance checks to meet EU, FDA, Gulf, and Asian import requirements.',
+                color: 'from-blue-500 to-cyan-500',
+                bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+                iconBg: 'bg-blue-100 dark:bg-blue-900/40',
+                borderColor: 'border-blue-200 dark:border-blue-800',
+                emoji: '🛡️',
+                animation: 'shine'
               },
               {
                 icon: Truck,
-                title: 'Reliable Logistics',
-                description: 'Efficient shipping and real-time tracking for all orders'
+                title: 'Export-Optimized Logistics',
+                description: 'Whether air cargo for perishables or sea freight for bulk shipments, our logistics chain ensures fast, temperature-controlled, and fully documented exports with real-time tracking.',
+                color: 'from-purple-500 to-pink-500',
+                bgColor: 'bg-purple-50 dark:bg-purple-900/20',
+                iconBg: 'bg-purple-100 dark:bg-purple-900/40',
+                borderColor: 'border-purple-200 dark:border-purple-800',
+                emoji: '🚚',
+                animation: 'move'
               },
               {
                 icon: Users,
-                title: 'Expert Team',
-                description: 'Experienced professionals dedicated to your success'
+                title: 'Agricultural Export Experts',
+                description: 'Our team consists of experienced agronomists, export specialists, and quality engineers committed to delivering products that meet international buyer expectations.',
+                color: 'from-orange-500 to-amber-500',
+                bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+                iconBg: 'bg-orange-100 dark:bg-orange-900/40',
+                borderColor: 'border-orange-200 dark:border-orange-800',
+                emoji: '👨‍🌾',
+                animation: 'wave'
               },
               {
                 icon: TrendingUp,
-                title: 'Competitive Pricing',
-                description: 'Best market rates with transparent pricing'
+                title: 'Competitive International Pricing',
+                description: 'Thanks to our direct sourcing, efficient operations, and large-scale supply capacity, we offer fair, stable, and globally competitive export pricing.',
+                color: 'from-yellow-500 to-amber-500',
+                bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
+                iconBg: 'bg-yellow-100 dark:bg-yellow-900/40',
+                borderColor: 'border-yellow-200 dark:border-yellow-800',
+                emoji: '💰',
+                animation: 'bounce'
               },
               {
                 icon: Package,
-                title: 'Wide Selection',
-                description: '50+ product categories from agriculture to electronics'
+                title: 'Wide & Reliable Export Portfolio',
+                description: 'Choose from 50+ export-quality products, including fresh herbs, spices, cereals, legumes, vegetables, fruits, livestock products, and various Ethiopian-origin commodities.',
+                color: 'from-teal-500 to-cyan-500',
+                bgColor: 'bg-teal-50 dark:bg-teal-900/20',
+                iconBg: 'bg-teal-100 dark:bg-teal-900/40',
+                borderColor: 'border-teal-200 dark:border-teal-800',
+                emoji: '📦',
+                animation: 'open'
               }
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group"
               >
-                <Card className="h-full hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <feature.icon className="h-12 w-12 text-blue-600 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </CardContent>
-                </Card>
+                <div className={`relative h-full ${feature.bgColor} backdrop-blur-xl rounded-3xl p-6 border-2 ${feature.borderColor} hover:border-opacity-100 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl`}>
+                  {/* Parallax farmland background for Direct From Farms */}
+                  {feature.animation === 'float' && (
+                    <motion.div
+                      className="absolute inset-0 opacity-5"
+                      animate={{
+                        backgroundPosition: ['0% 0%', '100% 100%']
+                      }}
+                      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                      style={{
+                        backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 50 Q 25 30, 50 50 T 100 50 L 100 100 L 0 100 Z\' fill=\'%23166534\'/%3E%3C/svg%3E")',
+                        backgroundSize: '200px 100px',
+                        backgroundRepeat: 'repeat'
+                      }}
+                    />
+                  )}
+                  
+                  {/* World map lines for Logistics */}
+                  {feature.animation === 'move' && (
+                    <div className="absolute inset-0 opacity-10">
+                      {[...Array(5)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+                          style={{
+                            top: `${20 + i * 20}%`,
+                            left: 0,
+                            right: 0
+                          }}
+                          animate={{
+                            opacity: [0.3, 0.7, 0.3],
+                            scaleX: [0.8, 1, 0.8]
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            delay: i * 0.3
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Quality badges fade-in for Quality Control */}
+                  {feature.animation === 'shine' && (
+                    <div className="absolute top-4 right-4 flex gap-1">
+                      {['EU', 'FDA', 'ISO'].map((badge, i) => (
+                        <motion.div
+                          key={badge}
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.5 + i * 0.2 }}
+                          className="text-xs font-bold px-2 py-1 bg-blue-500/20 rounded-full text-blue-700 dark:text-blue-300"
+                        >
+                          {badge}
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Currency icons float for Pricing */}
+                  {feature.animation === 'bounce' && (
+                    <div className="absolute top-4 right-4">
+                      {['$', '€', '£'].map((currency, i) => (
+                        <motion.span
+                          key={currency}
+                          className="absolute text-yellow-500/30 font-bold"
+                          style={{ left: i * 15, top: i * 10 }}
+                          animate={{
+                            y: [0, -20, 0],
+                            opacity: [0.3, 0.6, 0.3]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: i * 0.3
+                          }}
+                        >
+                          {currency}
+                        </motion.span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                  />
+                  
+                  {/* Glowing border effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-3xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(0,0,0,0)',
+                        '0 0 20px rgba(34, 197, 94, 0.3)',
+                        '0 0 0px rgba(0,0,0,0)',
+                      ],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}
+                  />
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    {/* Icon with emoji - Custom animations per feature */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <motion.div
+                        whileHover={{ rotate: 360, scale: 1.2 }}
+                        transition={{ duration: 0.6 }}
+                        className={`${feature.iconBg} p-3 rounded-2xl relative overflow-hidden`}
+                      >
+                        {/* Shield shine effect */}
+                        {feature.animation === 'shine' && (
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                            animate={{
+                              x: ['-100%', '200%']
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              repeatDelay: 2
+                            }}
+                          />
+                        )}
+                        <feature.icon className={`h-8 w-8 bg-gradient-to-br ${feature.color} bg-clip-text text-transparent relative z-10`} />
+                      </motion.div>
+                      
+                      {/* Emoji with custom animations */}
+                      <motion.span
+                        animate={
+                          feature.animation === 'float' ? {
+                            y: [0, -8, 0],
+                            rotate: [0, 5, -5, 0]
+                          } :
+                          feature.animation === 'shine' ? {
+                            scale: [1, 1.1, 1],
+                            filter: ['brightness(1)', 'brightness(1.3)', 'brightness(1)']
+                          } :
+                          feature.animation === 'move' ? {
+                            x: [0, 5, -5, 0]
+                          } :
+                          feature.animation === 'wave' ? {
+                            rotate: [0, 15, -15, 0]
+                          } :
+                          feature.animation === 'bounce' ? {
+                            y: [0, -10, 0],
+                            scale: [1, 1.15, 1]
+                          } :
+                          feature.animation === 'open' ? {
+                            rotateY: [0, 180, 360]
+                          } :
+                          { scale: [1, 1.1, 1] }
+                        }
+                        transition={{ 
+                          duration: feature.animation === 'open' ? 4 : 3, 
+                          repeat: Infinity,
+                          delay: index * 0.3,
+                          ease: 'easeInOut'
+                        }}
+                        className="text-4xl"
+                        style={{ transformStyle: 'preserve-3d' }}
+                      >
+                        {feature.emoji}
+                      </motion.span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:bg-gradient-to-r group-hover:from-green-600 group-hover:to-blue-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {feature.description}
+                    </p>
+                    
+                    {/* Hover arrow */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      whileHover={{ opacity: 1, x: 0 }}
+                      className="mt-4 flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
+                    >
+                      Learn more
+                      <motion.span
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        →
+                      </motion.span>
+                    </motion.div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8 }}
+            className="text-center mt-16"
+          >
+            <Link href="/about">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 hover:from-green-700 hover:via-emerald-700 hover:to-blue-700 text-white px-8 py-6 text-lg font-bold shadow-2xl rounded-full"
+                >
+                  <span className="flex items-center gap-2">
+                    Discover Our Story
+                    <motion.span
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      →
+                    </motion.span>
+                  </span>
+                </Button>
+              </motion.div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
