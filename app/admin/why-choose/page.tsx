@@ -23,6 +23,7 @@ interface WhyChooseData {
     subtitle: string;
     description: string;
     icon: string;
+    videoUrl: string;
   }[];
 }
 
@@ -39,25 +40,29 @@ export default function WhyChooseAdminPage() {
         title: 'Direct Farm Sourcing',
         subtitle: 'Freshness Guaranteed',
         description: 'We partner directly with local farmers, cooperatives, and rural suppliers, ensuring 100% traceable, ethically-grown products — from fresh rosemary and spices to premium vegetables and cereals.',
-        icon: '🌱'
+        icon: '🌱',
+        videoUrl: ''
       },
       {
         title: 'Global Logistics Support',
         subtitle: 'Air • Sea • Road',
         description: 'From Ethiopia to the world — delivered with precision, speed, and temperature-controlled logistics. We coordinate air freight, sea freight, and inland transport with real-time tracking.',
-        icon: '🌐'
+        icon: '🌐',
+        videoUrl: ''
       },
       {
         title: 'Customized Packaging',
         subtitle: 'Options',
         description: 'Choose from vacuum-sealed, eco-friendly, private-label, and bulk export packaging options — all designed to keep products fresh and preserve aroma during long transport.',
-        icon: '📦'
+        icon: '📦',
+        videoUrl: ''
       },
       {
         title: 'Competitive Wholesale Pricing',
         subtitle: '',
         description: 'By cutting middlemen and sourcing straight from farms, we deliver global market–competitive pricing with transparent quotes and stable supply.',
-        icon: '💲'
+        icon: '💲',
+        videoUrl: ''
       }
     ]
   });
@@ -244,6 +249,20 @@ export default function WhyChooseAdminPage() {
                   placeholder="Feature description..."
                   rows={3}
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                  <Video className="w-4 h-4" />
+                  Feature Video URL (Optional)
+                </label>
+                <Input
+                  value={feature.videoUrl}
+                  onChange={(e) => updateFeature(index, 'videoUrl', e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=... or video file URL"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  This video will play when the feature card is clicked
+                </p>
               </div>
             </CardContent>
           </Card>

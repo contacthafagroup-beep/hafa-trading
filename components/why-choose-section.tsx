@@ -19,12 +19,15 @@ interface WhyChooseData {
     subtitle: string;
     description: string;
     icon: string;
+    videoUrl: string;
   }[];
 }
 
 export default function WhyChooseSection() {
   const [data, setData] = useState<WhyChooseData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,25 +51,29 @@ export default function WhyChooseSection() {
                 title: 'Direct Farm Sourcing',
                 subtitle: 'Freshness Guaranteed',
                 description: 'We partner directly with local farmers, cooperatives, and rural suppliers, ensuring 100% traceable, ethically-grown products — from fresh rosemary and spices to premium vegetables and cereals.',
-                icon: '🌱'
+                icon: '🌱',
+                videoUrl: ''
               },
               {
                 title: 'Global Logistics Support',
                 subtitle: 'Air • Sea • Road',
                 description: 'From Ethiopia to the world — delivered with precision, speed, and temperature-controlled logistics. We coordinate air freight, sea freight, and inland transport with real-time tracking.',
-                icon: '🌐'
+                icon: '🌐',
+                videoUrl: ''
               },
               {
                 title: 'Customized Packaging',
                 subtitle: 'Options',
                 description: 'Choose from vacuum-sealed, eco-friendly, private-label, and bulk export packaging options — all designed to keep products fresh and preserve aroma during long transport.',
-                icon: '📦'
+                icon: '📦',
+                videoUrl: ''
               },
               {
                 title: 'Competitive Wholesale Pricing',
                 subtitle: '',
                 description: 'By cutting middlemen and sourcing straight from farms, we deliver global market–competitive pricing with transparent quotes and stable supply.',
-                icon: '💲'
+                icon: '💲',
+                videoUrl: ''
               }
             ]
           });
@@ -117,6 +124,18 @@ export default function WhyChooseSection() {
 
   const embedUrl = getEmbedUrl(data.videoUrl);
   const isVideo = embedUrl && (embedUrl.includes('youtube.com') || embedUrl.includes('.mp4') || embedUrl.includes('.webm'));
+
+  const handleFeatureClick = (index: number) => {
+    if (data.features[index].videoUrl) {
+      setSelectedFeature(index);
+      setShowVideoModal(true);
+    }
+  };
+
+  const closeVideoModal = () => {
+    setShowVideoModal(false);
+    setSelectedFeature(null);
+  };
 
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-900">
@@ -324,7 +343,10 @@ export default function WhyChooseSection() {
                     whileHover={{ scale: 1.04, y: -8 }}
                     className="group"
                   >
-                    <div className={`relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 ${color.border} transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl ${color.shadow}`}>
+                    <div 
+                      className={`relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 ${color.border} transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl ${color.shadow} ${feature.videoUrl ? 'cursor-pointer' : ''}`}
+                      onClick={() => handleFeatureClick(index)}
+                    >
                       {/* Neon border sweep */}
                       <motion.div
                         className="absolute inset-0 rounded-3xl"
@@ -374,6 +396,26 @@ export default function WhyChooseSection() {
                       <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                         {feature.description}
                       </p>
+                      
+                      {/* Video indicator */}
+                      {feature.videoUrl && (
+                        <motion.div
+                          className="absolute top-4 right-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center"
+                          whileHover={{ scale: 1.1 }}
+                          animate={{ 
+                            boxShadow: [
+                              '0 0 0px rgba(255, 255, 255, 0)',
+                              '0 0 20px rgba(255, 255, 255, 0.5)',
+                              '0 0 0px rgba(255, 255, 255, 0)'
+                            ]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </motion.div>
+                      )}
                       
                       {/* Glow effect */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${color.gradient} transition-all duration-500 rounded-3xl`}></div>
@@ -464,6 +506,78 @@ export default function WhyChooseSection() {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {showVideoModal && selectedFeature !== null && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={closeVideoModal}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="relative w-full max-w-5xl bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeVideoModal}
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Feature title */}
+            <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">
+              <p className="text-white font-semibold flex items-center gap-2">
+                <span className="text-2xl">{data.features[selectedFeature].icon}</span>
+                {data.features[selectedFeature].title}
+              </p>
+            </div>
+
+            {/* Video */}
+            <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
+              {(() => {
+                const featureVideoUrl = getEmbedUrl(data.features[selectedFeature].videoUrl);
+                const isYouTube = featureVideoUrl.includes('youtube.com');
+                
+                return isYouTube ? (
+                  <iframe
+                    src={featureVideoUrl}
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video
+                    src={featureVideoUrl}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    controls
+                    autoPlay
+                  />
+                );
+              })()}
+            </div>
+
+            {/* Feature description */}
+            <div className="p-6 bg-gradient-to-t from-gray-900 to-gray-800">
+              <h3 className="text-xl font-bold text-white mb-2">
+                {data.features[selectedFeature].subtitle}
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                {data.features[selectedFeature].description}
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 }
