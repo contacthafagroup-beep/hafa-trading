@@ -1957,83 +1957,185 @@ export default function HomePage() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          {/* Premium Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
           >
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="text-6xl mb-4 inline-block"
-            >
-              🌍
-            </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-green-800 dark:text-green-400">
+            {/* Animated Icons Group */}
+            <div className="flex justify-center items-center gap-4 mb-6">
+              <motion.div
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.15, 1]
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="text-7xl"
+              >
+                🌍
+              </motion.div>
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: [0, 10, -10, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-6xl"
+              >
+                🤝
+              </motion.div>
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  y: [0, -8, 0]
+                }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="text-6xl"
+              >
+                💚
+              </motion.div>
+            </div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 dark:from-green-400 dark:via-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
               Sustainability & Social Impact
             </h2>
-            <p className="text-lg text-green-700 dark:text-green-300 max-w-3xl mx-auto">
-              Building a better future through responsible farming and community empowerment
-            </p>
+            
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            >
+              Building a <span className="font-bold text-green-600 dark:text-green-400">better future</span> through responsible farming and <span className="font-bold text-emerald-600 dark:text-emerald-400">community empowerment</span>
+            </motion.p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* Premium Impact Cards */}
+          <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                icon: '♻',
+                icon: '♻️',
                 title: 'Sustainable Farming',
                 items: ['Water conservation', 'Chemical-free harvesting', 'Farmer training programs', 'Soil health protection'],
-                color: 'from-green-400 to-emerald-600'
+                color: 'from-green-400 to-emerald-600',
+                bgGradient: 'from-green-500/10 to-emerald-500/10',
+                borderColor: 'border-green-200/50 dark:border-green-800/50 hover:border-green-400',
+                iconBg: 'from-green-400 to-emerald-600'
               },
               {
                 icon: '🤝',
                 title: 'Community Support',
                 items: ['Supporting smallholder farmers', 'Job creation', 'Women farmers empowerment', 'Fair trade practices'],
-                color: 'from-blue-400 to-cyan-600'
+                color: 'from-blue-400 to-cyan-600',
+                bgGradient: 'from-blue-500/10 to-cyan-500/10',
+                borderColor: 'border-blue-200/50 dark:border-blue-800/50 hover:border-blue-400',
+                iconBg: 'from-blue-400 to-cyan-600'
               },
               {
                 icon: '🌱',
                 title: 'Environmental Commitment',
                 items: ['Eco-friendly packaging', 'Reduced carbon footprint', 'Responsible waste management', 'Renewable energy use'],
-                color: 'from-teal-400 to-green-600'
+                color: 'from-teal-400 to-green-600',
+                bgGradient: 'from-teal-500/10 to-green-500/10',
+                borderColor: 'border-teal-200/50 dark:border-teal-800/50 hover:border-teal-400',
+                iconBg: 'from-teal-400 to-green-600'
               }
             ].map((section, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ y: -10, scale: 1.02 }}
+                transition={{ duration: 0.7, delay: index * 0.2 }}
+                whileHover={{ y: -15, scale: 1.03 }}
+                className="group"
               >
-                <Card className="h-full backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 border-2 border-green-200 hover:border-green-400 hover:shadow-2xl transition-all">
-                  <CardContent className="p-8">
+                <Card className={`h-full backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 border-2 ${section.borderColor} hover:shadow-2xl transition-all duration-500 relative overflow-hidden`}>
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${section.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
+                  
+                  {/* Glowing border effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(34, 197, 94, 0)',
+                        '0 0 30px rgba(34, 197, 94, 0.4)',
+                        '0 0 0px rgba(34, 197, 94, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: index * 0.8 }}
+                  />
+                  
+                  <CardContent className="p-10 relative z-10">
+                    {/* Animated Icon Container */}
                     <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className={`w-20 h-20 rounded-full bg-gradient-to-br ${section.color} flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg`}
+                      animate={{ 
+                        scale: [1, 1.15, 1],
+                        rotate: index === 0 ? [0, 360] : [0, 10, -10, 0]
+                      }}
+                      transition={{ 
+                        duration: index === 0 ? 8 : 3, 
+                        repeat: Infinity,
+                        ease: index === 0 ? 'linear' : 'easeInOut'
+                      }}
+                      className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${section.iconBg} flex items-center justify-center text-5xl mx-auto mb-8 shadow-2xl relative`}
                     >
-                      {section.icon}
+                      {/* Icon glow */}
+                      <motion.div
+                        className="absolute inset-0 rounded-2xl bg-white/20"
+                        animate={{
+                          opacity: [0.2, 0.5, 0.2]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      <span className="relative z-10">{section.icon}</span>
                     </motion.div>
-                    <h3 className="text-2xl font-bold mb-4 text-center text-green-800 dark:text-green-400">
+                    
+                    <h3 className={`text-3xl font-bold mb-6 text-center bg-gradient-to-r ${section.color} bg-clip-text text-transparent`}>
                       {section.title}
                     </h3>
-                    <ul className="space-y-3">
+                    
+                    <ul className="space-y-4">
                       {section.items.map((item, i) => (
                         <motion.li
                           key={i}
-                          initial={{ opacity: 0, x: -20 }}
+                          initial={{ opacity: 0, x: -30 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.5, delay: index * 0.2 + i * 0.1 }}
-                          className="flex items-start gap-2"
+                          whileHover={{ x: 5 }}
+                          className="flex items-start gap-3 group/item"
                         >
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">{item}</span>
+                          <motion.div
+                            animate={{
+                              scale: [1, 1.2, 1]
+                            }}
+                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                          >
+                            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0 group-hover/item:text-green-500" />
+                          </motion.div>
+                          <span className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed group-hover/item:text-gray-900 dark:group-hover/item:text-white transition-colors">
+                            {item}
+                          </span>
                         </motion.li>
                       ))}
                     </ul>
+                    
+                    {/* Hover indicator */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      className="mt-6 text-center text-sm font-bold text-green-600 dark:text-green-400"
+                    >
+                      Learn More →
+                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
