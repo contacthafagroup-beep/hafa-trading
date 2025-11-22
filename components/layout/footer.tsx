@@ -3,83 +3,180 @@
 import React from 'react';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-300 relative overflow-hidden">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.05, 0.1, 0.05],
+          }}
+          transition={{ duration: 15, repeat: Infinity }}
+          className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-green-500 to-blue-500 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.03, 0.08, 0.03],
+          }}
+          transition={{ duration: 18, repeat: Infinity, delay: 2 }}
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-purple-500 to-pink-500 rounded-full blur-3xl"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">Hafa General Trading PLC</h3>
-            <p className="text-sm mb-4">
-              Trading Beyond Borders - Your trusted partner in international import and export.
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.h3
+              className="text-white font-bold text-xl mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              Hafa General Trading PLC
+            </motion.h3>
+            <p className="text-sm mb-6 leading-relaxed text-gray-400">
+              <span className="font-semibold text-green-400">Trading Beyond Borders</span> - Your trusted partner in international import and export.
             </p>
             <div className="flex space-x-3">
-              <a href="#" className="hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
+              {[
+                { icon: Facebook, href: '#', color: 'hover:text-blue-400' },
+                { icon: Twitter, href: '#', color: 'hover:text-sky-400' },
+                { icon: Linkedin, href: '#', color: 'hover:text-blue-500' },
+                { icon: Instagram, href: '#', color: 'hover:text-pink-400' }
+              ].map((social, i) => (
+                <motion.a
+                  key={i}
+                  href={social.href}
+                  whileHover={{ scale: 1.2, y: -3 }}
+                  whileTap={{ scale: 0.9 }}
+                  className={`${social.color} transition-colors p-2 rounded-lg bg-white/5 hover:bg-white/10`}
+                >
+                  <social.icon className="h-5 w-5" />
+                </motion.a>
+              ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link href="/export-products" className="hover:text-white transition-colors">Our Products</Link></li>
-              <li><Link href="/services/export" className="hover:text-white transition-colors">Export Services</Link></li>
-              <li><Link href="/services/logistics" className="hover:text-white transition-colors">Logistics</Link></li>
-              <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h4 className="text-white font-semibold mb-4 text-lg">Quick Links</h4>
+            <ul className="space-y-3 text-sm">
+              {[
+                { href: '/about', label: 'About Us', icon: '🏢' },
+                { href: '/export-products', label: 'Our Products', icon: '🌿' },
+                { href: '/services/export', label: 'Export Services', icon: '✈️' },
+                { href: '/services/logistics', label: 'Logistics', icon: '🚚' },
+                { href: '/blog', label: 'Blog', icon: '📰' }
+              ].map((link, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.1 + i * 0.05 }}
+                  whileHover={{ x: 5 }}
+                >
+                  <Link href={link.href} className="hover:text-green-400 transition-colors flex items-center gap-2 group">
+                    <span className="text-base group-hover:scale-110 transition-transform">{link.icon}</span>
+                    <span>{link.label}</span>
+                  </Link>
+                </motion.li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Services */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Services</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/services/export" className="hover:text-white transition-colors">Export Services</Link></li>
-              <li><Link href="/services/import" className="hover:text-white transition-colors">Import Services</Link></li>
-              <li><Link href="/services/logistics" className="hover:text-white transition-colors">Logistics</Link></li>
-              <li><Link href="/track" className="hover:text-white transition-colors">Track Shipment</Link></li>
-              <li><Link href="/rfq" className="hover:text-white transition-colors">Request Quote</Link></li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h4 className="text-white font-semibold mb-4 text-lg">Services</h4>
+            <ul className="space-y-3 text-sm">
+              {[
+                { href: '/services/export', label: 'Export Services', icon: '📤' },
+                { href: '/services/import', label: 'Import Services', icon: '📥' },
+                { href: '/services/logistics', label: 'Logistics', icon: '🚛' },
+                { href: '/track', label: 'Track Shipment', icon: '📍' },
+                { href: '/rfq', label: 'Request Quote', icon: '💼' }
+              ].map((link, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.2 + i * 0.05 }}
+                  whileHover={{ x: 5 }}
+                >
+                  <Link href={link.href} className="hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                    <span className="text-base group-hover:scale-110 transition-transform">{link.icon}</span>
+                    <span>{link.label}</span>
+                  </Link>
+                </motion.li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact Info */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-                <span>Hossana, Ethiopia<br />Gofer Meda Subcity<br />Jelo Naremo District</span>
-              </li>
-              <li className="flex items-start">
-                <Phone className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-                <div>
-                  <a href="tel:+251954742383" className="hover:text-white transition-colors block">+251 954 742 383</a>
-                  <a href="tel:+251964839833" className="hover:text-white transition-colors block">+251 964 839 833</a>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <h4 className="text-white font-semibold mb-4 text-lg">Contact Us</h4>
+            <ul className="space-y-4 text-sm">
+              <motion.li
+                className="flex items-start group"
+                whileHover={{ x: 5 }}
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <MapPin className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5 text-green-400" />
+                </motion.div>
+                <span className="leading-relaxed">Hossana, Ethiopia<br />Gofer Meda Subcity<br />Jelo Naremo District</span>
+              </motion.li>
+              <motion.li
+                className="flex items-start group"
+                whileHover={{ x: 5 }}
+              >
+                <Phone className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5 text-blue-400" />
+                <div className="space-y-1">
+                  <a href="tel:+251954742383" className="hover:text-green-400 transition-colors block">+251 954 742 383</a>
+                  <a href="tel:+251964839833" className="hover:text-green-400 transition-colors block">+251 964 839 833</a>
                 </div>
-              </li>
-              <li className="flex items-start">
-                <Mail className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-                <div>
-                  <a href="mailto:contact.hafatrading@gmail.com" className="hover:text-white transition-colors block">contact.hafatrading@gmail.com</a>
-                  <a href="mailto:contact@hafagroup.com" className="hover:text-white transition-colors block">contact@hafagroup.com</a>
-                  <a href="mailto:info@hafatrading.com" className="hover:text-white transition-colors block">info@hafatrading.com</a>
+              </motion.li>
+              <motion.li
+                className="flex items-start group"
+                whileHover={{ x: 5 }}
+              >
+                <Mail className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5 text-purple-400" />
+                <div className="space-y-1">
+                  <a href="mailto:contact.hafatrading@gmail.com" className="hover:text-purple-400 transition-colors block break-all">contact.hafatrading@gmail.com</a>
+                  <a href="mailto:contact@hafagroup.com" className="hover:text-purple-400 transition-colors block">contact@hafagroup.com</a>
+                  <a href="mailto:info@hafatrading.com" className="hover:text-purple-400 transition-colors block">info@hafatrading.com</a>
                 </div>
-              </li>
+              </motion.li>
             </ul>
-          </div>
+          </motion.div>
         </div>
 
         {/* Live Chat and Quick Connect Section - Side by Side */}
@@ -147,9 +244,30 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; {new Date().getFullYear()} Hafa General Trading PLC. All rights reserved.</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="border-t border-gray-800/50 mt-8 pt-8 text-sm text-center"
+        >
+          <motion.p
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="text-gray-400"
+          >
+            &copy; {new Date().getFullYear()} <span className="font-semibold text-green-400">Hafa General Trading PLC</span>. All rights reserved.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+            className="text-xs text-gray-500 mt-2"
+          >
+            🌍 Trading Beyond Borders | 🌿 Quality You Can Trust
+          </motion.p>
+        </motion.div>
       </div>
     </footer>
   );
