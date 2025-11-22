@@ -75,8 +75,11 @@ export default function WhyChooseSection() {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-          setData(docSnap.data() as WhyChooseData);
+          const loadedData = docSnap.data() as WhyChooseData;
+          console.log('Loaded Why Choose data:', loadedData);
+          setData(loadedData);
         } else {
+          console.log('No data found in Firestore, using defaults');
           // Use default data if not found
           setData(defaultData);
         }
@@ -125,7 +128,11 @@ export default function WhyChooseSection() {
   }
 
   const embedUrl = getEmbedUrl(data.videoUrl);
-  const isVideo = embedUrl && (embedUrl.includes('youtube.com') || embedUrl.includes('.mp4') || embedUrl.includes('.webm'));
+  const isVideo = data.videoUrl && embedUrl && (embedUrl.includes('youtube.com') || embedUrl.includes('.mp4') || embedUrl.includes('.webm'));
+  
+  console.log('Video URL:', data.videoUrl);
+  console.log('Embed URL:', embedUrl);
+  console.log('Is Video:', isVideo);
 
   const handleFeatureClick = (index: number) => {
     if (data.features[index].videoUrl) {
