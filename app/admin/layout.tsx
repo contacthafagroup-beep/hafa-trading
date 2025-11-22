@@ -20,7 +20,9 @@ import {
   MessageSquare,
   BarChart3,
   FolderTree,
-  Video
+  Video,
+  Lightbulb,
+  MessagesSquare
 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -38,6 +40,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Customers', href: '/admin/customers', icon: Users },
     { name: 'Suppliers', href: '/admin/suppliers', icon: Users },
     { name: 'Blog', href: '/admin/blog', icon: MessageSquare },
+    { name: 'Insights', href: '/admin/insights', icon: Lightbulb },
+    { name: 'Live Chat', href: '/admin/live-chat', icon: MessagesSquare },
     { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
   ];

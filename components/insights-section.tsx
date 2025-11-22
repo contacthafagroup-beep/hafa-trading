@@ -35,28 +35,81 @@ export default function InsightsSection() {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
 
+  // Default sample insights if Firebase is not configured
+  const defaultInsights: Insight[] = [
+    {
+      id: '1',
+      title: 'UAE Increases Demand for Fresh Rosemary & Herbs',
+      summary: 'Export opportunities rise for East African suppliers.',
+      category: 'Herbs & Spices',
+      date: '2025-03-22',
+      content: 'UAE buyers show increasing preference for Ethiopian rosemary due to its strong aroma and long-lasting freshness. Market demand is projected to grow 25% over the next year, creating major opportunities for suppliers.\n\nThe demand surge is driven by the growing restaurant and hospitality sector in Dubai and Abu Dhabi, where fresh herbs are essential ingredients. Ethiopian rosemary is particularly valued for its organic cultivation methods and superior quality compared to competitors.',
+      featured: true,
+      visible: true
+    },
+    {
+      id: '2',
+      title: 'Saudi Arabia Introduces New Quality Requirements on Fresh Produce Imports',
+      summary: 'Updated regulations for agricultural exports.',
+      category: 'Regulations',
+      date: '2025-03-20',
+      content: 'Saudi Arabia has announced new quality standards for imported fresh produce, effective from April 2025. All exporters must comply with enhanced traceability requirements and obtain updated certifications.\n\nKey changes include mandatory pesticide residue testing, improved cold chain documentation, and stricter packaging standards. Exporters are advised to work closely with certification bodies to ensure compliance.',
+      featured: false,
+      visible: true
+    },
+    {
+      id: '3',
+      title: 'China Expands Market for East African Legumes',
+      summary: 'New trade agreements open opportunities.',
+      category: 'Cereals & Legumes',
+      date: '2025-03-18',
+      content: 'China has signed new trade agreements with East African countries, significantly expanding market access for legumes including chickpeas, lentils, and beans. The agreement reduces import tariffs by 40%.\n\nThis development presents substantial opportunities for Ethiopian exporters, as China\'s growing middle class increasingly demands high-protein plant-based foods. Market analysts predict a 300% increase in legume exports over the next three years.',
+      featured: false,
+      visible: true
+    }
+  ];
+
   useEffect(() => {
-    const insightsRef = collection(db, 'insights');
-    const q = query(
-      insightsRef,
-      where('visible', '==', true),
-      orderBy('featured', 'desc'),
-      orderBy('date', 'desc'),
-      limit(6)
-    );
+    try {
+      const insightsRef = collection(db, 'insights');
+      const q = query(
+        insightsRef,
+        where('visible', '==', true),
+        orderBy('featured', 'desc'),
+        orderBy('date', 'desc'),
+        limit(6)
+      );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const insightsData: Insight[] = [];
-      snapshot.forEach((doc) => {
-        insightsData.push({ id: doc.id, ...doc.data() } as Insight);
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const insightsData: Insight[] = [];
+        snapshot.forEach((doc) => {
+          insightsData.push({ id: doc.id, ...doc.data() } as Insight);
+        });
+        
+        // Use Firebase data if available, otherwise use defaults
+        if (insightsData.length > 0) {
+          setInsights(insightsData);
+          if (!selectedInsight) {
+            setSelectedInsight(insightsData[0]);
+          }
+        } else {
+          setInsights(defaultInsights);
+          if (!selectedInsight) {
+            setSelectedInsight(defaultInsights[0]);
+          }
+        }
+      }, (error) => {
+        console.log('Firebase not configured, using default insights');
+        setInsights(defaultInsights);
+        setSelectedInsight(defaultInsights[0]);
       });
-      setInsights(insightsData);
-      if (insightsData.length > 0 && !selectedInsight) {
-        setSelectedInsight(insightsData[0]);
-      }
-    });
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    } catch (error) {
+      console.log('Firebase not configured, using default insights');
+      setInsights(defaultInsights);
+      setSelectedInsight(defaultInsights[0]);
+    }
   }, []);
 
   return (
