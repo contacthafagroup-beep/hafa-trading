@@ -201,7 +201,7 @@ export default function LiveChatBox() {
                     <p className="text-sm text-muted-foreground mb-6">
                       Please login or register to start chatting with our support team
                     </p>
-                    <div className="space-y-3">
+                    <div className="space-y-3 mb-6">
                       <Link href="/login">
                         <Button className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
                           Login to Chat
@@ -212,6 +212,81 @@ export default function LiveChatBox() {
                           Create Account
                         </Button>
                       </Link>
+                    </div>
+
+                    {/* Alternative Contact Options */}
+                    <div className="border-t pt-4">
+                      <p className="text-xs font-semibold text-muted-foreground mb-3 text-center">
+                        Or contact us directly:
+                      </p>
+                      <div className="space-y-2">
+                        {/* WhatsApp */}
+                        <a
+                          href="https://wa.me/251954742383"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                            📱
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-green-700 dark:text-green-400">WhatsApp</p>
+                            <p className="text-xs text-muted-foreground truncate">+251 954 742 383</p>
+                          </div>
+                          <motion.div
+                            className="text-green-600 dark:text-green-400"
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.div>
+                        </a>
+
+                        {/* Telegram */}
+                        <a
+                          href="https://t.me/hafatrading"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                            ✈️
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">Telegram</p>
+                            <p className="text-xs text-muted-foreground truncate">@hafatrading</p>
+                          </div>
+                          <motion.div
+                            className="text-blue-600 dark:text-blue-400"
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.div>
+                        </a>
+
+                        {/* Email */}
+                        <a
+                          href="mailto:contact.hafatrading@gmail.com"
+                          className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors group"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white text-xl flex-shrink-0">
+                            📧
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-purple-700 dark:text-purple-400">Email</p>
+                            <p className="text-xs text-muted-foreground truncate">contact.hafatrading@gmail.com</p>
+                          </div>
+                          <motion.div
+                            className="text-purple-600 dark:text-purple-400"
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.div>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -289,6 +364,43 @@ export default function LiveChatBox() {
                       <p className="text-xs text-muted-foreground mt-2 text-center">
                         Typically replies within minutes
                       </p>
+
+                      {/* Quick Contact Links */}
+                      <div className="mt-4 pt-4 border-t">
+                        <p className="text-xs font-semibold text-muted-foreground mb-2 text-center">
+                          Other ways to reach us:
+                        </p>
+                        <div className="flex justify-center gap-2">
+                          <a
+                            href="https://wa.me/251954742383"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors text-xs"
+                            title="WhatsApp: +251 954 742 383"
+                          >
+                            <span>📱</span>
+                            <span className="font-medium">WhatsApp</span>
+                          </a>
+                          <a
+                            href="https://t.me/hafatrading"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors text-xs"
+                            title="Telegram: @hafatrading"
+                          >
+                            <span>✈️</span>
+                            <span className="font-medium">Telegram</span>
+                          </a>
+                          <a
+                            href="mailto:contact.hafatrading@gmail.com"
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-xs"
+                            title="Email: contact.hafatrading@gmail.com"
+                          >
+                            <span>📧</span>
+                            <span className="font-medium">Email</span>
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </>
                 )}
