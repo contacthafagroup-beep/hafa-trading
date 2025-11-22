@@ -21,6 +21,7 @@ import LiveChatBox from '@/components/live-chat-box';
 import InsightsSection from '@/components/insights-section';
 import WhyChooseSection from '@/components/why-choose-section';
 import MarketDashboard from '@/components/market-dashboard';
+import ProductCarousel from '@/components/product-carousel';
 
 export default function HomePage() {
   return (
@@ -2345,6 +2346,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Product Discovery Carousel */}
+      <ProductCarousel />
 
       {/* Market Trends & Price Dashboard */}
       <MarketDashboard />
