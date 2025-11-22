@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
 
 interface WhyChooseData {

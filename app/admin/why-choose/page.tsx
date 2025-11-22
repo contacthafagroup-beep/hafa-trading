@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase/config';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Save, Video, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -101,17 +101,17 @@ export default function WhyChooseAdminPage() {
     setSaving(true);
     try {
       const docRef = doc(db, 'siteContent', 'whyChoose');
-      await setDoc(docRef, data);
+      await setDoc(docRef, data, { merge: true });
       
       toast({
         title: 'Success',
         description: 'Why Choose section updated successfully'
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving data:', error);
       toast({
         title: 'Error',
-        description: 'Failed to save changes',
+        description: error?.message || 'Failed to save changes. Check console for details.',
         variant: 'destructive'
       });
     } finally {
