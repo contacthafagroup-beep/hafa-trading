@@ -415,33 +415,279 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-8">
-            <h3 className="text-2xl font-bold mb-4 text-center">🌍 Why Choose Hafa Trading PLC?</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                <span className="text-sm">Direct farm sourcing for consistent quality</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                <span className="text-sm">Global logistics support (air, sea, road)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                <span className="text-sm">Customized packaging options</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                <span className="text-sm">Competitive wholesale pricing</span>
+          {/* Why Choose Hafa - Super Attractive Section */}
+          <div className="relative overflow-hidden rounded-3xl">
+            {/* Video Background */}
+            <div className="absolute inset-0 z-0">
+              <div className="relative w-full h-full">
+                {/* Placeholder for video - Replace with actual video URL */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-900 via-blue-900 to-purple-900 animate-gradient-shift"></div>
+                {/* Video overlay */}
+                <div className="absolute inset-0 bg-black/50"></div>
+                {/* Animated particles */}
+                <div className="absolute inset-0">
+                  {[...Array(20)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 bg-white/20 rounded-full"
+                      initial={{ 
+                        x: Math.random() * 100 + '%', 
+                        y: Math.random() * 100 + '%',
+                        scale: Math.random() * 0.5 + 0.5
+                      }}
+                      animate={{
+                        y: [null, Math.random() * -100 - 50 + '%'],
+                        opacity: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: Math.random() * 3 + 2,
+                        repeat: Infinity,
+                        delay: Math.random() * 2
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="text-center mt-6">
-              <Link href="/export-products">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                  View All Products
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
+
+            {/* Content */}
+            <div className="relative z-10 p-8 md:p-16">
+              {/* Title */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="text-center mb-12"
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-6xl mb-4"
+                >
+                  🌍
+                </motion.div>
+                <h3 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                  Why Choose Hafa Trading PLC?
+                </h3>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-xl text-white/90 max-w-3xl mx-auto"
+                >
+                  Excellence From Ethiopian Farms to the World Market
+                </motion.p>
+              </motion.div>
+
+              {/* Feature Cards Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {/* Card 1: Direct Farm Sourcing */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  className="group"
+                >
+                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-green-400/50 transition-all duration-300 overflow-hidden">
+                    {/* Animated border sweep */}
+                    <motion.div
+                      className="absolute inset-0 border-2 border-green-400/0 rounded-2xl"
+                      animate={{
+                        borderColor: ['rgba(74, 222, 128, 0)', 'rgba(74, 222, 128, 0.5)', 'rgba(74, 222, 128, 0)']
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    />
+                    
+                    {/* Floating Icon */}
+                    <motion.div
+                      animate={{ 
+                        y: [0, -10, 0],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-6xl mb-4"
+                    >
+                      🌱
+                    </motion.div>
+                    
+                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">
+                      Direct Farm Sourcing
+                    </h4>
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      We work directly with farmers and cooperatives to guarantee fresh, traceable, ethically harvested agricultural products year-round.
+                    </p>
+                    
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-green-500/0 group-hover:bg-green-500/10 transition-all duration-300 rounded-2xl"></div>
+                  </div>
+                </motion.div>
+
+                {/* Card 2: Global Logistics */}
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  className="group"
+                >
+                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-blue-400/50 transition-all duration-300 overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 border-2 border-blue-400/0 rounded-2xl"
+                      animate={{
+                        borderColor: ['rgba(96, 165, 250, 0)', 'rgba(96, 165, 250, 0.5)', 'rgba(96, 165, 250, 0)']
+                      }}
+                      transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                    />
+                    
+                    <motion.div
+                      animate={{ 
+                        rotate: [0, 360],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="text-6xl mb-4"
+                    >
+                      🌐
+                    </motion.div>
+                    
+                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                      Global Logistics Support
+                    </h4>
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      Whether by air, sea, or road, our logistics team ensures fast, reliable, temperature-controlled delivery anywhere in the world.
+                    </p>
+                    
+                    <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-all duration-300 rounded-2xl"></div>
+                  </div>
+                </motion.div>
+
+                {/* Card 3: Customized Packaging */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  className="group"
+                >
+                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-purple-400/50 transition-all duration-300 overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 border-2 border-purple-400/0 rounded-2xl"
+                      animate={{
+                        borderColor: ['rgba(192, 132, 252, 0)', 'rgba(192, 132, 252, 0.5)', 'rgba(192, 132, 252, 0)']
+                      }}
+                      transition={{ duration: 3, repeat: Infinity, delay: 2 }}
+                    />
+                    
+                    <motion.div
+                      animate={{ 
+                        y: [0, -8, 0],
+                        rotateY: [0, 180, 360]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-6xl mb-4"
+                    >
+                      📦
+                    </motion.div>
+                    
+                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
+                      Customized Packaging
+                    </h4>
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      We provide private labeling, eco-friendly packaging, vacuum sealing, carton branding, and full export-ready packing solutions.
+                    </p>
+                    
+                    <div className="absolute inset-0 bg-purple-500/0 group-hover:bg-purple-500/10 transition-all duration-300 rounded-2xl"></div>
+                  </div>
+                </motion.div>
+
+                {/* Card 4: Competitive Pricing */}
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  className="group"
+                >
+                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-yellow-400/50 transition-all duration-300 overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 border-2 border-yellow-400/0 rounded-2xl"
+                      animate={{
+                        borderColor: ['rgba(250, 204, 21, 0)', 'rgba(250, 204, 21, 0.5)', 'rgba(250, 204, 21, 0)']
+                      }}
+                      transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                    />
+                    
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.2, 1],
+                        opacity: [0.8, 1, 0.8]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-6xl mb-4"
+                    >
+                      💲
+                    </motion.div>
+                    
+                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">
+                      Competitive Pricing
+                    </h4>
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      Our direct procurement model allows us to offer global-market competitive prices with guaranteed consistency and transparency.
+                    </p>
+                    
+                    <div className="absolute inset-0 bg-yellow-500/0 group-hover:bg-yellow-500/10 transition-all duration-300 rounded-2xl"></div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Showcase Caption */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="text-center mb-8"
+              >
+                <p className="text-2xl text-white/90 font-semibold italic">
+                  "From Farm to Global Markets — Our Quality, Your Trust."
+                </p>
+              </motion.div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="text-center"
+              >
+                <Link href="/export-products">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button 
+                      size="lg" 
+                      className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-6 text-lg font-semibold shadow-2xl hover:shadow-green-500/50 transition-all duration-300"
+                    >
+                      <motion.span
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        View All Products
+                      </motion.span>
+                      <ArrowRight className="ml-2 h-6 w-6" />
+                    </Button>
+                  </motion.div>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>
