@@ -159,30 +159,69 @@ export default function Footer() {
 function FooterLiveChat() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [message, setMessage] = React.useState('');
-  const [messages, setMessages] = React.useState<Array<{ text: string; isUser: boolean; time: string }>>([
-    { text: 'Hello! How can we help you today?', isUser: false, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
-  ]);
+  const [messages, setMessages] = React.useState<Array<{ id: string; text: string; senderId: string; senderName: string; senderEmail: string; timestamp: any; isAdmin: boolean }>>([]);
+  const [loading, setLoading] = React.useState(false);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
-    if (!message.trim()) return;
-    
-    const newMessage = {
-      text: message,
-      isUser: true,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    
-    setMessages([...messages, newMessage]);
-    setMessage('');
-    
-    // Auto-reply after 1 second
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        text: 'Thank you for your message! Our team will respond shortly. For immediate assistance, please use WhatsApp or Telegram.',
-        isUser: false,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }]);
-    }, 1000);
+  // Import auth context and firebase
+  const { useAuth } = require('@/contexts/auth-context');
+  const { db } = require('@/lib/firebase');
+  const { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where } = require('firebase/firestore');
+  const { user } = useAuth();
+
+  // Scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Listen to messages in real-time
+  React.useEffect(() => {
+    if (!user || !isOpen) return;
+
+    const messagesRef = collection(db, 'chatMessages');
+    const q = query(
+      messagesRef,
+      where('userId', '==', user.uid),
+      orderBy('timestamp', 'asc')
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot: any) => {
+      const msgs: any[] = [];
+      snapshot.forEach((doc: any) => {
+        msgs.push({ id: doc.id, ...doc.data() });
+      });
+      setMessages(msgs);
+    });
+
+    return () => unsubscribe();
+  }, [user, isOpen]);
+
+  const handleSend = async () => {
+    if (!message.trim() || !user) return;
+
+    setLoading(true);
+    try {
+      await addDoc(collection(db, 'chatMessages'), {
+        text: message.trim(),
+        senderId: user.uid,
+        senderName: user.displayName || user.email?.split('@')[0] || 'Customer',
+        senderEmail: user.email,
+        userId: user.uid,
+        timestamp: serverTimestamp(),
+        isAdmin: false,
+        read: false
+      });
+
+      setMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -195,7 +234,7 @@ function FooterLiveChat() {
             </div>
             <div>
               <h3 className="text-white font-bold text-base">Live Chat</h3>
-              <p className="text-white/80 text-xs">24/7 Support</p>
+              <p className="text-white/80 text-xs">{user ? 'Chat with us' : 'Login to chat'}</p>
             </div>
           </div>
           <button
@@ -208,123 +247,220 @@ function FooterLiveChat() {
 
         {isOpen && (
           <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-            {/* Chat Header */}
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                  👤
+            {!user ? (
+              // Not logged in - Show login prompt
+              <div className="p-4 text-center">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
+                  <span className="text-3xl">👤</span>
                 </div>
-                <div>
-                  <p className="text-white font-semibold">Hafa Support Team</p>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-full bg-green-300 animate-pulse"></div>
-                    <p className="text-white/90 text-xs">Online</p>
+                <h4 className="font-bold text-base mb-2 text-gray-800">Welcome!</h4>
+                <p className="text-sm text-gray-600 mb-4">
+                  Please login or register to start chatting with our team
+                </p>
+                <div className="space-y-2 mb-4">
+                  <Link href="/login">
+                    <button className="w-full px-4 py-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-blue-700 transition-all">
+                      Login to Chat
+                    </button>
+                  </Link>
+                  <Link href="/register">
+                    <button className="w-full px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all">
+                      Create Account
+                    </button>
+                  </Link>
+                </div>
+                <div className="border-t pt-4">
+                  <p className="text-xs font-semibold text-gray-600 mb-3">Or contact us directly:</p>
+                  <div className="space-y-2">
+                    <a
+                      href="https://wa.me/251954742383"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-green-50 hover:bg-green-100 transition-colors group"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-base flex-shrink-0">
+                        📱
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-xs font-semibold text-green-700">WhatsApp</p>
+                        <p className="text-xs text-gray-600 truncate">+251 954 742 383</p>
+                      </div>
+                      <span className="text-green-600">→</span>
+                    </a>
+                    <a
+                      href="https://t.me/hafatrading"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors group"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-base flex-shrink-0">
+                        ✈️
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-xs font-semibold text-blue-700">Telegram</p>
+                        <p className="text-xs text-gray-600 truncate">@hafatrading</p>
+                      </div>
+                      <span className="text-blue-600">→</span>
+                    </a>
+                    <a
+                      href="mailto:contact.hafatrading@gmail.com"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors group"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-base flex-shrink-0">
+                        📧
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-xs font-semibold text-purple-700">Email</p>
+                        <p className="text-xs text-gray-600 truncate">contact.hafatrading@gmail.com</p>
+                      </div>
+                      <span className="text-purple-600">→</span>
+                    </a>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <a
-                  href="https://wa.me/251954742383"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-                  title="WhatsApp"
-                >
-                  📱
-                </a>
-                <a
-                  href="https://t.me/hafatrading"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-                  title="Telegram"
-                >
-                  ✈️
-                </a>
-                <a
-                  href="mailto:contact.hafatrading@gmail.com"
-                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-                  title="Email"
-                >
-                  📧
-                </a>
-              </div>
-            </div>
-
-            {/* Messages Area */}
-            <div className="h-64 overflow-y-auto p-3 bg-gray-50 space-y-2">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                      msg.isUser
-                        ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
-                        : 'bg-white border border-gray-200 text-gray-800'
-                    }`}
-                  >
-                    <p className="text-sm">{msg.text}</p>
-                    <p className={`text-xs mt-1 ${msg.isUser ? 'text-white/70' : 'text-gray-500'}`}>
-                      {msg.time}
-                    </p>
+            ) : (
+              <>
+                {/* Chat Header */}
+                <div className="bg-gradient-to-r from-green-500 to-blue-500 p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      👤
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">Hafa Support Team</p>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-green-300 animate-pulse"></div>
+                        <p className="text-white/90 text-xs">Online</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href="https://wa.me/251954742383"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                      title="WhatsApp"
+                    >
+                      📱
+                    </a>
+                    <a
+                      href="https://t.me/hafatrading"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                      title="Telegram"
+                    >
+                      ✈️
+                    </a>
+                    <a
+                      href="mailto:contact.hafatrading@gmail.com"
+                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                      title="Email"
+                    >
+                      📧
+                    </a>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Input Area */}
-            <div className="p-3 bg-white border-t">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Type message..."
-                  className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={!message.trim()}
-                  className="px-4 py-1.5 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-full text-sm font-semibold hover:from-green-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                >
-                  Send
-                </button>
-              </div>
-            </div>
+                {/* Messages Area */}
+                <div className="h-64 overflow-y-auto p-3 bg-gray-50 space-y-2">
+                  {messages.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                      <div className="text-5xl mb-3">👋</div>
+                      <p className="text-sm text-gray-600">
+                        Start a conversation with our team!
+                      </p>
+                    </div>
+                  ) : (
+                    messages.map((msg, index) => (
+                      <div
+                        key={msg.id}
+                        className={`flex ${msg.isAdmin ? 'justify-start' : 'justify-end'}`}
+                      >
+                        <div
+                          className={`max-w-[70%] rounded-2xl px-4 py-2 ${
+                            msg.isAdmin
+                              ? 'bg-white border border-gray-200 text-gray-800'
+                              : 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
+                          }`}
+                        >
+                          {msg.isAdmin && (
+                            <p className="text-xs font-semibold mb-1 opacity-70">
+                              Admin
+                            </p>
+                          )}
+                          <p className="text-sm">{msg.text}</p>
+                          <p className={`text-xs mt-1 ${msg.isAdmin ? 'text-gray-500' : 'text-white/70'}`}>
+                            {msg.timestamp?.toDate?.()?.toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) || 'Sending...'}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
 
-            {/* Quick Actions */}
-            <div className="p-3 bg-gray-50 border-t">
-              <p className="text-xs font-semibold text-gray-600 mb-2">Quick:</p>
-              <div className="grid grid-cols-2 gap-1.5">
-                <button
-                  onClick={() => setMessage('I need a quote for export')}
-                  className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
-                >
-                  📋 Quote
-                </button>
-                <button
-                  onClick={() => setMessage('I want to track my shipment')}
-                  className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
-                >
-                  📦 Track
-                </button>
-                <button
-                  onClick={() => setMessage('Tell me about your products')}
-                  className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
-                >
-                  🌿 Products
-                </button>
-                <button
-                  onClick={() => setMessage('I need help with customs')}
-                  className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
-                >
-                  🛃 Customs
-                </button>
-              </div>
-            </div>
+                {/* Input Area */}
+                <div className="p-3 bg-white border-t">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && !loading && handleSend()}
+                      placeholder="Type message..."
+                      disabled={loading}
+                      className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 disabled:opacity-50"
+                    />
+                    <button
+                      onClick={handleSend}
+                      disabled={!message.trim() || loading}
+                      className="px-4 py-1.5 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-full text-sm font-semibold hover:from-green-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      Send
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 text-center">
+                    Typically replies within minutes
+                  </p>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="p-3 bg-gray-50 border-t">
+                  <p className="text-xs font-semibold text-gray-600 mb-2">Quick:</p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button
+                      onClick={() => setMessage('I need a quote for export')}
+                      className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
+                    >
+                      📋 Quote
+                    </button>
+                    <button
+                      onClick={() => setMessage('I want to track my shipment')}
+                      className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
+                    >
+                      📦 Track
+                    </button>
+                    <button
+                      onClick={() => setMessage('Tell me about your products')}
+                      className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
+                    >
+                      🌿 Products
+                    </button>
+                    <button
+                      onClick={() => setMessage('I need help with customs')}
+                      className="px-2 py-1 bg-white border border-gray-300 rounded-lg text-xs hover:bg-gray-100 transition-colors text-gray-700"
+                    >
+                      🛃 Customs
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
