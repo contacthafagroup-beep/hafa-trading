@@ -18,6 +18,7 @@ import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 import GlobalMap from '@/components/global-map';
 import LiveChatBox from '@/components/live-chat-box';
+import InsightsSection from '@/components/insights-section';
 
 export default function HomePage() {
   return (
@@ -1267,6 +1268,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Insights Section - Latest Industry News */}
+      <InsightsSection />
 
       {/* Live Chat Box with Real-time Messaging */}
       <LiveChatBox />
