@@ -38,6 +38,31 @@ export default function InsightsSection() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [language, setLanguage] = useState('English');
 
+  // Helper function to get translated content
+  const getTranslatedContent = (insight: Insight | null) => {
+    if (!insight) return null;
+    
+    const langMap: { [key: string]: string } = {
+      'English': 'english',
+      'አማርኛ (Amharic)': 'amharic',
+      'العربية (Arabic)': 'arabic',
+      'Français': 'french',
+      '中文 (Chinese)': 'chinese'
+    };
+
+    const langKey = langMap[language];
+    
+    if (langKey === 'english' || !insight.translations || !insight.translations[langKey]) {
+      return {
+        title: insight.title,
+        summary: insight.summary,
+        content: insight.content
+      };
+    }
+
+    return insight.translations[langKey];
+  };
+
   // Default sample insights if Firebase is not configured
   const defaultInsights: Insight[] = [
     {
@@ -386,7 +411,7 @@ export default function InsightsSection() {
                               transition={{ duration: 0.5, delay: 0.3 }}
                               className="text-2xl font-bold mb-3"
                             >
-                              {selectedInsight.title}
+                              {getTranslatedContent(selectedInsight)?.title}
                             </motion.h3>
 
                             {/* Date */}
@@ -413,7 +438,7 @@ export default function InsightsSection() {
                               className="prose prose-sm max-w-none mb-8"
                             >
                               <p className="leading-relaxed whitespace-pre-wrap" style={{ opacity: 0.8 }}>
-                                {selectedInsight.content}
+                                {getTranslatedContent(selectedInsight)?.content}
                               </p>
                             </motion.div>
 

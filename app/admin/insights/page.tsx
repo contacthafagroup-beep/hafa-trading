@@ -41,6 +41,14 @@ interface Insight {
   content: string;
   featured: boolean;
   visible: boolean;
+  translations?: {
+    [key: string]: {
+      title: string;
+      summary: string;
+      content: string;
+    };
+  };
+  autoTranslate?: boolean;
 }
 
 const categories = [
@@ -67,8 +75,16 @@ export default function AdminInsightsPage() {
     thumbnail: '',
     content: '',
     featured: false,
-    visible: true
+    visible: true,
+    autoTranslate: true,
+    translations: {
+      amharic: { title: '', summary: '', content: '' },
+      arabic: { title: '', summary: '', content: '' },
+      french: { title: '', summary: '', content: '' },
+      chinese: { title: '', summary: '', content: '' }
+    }
   });
+  const [showTranslations, setShowTranslations] = useState(false);
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [isDemo, setIsDemo] = useState(false);
@@ -145,18 +161,49 @@ export default function AdminInsightsPage() {
     }
 
     try {
+      let dataToSave = { ...formData };
+
+      // If auto-translate is enabled, generate translations
+      if (formData.autoTranslate) {
+        toast.info('Generating translations...');
+        
+        // Import translator dynamically
+        const { translateInsight, languages } = await import('@/lib/translator');
+        
+        const translations: any = {};
+        
+        // Translate to each language
+        for (const [langKey, langCode] of Object.entries(languages)) {
+          if (langKey !== 'english') {
+            try {
+              const translated = await translateInsight(
+                formData.title,
+                formData.summary,
+                formData.content,
+                langCode
+              );
+              translations[langKey] = translated;
+            } catch (error) {
+              console.error(`Translation error for ${langKey}:`, error);
+            }
+          }
+        }
+        
+        dataToSave.translations = translations;
+      }
+
       if (editingId) {
         await updateDoc(doc(db, 'insights', editingId), {
-          ...formData,
+          ...dataToSave,
           updatedAt: serverTimestamp()
         });
-        toast.success('Insight updated successfully');
+        toast.success('Insight updated successfully with translations!');
       } else {
         await addDoc(collection(db, 'insights'), {
-          ...formData,
+          ...dataToSave,
           createdAt: serverTimestamp()
         });
-        toast.success('Insight added successfully');
+        toast.success('Insight added successfully with translations!');
       }
 
       resetForm();
@@ -353,6 +400,155 @@ export default function AdminInsightsPage() {
                     rows={8}
                     required
                   />
+                </div>
+
+                {/* Translation Options */}
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <Label className="text-base font-semibold">🌐 Multi-Language Support</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowTranslations(!showTranslations)}
+                    >
+                      {showTranslations ? 'Hide' : 'Show'} Translations
+                    </Button>
+                  </div>
+
+                  <label className="flex items-center gap-2 cursor-pointer mb-4">
+                    <input
+                      type="checkbox"
+                      checked={formData.autoTranslate}
+                      onChange={(e) => setFormData({ ...formData, autoTranslate: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm">
+                      🤖 Auto-translate to all languages (uses LibreTranslate API)
+                    </span>
+                  </label>
+
+                  {showTranslations && !formData.autoTranslate && (
+                    <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Manually provide translations for each language (leave empty to use auto-translation)
+                      </p>
+
+                      {/* Amharic */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold">አማርኛ (Amharic)</Label>
+                        <Input
+                          placeholder="Title in Amharic"
+                          value={formData.translations.amharic.title}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              amharic: { ...formData.translations.amharic, title: e.target.value }
+                            }
+                          })}
+                        />
+                        <Textarea
+                          placeholder="Content in Amharic"
+                          value={formData.translations.amharic.content}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              amharic: { ...formData.translations.amharic, content: e.target.value }
+                            }
+                          })}
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Arabic */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold">العربية (Arabic)</Label>
+                        <Input
+                          placeholder="Title in Arabic"
+                          value={formData.translations.arabic.title}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              arabic: { ...formData.translations.arabic, title: e.target.value }
+                            }
+                          })}
+                          dir="rtl"
+                        />
+                        <Textarea
+                          placeholder="Content in Arabic"
+                          value={formData.translations.arabic.content}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              arabic: { ...formData.translations.arabic, content: e.target.value }
+                            }
+                          })}
+                          rows={3}
+                          dir="rtl"
+                        />
+                      </div>
+
+                      {/* French */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold">Français (French)</Label>
+                        <Input
+                          placeholder="Title in French"
+                          value={formData.translations.french.title}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              french: { ...formData.translations.french, title: e.target.value }
+                            }
+                          })}
+                        />
+                        <Textarea
+                          placeholder="Content in French"
+                          value={formData.translations.french.content}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              french: { ...formData.translations.french, content: e.target.value }
+                            }
+                          })}
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Chinese */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold">中文 (Chinese)</Label>
+                        <Input
+                          placeholder="Title in Chinese"
+                          value={formData.translations.chinese.title}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              chinese: { ...formData.translations.chinese, title: e.target.value }
+                            }
+                          })}
+                        />
+                        <Textarea
+                          placeholder="Content in Chinese"
+                          value={formData.translations.chinese.content}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            translations: {
+                              ...formData.translations,
+                              chinese: { ...formData.translations.chinese, content: e.target.value }
+                            }
+                          })}
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-4">
