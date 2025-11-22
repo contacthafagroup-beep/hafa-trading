@@ -447,62 +447,199 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Product Categories */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-green-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500 rounded-full blur-3xl"></div>
+      {/* Product Range - Premium Redesigned Section */}
+      <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* Gradient Orbs */}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              x: [0, 50, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 15, repeat: Infinity }}
+            className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, -50, 0],
+              opacity: [0.15, 0.35, 0.15],
+            }}
+            transition={{ duration: 18, repeat: Infinity, delay: 2 }}
+            className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.15, 1],
+              y: [0, 30, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 20, repeat: Infinity, delay: 4 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-purple-400 to-pink-500 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Product Icons */}
+          {['🌿', '🥬', '🍊', '🌾', '🐑', '☕'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-4xl opacity-10"
+              style={{
+                left: `${10 + i * 15}%`,
+                top: `${20 + (i % 3) * 30}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 10, -10, 0],
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: 5 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <div className="inline-block mb-4">
-              <span className="text-6xl">🌿</span>
+            {/* Animated Icon Group */}
+            <div className="flex justify-center items-center gap-3 mb-6">
+              {['🌿', '🥬', '🍊', '🌾'].map((emoji, i) => (
+                <motion.span
+                  key={i}
+                  className="text-5xl"
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                >
+                  {emoji}
+                </motion.span>
+              ))}
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Our Product Range
+            
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 dark:from-green-400 dark:via-emerald-400 dark:to-blue-400 bg-clip-text text-transparent">
+              Our Export Product Range
             </h2>
-            <div className="flex flex-wrap justify-center gap-4 mb-6">
-              <span className="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-sm font-semibold">
-                Premium Quality
-              </span>
-              <span className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
-                Ethically Sourced
-              </span>
-              <span className="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-semibold">
-                Export-Ready
-              </span>
+            
+            {/* Animated Badges */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              {[
+                { text: '🏆 Premium Quality', color: 'green' },
+                { text: '🌱 Ethically Sourced', color: 'blue' },
+                { text: '✈️ Export-Ready', color: 'purple' },
+                { text: '🛡️ Certified', color: 'amber' }
+              ].map((badge, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * i, duration: 0.5 }}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  className={`px-5 py-2.5 bg-${badge.color}-100 dark:bg-${badge.color}-900/30 text-${badge.color}-700 dark:text-${badge.color}-300 rounded-full text-sm font-bold shadow-lg backdrop-blur-sm border border-${badge.color}-200 dark:border-${badge.color}-800`}
+                >
+                  {badge.text}
+                </motion.span>
+              ))}
             </div>
-            <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              Hafa Trading PLC proudly supplies a diverse portfolio of high-quality agricultural products, fresh produce, 
+            
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="text-xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
+            >
+              Hafa Trading PLC proudly <span className="font-bold text-green-600 dark:text-green-400">exports</span> a diverse portfolio of high-quality agricultural products, fresh produce, 
               livestock, herbs, and spices, sourced directly from trusted Ethiopian farmers, cooperatives, and pastoralist communities.
-            </p>
+            </motion.p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {/* Fresh Vegetables */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/fresh-vegetables" className="block h-full">
-                <Card className="h-full border-2 border-green-100 dark:border-green-900 hover:border-green-300 dark:hover:border-green-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-green-200/50 dark:border-green-800/50 hover:border-green-400 dark:hover:border-green-600 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  
+                  {/* Glowing border effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(34, 197, 94, 0)',
+                        '0 0 30px rgba(34, 197, 94, 0.4)',
+                        '0 0 0px rgba(34, 197, 94, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                  />
+                  
+                  {/* Floating vegetables in background */}
+                  <div className="absolute inset-0 opacity-5">
+                    {['🥬', '🥕', '🍅'].map((veg, i) => (
+                      <motion.span
+                        key={i}
+                        className="absolute text-6xl"
+                        style={{
+                          left: `${20 + i * 30}%`,
+                          top: `${30 + i * 20}%`,
+                        }}
+                        animate={{
+                          y: [0, -20, 0],
+                          rotate: [0, 10, -10, 0],
+                        }}
+                        transition={{
+                          duration: 4 + i,
+                          repeat: Infinity,
+                          delay: i * 0.5,
+                        }}
+                      >
+                        {veg}
+                      </motion.span>
+                    ))}
+                  </div>
+                  
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🥬</div>
-                    <h3 className="text-2xl font-bold mb-2 text-green-600 dark:text-green-400">Fresh Vegetables</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">Premium & Commercial Grade</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      🥬
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-green-600 dark:text-green-400 group-hover:text-green-500 transition-colors">Fresh Vegetables</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">Premium & Commercial Grade</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
@@ -521,9 +658,14 @@ export default function HomePage() {
                         <span>Lettuce, Spinach, Kale, Garlic</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-green-600 dark:text-green-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-green-600 dark:text-green-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
@@ -532,19 +674,41 @@ export default function HomePage() {
 
             {/* Fresh Fruits */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/fresh-fruits" className="block h-full">
-                <Card className="h-full border-2 border-orange-100 dark:border-orange-900 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950 dark:to-amber-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-orange-200/50 dark:border-orange-800/50 hover:border-orange-400 dark:hover:border-orange-600 hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(249, 115, 22, 0)',
+                        '0 0 30px rgba(249, 115, 22, 0.4)',
+                        '0 0 0px rgba(249, 115, 22, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
+                  />
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🍊</div>
-                    <h3 className="text-2xl font-bold mb-2 text-orange-600 dark:text-orange-400">Fresh Fruits</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">Naturally Grown & Export Ready</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, -5, 5, 0],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      🍊
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-orange-600 dark:text-orange-400 group-hover:text-orange-500 transition-colors">Fresh Fruits</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">Naturally Grown & Export Ready</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
@@ -563,9 +727,11 @@ export default function HomePage() {
                         <span>Watermelon, Guava, Grapes</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-orange-600 dark:text-orange-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
@@ -574,19 +740,41 @@ export default function HomePage() {
 
             {/* Herbs & Spices */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/herbs-spices" className="block h-full">
-                <Card className="h-full border-2 border-purple-100 dark:border-purple-900 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-purple-200/50 dark:border-purple-800/50 hover:border-purple-400 dark:hover:border-purple-600 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(168, 85, 247, 0)',
+                        '0 0 30px rgba(168, 85, 247, 0.4)',
+                        '0 0 0px rgba(168, 85, 247, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                  />
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🌿</div>
-                    <h3 className="text-2xl font-bold mb-2 text-purple-600 dark:text-purple-400">Herbs & Spices</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">Fresh & Dried</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        y: [0, -8, 0],
+                        rotate: [0, 10, -10, 0],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      🌿
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-purple-600 dark:text-purple-400 group-hover:text-purple-500 transition-colors">Herbs & Spices</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">Fresh & Dried</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
@@ -605,9 +793,11 @@ export default function HomePage() {
                         <span>Cinnamon, Fenugreek, Bay Leaves</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-purple-600 dark:text-purple-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-purple-600 dark:text-purple-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
@@ -616,19 +806,40 @@ export default function HomePage() {
 
             {/* Grains & Legumes */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/grains-legumes" className="block h-full">
-                <Card className="h-full border-2 border-amber-100 dark:border-amber-900 hover:border-amber-300 dark:hover:border-amber-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-amber-200/50 dark:border-amber-800/50 hover:border-amber-400 dark:hover:border-amber-600 hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(245, 158, 11, 0)',
+                        '0 0 30px rgba(245, 158, 11, 0.4)',
+                        '0 0 0px rgba(245, 158, 11, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 1.5 }}
+                  />
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🌾</div>
-                    <h3 className="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Grains & Legumes</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">Bulk Export Quality</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        rotate: [0, 10, -10, 0],
+                      }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                    >
+                      🌾
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400 group-hover:text-amber-500 transition-colors">Grains & Legumes</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">Bulk Export Quality</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -647,9 +858,11 @@ export default function HomePage() {
                         <span>Sesame Seeds, Soybeans</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-amber-600 dark:text-amber-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
@@ -658,19 +871,40 @@ export default function HomePage() {
 
             {/* Livestock & Meat */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/livestock-meat" className="block h-full">
-                <Card className="h-full border-2 border-red-100 dark:border-red-900 hover:border-red-300 dark:hover:border-red-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950 dark:to-rose-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-red-200/50 dark:border-red-800/50 hover:border-red-400 dark:hover:border-red-600 hover:shadow-2xl hover:shadow-red-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-rose-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(239, 68, 68, 0)',
+                        '0 0 30px rgba(239, 68, 68, 0.4)',
+                        '0 0 0px rgba(239, 68, 68, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+                  />
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🐑</div>
-                    <h3 className="text-2xl font-bold mb-2 text-red-600 dark:text-red-400">Livestock & Meat</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">Export-Standard & Halal Certified</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        scale: [1, 1.05, 1],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      🐑
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-red-600 dark:text-red-400 group-hover:text-red-500 transition-colors">Livestock & Meat</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">Export-Standard & Halal Certified</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
@@ -689,9 +923,11 @@ export default function HomePage() {
                         <span>Mutton, Beef, Organs</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-red-600 dark:text-red-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-red-600 dark:text-red-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
@@ -700,19 +936,41 @@ export default function HomePage() {
 
             {/* Specialty Products */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              whileHover={{ y: -12, scale: 1.03 }}
             >
               <Link href="/products/categories/specialty-products" className="block h-full">
-                <Card className="h-full border-2 border-yellow-100 dark:border-yellow-900 hover:border-yellow-300 dark:hover:border-yellow-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950 dark:to-amber-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Card className="h-full border-2 border-yellow-200/50 dark:border-yellow-800/50 hover:border-yellow-400 dark:hover:border-yellow-600 hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 overflow-hidden group relative backdrop-blur-xl bg-white/80 dark:bg-gray-900/80">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(234, 179, 8, 0)',
+                        '0 0 30px rgba(234, 179, 8, 0.4)',
+                        '0 0 0px rgba(234, 179, 8, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 2.5 }}
+                  />
                   <CardContent className="p-8 relative z-10">
-                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">⭐</div>
-                    <h3 className="text-2xl font-bold mb-2 text-yellow-600 dark:text-yellow-400">Specialty Products</h3>
-                    <p className="text-sm text-muted-foreground mb-4 font-medium">High-Demand Items</p>
+                    <motion.div
+                      className="text-6xl mb-4"
+                      animate={{
+                        rotate: [0, 360],
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{ duration: 5, repeat: Infinity }}
+                    >
+                      ⭐
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-2 text-yellow-600 dark:text-yellow-400 group-hover:text-yellow-500 transition-colors">Specialty Products</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-semibold">High-Demand Items</p>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
@@ -731,9 +989,11 @@ export default function HomePage() {
                         <span>Moringa Leaves & Powder</span>
                       </li>
                     </ul>
-                    <div className="flex items-center text-yellow-600 dark:text-yellow-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-yellow-600 dark:text-yellow-400 font-bold group-hover:gap-3 gap-2 transition-all">
                       <span>Explore Range</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
