@@ -141,11 +141,51 @@ export default function InsightsSection() {
   }, []);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-purple-300 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 rounded-full blur-3xl"></div>
+    <section className="py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
+      {/* Premium Background decoration */}
+      <div className="absolute inset-0">
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 40, 0],
+            opacity: [0.2, 0.35, 0.2],
+          }}
+          transition={{ duration: 15, repeat: Infinity }}
+          className="absolute top-20 left-10 w-[500px] h-[500px] bg-gradient-to-br from-purple-400 to-pink-500 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.4, 1],
+            x: [0, -50, 0],
+            opacity: [0.15, 0.3, 0.15],
+          }}
+          transition={{ duration: 18, repeat: Infinity, delay: 2 }}
+          className="absolute bottom-20 right-10 w-[600px] h-[600px] bg-gradient-to-br from-blue-400 to-purple-500 rounded-full blur-3xl"
+        />
+        
+        {/* Floating Icons */}
+        {['📰', '📱', '🌐', '💡', '📊', '🚀'].map((emoji, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-4xl opacity-10"
+            style={{
+              left: `${15 + i * 14}%`,
+              top: `${20 + (i % 3) * 20}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              rotate: [0, 15, -15, 0],
+              scale: [1, 1.15, 1],
+            }}
+            transition={{
+              duration: 5 + i,
+              repeat: Infinity,
+              delay: i * 0.4,
+            }}
+          >
+            {emoji}
+          </motion.div>
+        ))}
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -158,14 +198,32 @@ export default function InsightsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mb-8"
+              className="mb-10"
             >
+              {/* Animated Icons */}
+              <div className="flex items-center gap-3 mb-6">
+                {['📰', '💡', '🚀'].map((emoji, i) => (
+                  <motion.span
+                    key={i}
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 10, -10, 0],
+                      y: [0, -8, 0]
+                    }}
+                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
+                    className="text-5xl"
+                  >
+                    {emoji}
+                  </motion.span>
+                ))}
+              </div>
+              
               <motion.h2
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold mb-6"
+                className="text-5xl md:text-6xl font-bold mb-6"
               >
                 <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                   Bringing you the latest insights
@@ -176,7 +234,7 @@ export default function InsightsSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
-                  className="text-2xl md:text-3xl font-normal bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 dark:from-gray-300 dark:via-gray-400 dark:to-gray-500 bg-clip-text text-transparent"
+                  className="text-3xl md:text-4xl font-normal bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 dark:from-gray-300 dark:via-gray-400 dark:to-gray-500 bg-clip-text text-transparent"
                 >
                   from the export industry
                 </motion.span>
@@ -201,28 +259,57 @@ export default function InsightsSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ x: 10, scale: 1.02 }}
+                    whileHover={{ x: 12, scale: 1.03 }}
                     onClick={() => setSelectedInsight(insight)}
-                    className="cursor-pointer"
+                    className="cursor-pointer group"
                   >
-                    <Card className={`transition-all duration-300 ${
+                    <Card className={`transition-all duration-500 backdrop-blur-xl relative overflow-hidden ${
                       selectedInsight?.id === insight.id
-                        ? 'border-2 border-purple-500 shadow-lg shadow-purple-500/50 bg-purple-50 dark:bg-purple-900/20'
-                        : 'hover:border-purple-300 hover:shadow-md'
+                        ? 'border-2 border-purple-500 shadow-2xl shadow-purple-500/50 bg-purple-50/90 dark:bg-purple-900/30'
+                        : 'bg-white/90 dark:bg-gray-800/90 border-2 border-purple-200/50 dark:border-purple-800/50 hover:border-purple-400 hover:shadow-xl'
                     }`}>
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <div className="text-3xl flex-shrink-0">
+                      {/* Animated gradient background */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      />
+                      
+                      {/* Glowing border effect */}
+                      {selectedInsight?.id === insight.id && (
+                        <motion.div
+                          className="absolute inset-0 rounded-xl"
+                          animate={{
+                            boxShadow: [
+                              '0 0 20px rgba(168, 85, 247, 0.3)',
+                              '0 0 40px rgba(168, 85, 247, 0.6)',
+                              '0 0 20px rgba(168, 85, 247, 0.3)',
+                            ],
+                          }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        />
+                      )}
+                      
+                      <CardContent className="p-5 relative z-10">
+                        <div className="flex items-start gap-4">
+                          {/* Animated Icon */}
+                          <motion.div
+                            animate={{ 
+                              scale: selectedInsight?.id === insight.id ? [1, 1.2, 1] : 1,
+                              rotate: [0, 10, -10, 0]
+                            }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="text-4xl flex-shrink-0"
+                          >
                             {categoryIcons[insight.category] || '📰'}
-                          </div>
+                          </motion.div>
+                          
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-lg mb-1 line-clamp-2">
+                            <h3 className="font-bold text-xl mb-2 line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                               {insight.title}
                             </h3>
-                            <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2 leading-relaxed">
                               {insight.summary}
                             </p>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                               <span className="flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />
                                 {new Date(insight.date).toLocaleDateString('en-US', {
@@ -231,14 +318,22 @@ export default function InsightsSection() {
                                   year: 'numeric'
                                 })}
                               </span>
-                              <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full">
+                              <span className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 text-purple-700 dark:text-purple-300 rounded-full font-semibold">
                                 {insight.category}
                               </span>
                             </div>
                           </div>
-                          <ArrowRight className={`w-5 h-5 flex-shrink-0 transition-transform ${
-                            selectedInsight?.id === insight.id ? 'translate-x-1' : ''
-                          }`} />
+                          
+                          <motion.div
+                            animate={{ 
+                              x: selectedInsight?.id === insight.id ? [0, 5, 0] : 0
+                            }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <ArrowRight className={`w-6 h-6 flex-shrink-0 transition-all ${
+                              selectedInsight?.id === insight.id ? 'text-purple-600' : 'text-gray-400 group-hover:text-purple-500'
+                            }`} />
+                          </motion.div>
                         </div>
                       </CardContent>
                     </Card>
@@ -257,17 +352,39 @@ export default function InsightsSection() {
               transition={{ duration: 0.8 }}
               className="sticky top-24"
             >
-              {/* Floating animation */}
+              {/* Premium Floating animation */}
               <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ 
+                  y: [0, -15, 0],
+                  rotate: [0, 1, -1, 0]
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               >
                 {/* iPhone Mockup */}
                 <div className="relative mx-auto max-w-sm">
+                  {/* Glowing aura */}
+                  <motion.div
+                    className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-500/30 to-blue-500/30 blur-3xl rounded-full"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.5, 0.3]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                  />
+                  
                   {/* Phone Frame */}
-                  <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
+                  <div className="relative bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
+                    {/* Metallic shine effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-[3rem]"
+                      animate={{
+                        opacity: [0.1, 0.2, 0.1]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    />
+                    
                     {/* Notch */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-7 bg-gray-900 rounded-b-3xl z-10"></div>
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-7 bg-gray-900 rounded-b-3xl z-10 shadow-lg"></div>
                     
                     {/* Screen */}
                     <div className="relative bg-white dark:bg-gray-950 rounded-[2.5rem] overflow-hidden shadow-inner">
@@ -473,8 +590,15 @@ export default function InsightsSection() {
                     </div>
                   </div>
 
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-500/20 to-blue-500/20 blur-3xl rounded-full"></div>
+                  {/* Enhanced Glow Effect */}
+                  <motion.div
+                    className="absolute inset-0 -z-20 bg-gradient-to-br from-purple-500/25 to-blue-500/25 blur-3xl rounded-full"
+                    animate={{
+                      scale: [1, 1.15, 1],
+                      rotate: [0, 180, 360]
+                    }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  />
                 </div>
               </motion.div>
             </motion.div>
