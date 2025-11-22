@@ -418,125 +418,194 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Why Choose Hafa - Super Attractive Section */}
+          {/* Why Choose Hafa - Premium Redesigned Section */}
           <div className="relative overflow-hidden rounded-3xl">
-            {/* Video Background */}
+            {/* Parallax Background Layers */}
             <div className="absolute inset-0 z-0">
               <div className="relative w-full h-full">
-                {/* Placeholder for video - Replace with actual video URL */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-900 via-blue-900 to-purple-900 animate-gradient-shift"></div>
-                {/* Video overlay */}
-                <div className="absolute inset-0 bg-black/50"></div>
-                {/* Animated particles */}
-                <div className="absolute inset-0">
-                  {[...Array(20)].map((_, i) => (
+                {/* Layer 1: Ethiopian farmland silhouette with parallax */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-green-50 via-emerald-100 to-green-200 dark:from-green-950 dark:via-emerald-900 dark:to-green-800"
+                  style={{
+                    backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 50 Q 25 30, 50 50 T 100 50 L 100 100 L 0 100 Z\' fill=\'%23166534\' opacity=\'0.1\'/%3E%3C/svg%3E")',
+                    backgroundSize: '200px 100px',
+                    backgroundRepeat: 'repeat-x',
+                    backgroundPosition: 'bottom'
+                  }}
+                  animate={{
+                    backgroundPositionX: ['0px', '200px']
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                />
+                
+                {/* Layer 2: Animated sunlight rays */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
                     <motion.div
-                      key={i}
-                      className="absolute w-2 h-2 bg-white/20 rounded-full"
-                      initial={{ 
-                        x: Math.random() * 100 + '%', 
-                        y: Math.random() * 100 + '%',
-                        scale: Math.random() * 0.5 + 0.5
+                      key={`ray-${i}`}
+                      className="absolute top-0 w-1 h-full bg-gradient-to-b from-yellow-200/30 via-yellow-100/10 to-transparent"
+                      style={{
+                        left: `${20 + i * 20}%`,
+                        transformOrigin: 'top center'
                       }}
                       animate={{
-                        y: [null, Math.random() * -100 - 50 + '%'],
-                        opacity: [0, 1, 0]
+                        opacity: [0.3, 0.6, 0.3],
+                        scaleY: [1, 1.1, 1]
                       }}
                       transition={{
-                        duration: Math.random() * 3 + 2,
+                        duration: 4,
                         repeat: Infinity,
-                        delay: Math.random() * 2
+                        delay: i * 0.5
                       }}
                     />
                   ))}
                 </div>
+
+                {/* Layer 3: Floating particles (very light) */}
+                <div className="absolute inset-0">
+                  {[...Array(15)].map((_, i) => (
+                    <motion.div
+                      key={`particle-${i}`}
+                      className="absolute w-1.5 h-1.5 bg-green-400/20 rounded-full blur-sm"
+                      initial={{ 
+                        x: Math.random() * 100 + '%', 
+                        y: '100%',
+                        scale: Math.random() * 0.5 + 0.5
+                      }}
+                      animate={{
+                        y: [null, '-20%'],
+                        x: [null, `${Math.random() * 100}%`],
+                        opacity: [0, 0.6, 0]
+                      }}
+                      transition={{
+                        duration: Math.random() * 8 + 6,
+                        repeat: Infinity,
+                        delay: Math.random() * 3,
+                        ease: 'easeInOut'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-white/20 dark:via-black/5 dark:to-black/20"></div>
               </div>
             </div>
 
             {/* Content */}
             <div className="relative z-10 p-8 md:p-16">
-              {/* Title */}
+              {/* Title with Motion */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="text-center mb-12"
+                transition={{ duration: 1, ease: 'easeOut' }}
+                className="text-center mb-16"
               >
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-6xl mb-4"
-                >
-                  🌍
-                </motion.div>
-                <h3 className="text-3xl md:text-5xl font-bold text-white mb-4">
-                  Why Choose Hafa Trading PLC?
-                </h3>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.03, 1],
+                      rotate: [0, 2, -2, 0]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                    className="text-6xl md:text-7xl"
+                  >
+                    🌍
+                  </motion.div>
+                  <motion.div
+                    animate={{ 
+                      rotate: [0, 360],
+                      y: [0, -5, 0]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity }}
+                    className="text-4xl"
+                  >
+                    🍃
+                  </motion.div>
+                </div>
+                
+                <motion.h3 
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="text-xl text-white/90 max-w-3xl mx-auto"
+                  transition={{ duration: 1, delay: 0.2 }}
+                  className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-700 via-emerald-600 to-green-700 dark:from-green-400 dark:via-emerald-300 dark:to-green-400 bg-clip-text text-transparent mb-6"
                 >
-                  Excellence From Ethiopian Farms to the World Market
+                  Why Choose Hafa Trading PLC?
+                </motion.h3>
+                
+                <motion.p
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
+                >
+                  Trusted global exporter of premium agricultural products, herbs, livestock, and spices — delivering <span className="font-semibold text-green-600 dark:text-green-400">freshness</span>, <span className="font-semibold text-emerald-600 dark:text-emerald-400">quality</span>, and <span className="font-semibold text-green-700 dark:text-green-300">reliability</span> worldwide.
                 </motion.p>
               </motion.div>
 
-              {/* Cinematic Video Showcase Section - Full Width Ultra-Wide */}
+              {/* Mini Video Strip (Optional) */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="mb-12 -mx-8 md:-mx-16"
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="mb-16 -mx-8 md:-mx-16"
               >
-                <div className="relative overflow-hidden shadow-2xl group">
-                  {/* Video Container - Ultra-Wide Cinematic (32:9 aspect ratio for very minimal height) */}
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl group">
                   <motion.div
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ duration: 0.3 }}
-                    className="relative w-full bg-black/30 backdrop-blur-sm"
-                    style={{ aspectRatio: '32/9' }}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative w-full bg-black/20 backdrop-blur-sm"
+                    style={{ aspectRatio: '21/9' }}
                   >
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=1"
-                      className="absolute inset-0 w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                    
-                    {/* Subtle overlay for better text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
-                  </motion.div>
-                  
-                  {/* Video Caption - Positioned over video */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 md:p-8 pointer-events-none"
-                  >
-                    <div className="max-w-7xl mx-auto">
-                      <p className="text-white text-xl md:text-2xl lg:text-3xl font-bold text-center tracking-wide">
-                        🎬 From Farm to Global Markets — Our Quality, Your Trust
-                      </p>
-                      <p className="text-white/80 text-sm md:text-base text-center mt-2">
-                        Watch our complete agricultural supply chain in action
-                      </p>
+                    {/* Video placeholder - replace with actual video */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-600 via-emerald-500 to-green-700">
+                      <motion.div
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 8, repeat: Infinity }}
+                        className="w-full h-full flex items-center justify-center"
+                      >
+                        <div className="text-center text-white p-8">
+                          <motion.div
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="text-6xl mb-4"
+                          >
+                            🎥
+                          </motion.div>
+                          <p className="text-2xl font-bold mb-2">Quality You Can Trust</p>
+                          <p className="text-lg opacity-90">From Farm to Market</p>
+                        </div>
+                      </motion.div>
                     </div>
+                    
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+                    
+                    {/* Glowing border on hover */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl"
+                      animate={{
+                        boxShadow: [
+                          '0 0 0px rgba(34, 197, 94, 0)',
+                          '0 0 30px rgba(34, 197, 94, 0.4)',
+                          '0 0 0px rgba(34, 197, 94, 0)'
+                        ]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    />
                   </motion.div>
-                  
-                  {/* Cinematic border glow effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                    <div className="absolute inset-0 shadow-[0_0_80px_rgba(34,197,94,0.3)]"></div>
-                  </div>
                 </div>
               </motion.div>
 
-              {/* Feature Cards Grid */}
+              {/* 4-Point Feature Grid - Glassmorphism Cards */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {/* Card 1: Direct Farm Sourcing */}
                 <motion.div
@@ -544,40 +613,48 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ scale: 1.04, y: -8 }}
                   className="group"
                 >
-                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-green-400/50 transition-all duration-300 overflow-hidden">
-                    {/* Animated border sweep */}
+                  <div className="relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-green-200/50 dark:border-green-700/50 hover:border-green-400 dark:hover:border-green-500 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-green-500/20">
+                    {/* Neon border sweep */}
                     <motion.div
-                      className="absolute inset-0 border-2 border-green-400/0 rounded-2xl"
+                      className="absolute inset-0 rounded-3xl"
                       animate={{
-                        borderColor: ['rgba(74, 222, 128, 0)', 'rgba(74, 222, 128, 0.5)', 'rgba(74, 222, 128, 0)']
+                        boxShadow: [
+                          '0 0 0px rgba(34, 197, 94, 0)',
+                          '0 0 20px rgba(34, 197, 94, 0.6)',
+                          '0 0 0px rgba(34, 197, 94, 0)'
+                        ]
                       }}
-                      transition={{ duration: 3, repeat: Infinity }}
+                      transition={{ duration: 5, repeat: Infinity }}
                     />
                     
-                    {/* Floating Icon */}
+                    {/* Floating Icon with grow animation */}
                     <motion.div
                       animate={{ 
-                        y: [0, -10, 0],
-                        rotate: [0, 5, -5, 0]
+                        y: [0, -5, 0],
+                        scale: [1, 1.05, 1]
                       }}
                       transition={{ duration: 3, repeat: Infinity }}
-                      className="text-6xl mb-4"
+                      whileHover={{ scale: 1.2, rotate: [0, -5, 5, 0] }}
+                      className="text-7xl mb-4 cursor-pointer"
                     >
                       🌱
                     </motion.div>
                     
-                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">
+                    <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-3 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                       Direct Farm Sourcing
                     </h4>
-                    <p className="text-white/80 text-sm leading-relaxed">
-                      We work directly with farmers and cooperatives to guarantee fresh, traceable, ethically harvested agricultural products year-round.
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-2">
+                      <span className="font-semibold text-green-600 dark:text-green-400">Freshness Guaranteed</span>
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      We partner directly with local farmers, cooperatives, and rural suppliers, ensuring 100% traceable, ethically-grown products — from fresh rosemary and spices to premium vegetables and cereals.
                     </p>
                     
                     {/* Glow effect */}
-                    <div className="absolute inset-0 bg-green-500/0 group-hover:bg-green-500/10 transition-all duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 to-emerald-500/0 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-500 rounded-3xl"></div>
                   </div>
                 </motion.div>
 
@@ -587,37 +664,44 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ scale: 1.04, y: -8 }}
                   className="group"
                 >
-                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-blue-400/50 transition-all duration-300 overflow-hidden">
+                  <div className="relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-blue-200/50 dark:border-blue-700/50 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20">
                     <motion.div
-                      className="absolute inset-0 border-2 border-blue-400/0 rounded-2xl"
+                      className="absolute inset-0 rounded-3xl"
                       animate={{
-                        borderColor: ['rgba(96, 165, 250, 0)', 'rgba(96, 165, 250, 0.5)', 'rgba(96, 165, 250, 0)']
+                        boxShadow: [
+                          '0 0 0px rgba(59, 130, 246, 0)',
+                          '0 0 20px rgba(59, 130, 246, 0.6)',
+                          '0 0 0px rgba(59, 130, 246, 0)'
+                        ]
                       }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                      transition={{ duration: 5, repeat: Infinity, delay: 1 }}
                     />
                     
+                    {/* Rotating globe icon */}
                     <motion.div
                       animate={{ 
-                        rotate: [0, 360],
-                        scale: [1, 1.1, 1]
+                        rotate: [0, 360]
                       }}
-                      transition={{ duration: 4, repeat: Infinity }}
-                      className="text-6xl mb-4"
+                      transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+                      className="text-7xl mb-4"
                     >
                       🌐
                     </motion.div>
                     
-                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                    <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       Global Logistics Support
                     </h4>
-                    <p className="text-white/80 text-sm leading-relaxed">
-                      Whether by air, sea, or road, our logistics team ensures fast, reliable, temperature-controlled delivery anywhere in the world.
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-2">
+                      <span className="font-semibold text-blue-600 dark:text-blue-400">Air • Sea • Road</span>
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      From Ethiopia to the world — delivered with precision, speed, and temperature-controlled logistics. We coordinate air freight, sea freight, and inland transport with real-time tracking.
                     </p>
                     
-                    <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-all duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-500 rounded-3xl"></div>
                   </div>
                 </motion.div>
 
@@ -627,37 +711,50 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ scale: 1.04, y: -8 }}
                   className="group"
                 >
-                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-purple-400/50 transition-all duration-300 overflow-hidden">
+                  <div className="relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-purple-200/50 dark:border-purple-700/50 hover:border-purple-400 dark:hover:border-purple-500 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-purple-500/20">
                     <motion.div
-                      className="absolute inset-0 border-2 border-purple-400/0 rounded-2xl"
+                      className="absolute inset-0 rounded-3xl"
                       animate={{
-                        borderColor: ['rgba(192, 132, 252, 0)', 'rgba(192, 132, 252, 0.5)', 'rgba(192, 132, 252, 0)']
+                        boxShadow: [
+                          '0 0 0px rgba(168, 85, 247, 0)',
+                          '0 0 20px rgba(168, 85, 247, 0.6)',
+                          '0 0 0px rgba(168, 85, 247, 0)'
+                        ]
                       }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 2 }}
+                      transition={{ duration: 5, repeat: Infinity, delay: 2 }}
                     />
                     
+                    {/* Box opening animation */}
                     <motion.div
                       animate={{ 
-                        y: [0, -8, 0],
-                        rotateY: [0, 180, 360]
+                        rotateY: [0, 15, 0],
+                        y: [0, -3, 0]
                       }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      className="text-6xl mb-4"
+                      transition={{ duration: 5, repeat: Infinity }}
+                      whileHover={{ 
+                        scale: 1.2,
+                        rotateY: 180
+                      }}
+                      className="text-7xl mb-4 cursor-pointer"
+                      style={{ transformStyle: 'preserve-3d' }}
                     >
                       📦
                     </motion.div>
                     
-                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
+                    <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                       Customized Packaging
                     </h4>
-                    <p className="text-white/80 text-sm leading-relaxed">
-                      We provide private labeling, eco-friendly packaging, vacuum sealing, carton branding, and full export-ready packing solutions.
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-2">
+                      <span className="font-semibold text-purple-600 dark:text-purple-400">Options</span>
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      Choose from vacuum-sealed, eco-friendly, private-label, and bulk export packaging options — all designed to keep products fresh and preserve aroma during long transport.
                     </p>
                     
-                    <div className="absolute inset-0 bg-purple-500/0 group-hover:bg-purple-500/10 transition-all duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all duration-500 rounded-3xl"></div>
                   </div>
                 </motion.div>
 
@@ -667,37 +764,54 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ scale: 1.04, y: -8 }}
                   className="group"
                 >
-                  <div className="relative h-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-yellow-400/50 transition-all duration-300 overflow-hidden">
+                  <div className="relative h-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-yellow-200/50 dark:border-yellow-700/50 hover:border-yellow-400 dark:hover:border-yellow-500 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-yellow-500/20">
                     <motion.div
-                      className="absolute inset-0 border-2 border-yellow-400/0 rounded-2xl"
+                      className="absolute inset-0 rounded-3xl"
                       animate={{
-                        borderColor: ['rgba(250, 204, 21, 0)', 'rgba(250, 204, 21, 0.5)', 'rgba(250, 204, 21, 0)']
+                        boxShadow: [
+                          '0 0 0px rgba(234, 179, 8, 0)',
+                          '0 0 20px rgba(234, 179, 8, 0.6)',
+                          '0 0 0px rgba(234, 179, 8, 0)'
+                        ]
                       }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                      transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
                     />
                     
+                    {/* Shimmer effect on dollar sign */}
                     <motion.div
                       animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [0.8, 1, 0.8]
+                        scale: [1, 1.1, 1]
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="text-6xl mb-4"
+                      className="relative text-7xl mb-4"
                     >
-                      💲
+                      <motion.span
+                        animate={{
+                          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                        }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                        style={{
+                          backgroundImage: 'linear-gradient(90deg, #eab308, #fbbf24, #fcd34d, #eab308)',
+                          backgroundSize: '200% 100%',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent'
+                        }}
+                      >
+                        💲
+                      </motion.span>
                     </motion.div>
                     
-                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">
-                      Competitive Pricing
+                    <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-3 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
+                      Competitive Wholesale Pricing
                     </h4>
-                    <p className="text-white/80 text-sm leading-relaxed">
-                      Our direct procurement model allows us to offer global-market competitive prices with guaranteed consistency and transparency.
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      By cutting middlemen and sourcing straight from farms, we deliver global market–competitive pricing with transparent quotes and stable supply.
                     </p>
                     
-                    <div className="absolute inset-0 bg-yellow-500/0 group-hover:bg-yellow-500/10 transition-all duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-amber-500/0 group-hover:from-yellow-500/10 group-hover:to-amber-500/10 transition-all duration-500 rounded-3xl"></div>
                   </div>
                 </motion.div>
               </div>
@@ -708,16 +822,16 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-center mb-8"
+                className="text-center mb-10"
               >
-                <p className="text-2xl text-white/90 font-semibold italic">
-                  "From Farm to Global Markets — Our Quality, Your Trust."
+                <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-200 font-bold italic">
+                  "Quality You Can Trust. From Farm to Market."
                 </p>
               </motion.div>
 
-              {/* CTA Button */}
+              {/* CTA Button - Animated with Glow */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.6 }}
@@ -727,19 +841,56 @@ export default function HomePage() {
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    className="inline-block"
                   >
-                    <Button 
-                      size="lg" 
-                      className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-6 text-lg font-semibold shadow-2xl hover:shadow-green-500/50 transition-all duration-300"
+                    <motion.div
+                      animate={{
+                        boxShadow: [
+                          '0 0 20px rgba(34, 197, 94, 0.3)',
+                          '0 0 40px rgba(34, 197, 94, 0.6)',
+                          '0 0 20px rgba(34, 197, 94, 0.3)'
+                        ]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="rounded-full"
                     >
-                      <motion.span
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                      <Button 
+                        size="lg" 
+                        className="relative bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:via-emerald-600 hover:to-green-700 text-white px-10 py-7 text-lg font-bold shadow-2xl overflow-hidden group"
                       >
-                        View All Products
-                      </motion.span>
-                      <ArrowRight className="ml-2 h-6 w-6" />
-                    </Button>
+                        {/* Neon outer ring on hover */}
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          whileHover={{
+                            boxShadow: '0 0 0 4px rgba(34, 197, 94, 0.4)'
+                          }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        
+                        <span className="relative z-10 flex items-center gap-2">
+                          🛒 Explore All Products
+                          <motion.span
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.span>
+                        </span>
+                        
+                        {/* Shimmer effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          animate={{
+                            x: ['-100%', '200%']
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 1
+                          }}
+                        />
+                      </Button>
+                    </motion.div>
                   </motion.div>
                 </Link>
               </motion.div>
