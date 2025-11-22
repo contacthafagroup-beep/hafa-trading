@@ -100,15 +100,17 @@ export default function WhyChooseAdminPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      console.log('Saving data to Firestore:', data);
       const docRef = doc(db, 'siteContent', 'whyChoose');
       await setDoc(docRef, data, { merge: true });
       
+      console.log('✅ Data saved successfully');
       toast({
         title: 'Success',
         description: 'Why Choose section updated successfully'
       });
     } catch (error: any) {
-      console.error('Error saving data:', error);
+      console.error('❌ Error saving data:', error);
       toast({
         title: 'Error',
         description: error?.message || 'Failed to save changes. Check console for details.',
@@ -294,7 +296,40 @@ export default function WhyChooseAdminPage() {
         </Card>
 
         {/* Save Button */}
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-4">
+          <Button
+            onClick={async () => {
+              try {
+                const docRef = doc(db, 'siteContent', 'whyChoose');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                  console.log('✅ Current data in Firestore:', docSnap.data());
+                  toast({
+                    title: 'Data Loaded',
+                    description: 'Check console for current data'
+                  });
+                } else {
+                  console.log('❌ No data found');
+                  toast({
+                    title: 'No Data',
+                    description: 'No data found in Firestore',
+                    variant: 'destructive'
+                  });
+                }
+              } catch (error: any) {
+                console.error('Error:', error);
+                toast({
+                  title: 'Error',
+                  description: error.message,
+                  variant: 'destructive'
+                });
+              }
+            }}
+            variant="outline"
+            size="lg"
+          >
+            Test Load Data
+          </Button>
           <Button
             onClick={handleSave}
             disabled={saving}
