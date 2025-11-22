@@ -13,6 +13,7 @@ import { saveCategoryContent, getCategoryContent } from '@/lib/firebase/category
 import { useToast } from '@/hooks/use-toast';
 
 const categories = [
+  { id: 'home-page', name: '🏠 Home Page (Why Choose Section)' },
   { id: 'fresh-vegetables', name: 'Fresh Vegetables' },
   { id: 'fresh-fruits', name: 'Fresh Fruits' },
   { id: 'grains-legumes', name: 'Grains & Legumes' },
@@ -23,9 +24,10 @@ const categories = [
 
 export default function CategoryContentManagement() {
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = useState('fresh-vegetables');
+  const [selectedCategory, setSelectedCategory] = useState('home-page');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showcaseVideoUrl, setShowcaseVideoUrl] = useState('');
   const [videos, setVideos] = useState([
     { title: '', desc: '', thumbnail: '', videoUrl: '' }
   ]);
@@ -52,6 +54,7 @@ export default function CategoryContentManagement() {
     try {
       const content = await getCategoryContent(selectedCategory);
       if (content) {
+        setShowcaseVideoUrl((content as any).showcaseVideoUrl || '');
         setVideos(content.videos || [{ title: '', desc: '', thumbnail: '', videoUrl: '' }]);
         setOriginRegions(content.originRegions || [{ name: '', product: '', coordinates: '', mapUrl: '' }]);
         setCertifications(content.certifications || [{ icon: '', name: '', desc: '' }]);

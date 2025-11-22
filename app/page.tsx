@@ -481,6 +481,58 @@ export default function HomePage() {
                 </motion.p>
               </motion.div>
 
+              {/* Cinematic Video Showcase Section - Full Width Ultra-Wide */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mb-12 -mx-8 md:-mx-16"
+              >
+                <div className="relative overflow-hidden shadow-2xl group">
+                  {/* Video Container - Ultra-Wide Cinematic (32:9 aspect ratio for very minimal height) */}
+                  <motion.div
+                    whileHover={{ scale: 1.01 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative w-full bg-black/30 backdrop-blur-sm"
+                    style={{ aspectRatio: '32/9' }}
+                  >
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=1"
+                      className="absolute inset-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                    
+                    {/* Subtle overlay for better text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
+                  </motion.div>
+                  
+                  {/* Video Caption - Positioned over video */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 md:p-8 pointer-events-none"
+                  >
+                    <div className="max-w-7xl mx-auto">
+                      <p className="text-white text-xl md:text-2xl lg:text-3xl font-bold text-center tracking-wide">
+                        🎬 From Farm to Global Markets — Our Quality, Your Trust
+                      </p>
+                      <p className="text-white/80 text-sm md:text-base text-center mt-2">
+                        Watch our complete agricultural supply chain in action
+                      </p>
+                    </div>
+                  </motion.div>
+                  
+                  {/* Cinematic border glow effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="absolute inset-0 shadow-[0_0_80px_rgba(34,197,94,0.3)]"></div>
+                  </div>
+                </div>
+              </motion.div>
+
               {/* Feature Cards Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {/* Card 1: Direct Farm Sourcing */}
