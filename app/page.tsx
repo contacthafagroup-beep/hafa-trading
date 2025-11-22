@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
+import GlobalMap from '@/components/global-map';
 
 export default function HomePage() {
   return (
@@ -768,6 +769,529 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Hafa Trading Team Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-6xl mb-4"
+            >
+              🧑‍💼
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, letterSpacing: '0.5em' }}
+              whileInView={{ opacity: 1, letterSpacing: '0.05em' }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+              className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+            >
+              Meet the Hafa Trading Team
+            </motion.h2>
+            <p className="text-lg text-muted-foreground">
+              Dedicated professionals connecting Ethiopia to the world
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {[
+              { name: 'Ahmed Hassan', position: 'CEO & Founder', country: '🇪🇹', bio: 'Leading Ethiopian agricultural exports with 15+ years of experience' },
+              { name: 'Sarah Mohammed', position: 'Export Director', country: '🇪🇹', bio: 'Managing international trade operations across 12 countries' },
+              { name: 'David Chen', position: 'Quality Assurance', country: '🇨🇳', bio: 'Ensuring premium quality standards for all products' },
+              { name: 'Fatima Al-Rashid', position: 'Logistics Manager', country: '🇦🇪', bio: 'Coordinating seamless global shipping operations' },
+              { name: 'John Smith', position: 'Business Development', country: '🇺🇸', bio: 'Expanding market reach and building partnerships' },
+              { name: 'Aisha Ibrahim', position: 'Sustainability Lead', country: '🇪🇹', bio: 'Championing eco-friendly farming practices' }
+            ].map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+              >
+                <Card className="h-full backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 border-2 border-white/50 hover:border-purple-300 hover:shadow-2xl transition-all duration-300 group">
+                  <CardContent className="p-6 text-center">
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="relative inline-block mb-4"
+                    >
+                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 mx-auto flex items-center justify-center text-4xl shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
+                        👤
+                      </div>
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="absolute inset-0 rounded-full bg-purple-400/30 blur-xl -z-10"
+                      />
+                    </motion.div>
+                    <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+                    <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold mb-2">{member.position}</p>
+                    <div className="text-2xl mb-3">{member.country}</div>
+                    <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
+                    <div className="flex justify-center gap-3">
+                      {['💬', '📧', '🔗'].map((icon, i) => (
+                        <motion.button
+                          key={i}
+                          whileHover={{ scale: 1.2, y: -3 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg hover:shadow-purple-500/50 transition-shadow"
+                        >
+                          {icon}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <Link href="/about">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">
+                ✨ Meet the Whole Team
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                  className="ml-2"
+                >
+                  →
+                </motion.span>
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Global Market Reach Section */}
+      <section className="py-20 bg-gradient-to-b from-blue-900 via-blue-950 to-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="text-6xl mb-4 inline-block"
+            >
+              🌍
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Global Market Reach</h2>
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+              Exporting premium Ethiopian agricultural products to more than 12 countries worldwide
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              { icon: '✈', title: 'Air Freight', desc: '48–72 hours', color: 'from-blue-500 to-cyan-500' },
+              { icon: '🚢', title: 'Sea Freight', desc: '15–40 days', color: 'from-green-500 to-emerald-500' },
+              { icon: '🚚', title: 'Road Freight', desc: 'Across East Africa', color: 'from-orange-500 to-red-500' }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className={`bg-gradient-to-br ${item.color} border-0 text-white`}>
+                  <CardContent className="p-6 text-center">
+                    <motion.div
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-5xl mb-3"
+                    >
+                      {item.icon}
+                    </motion.div>
+                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-white/90">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Interactive World Map */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-12"
+          >
+            <GlobalMap />
+          </motion.div>
+
+          {/* Country Grid */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20"
+          >
+            <h3 className="text-2xl font-bold text-center mb-6">Our Export Destinations</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 text-center">
+              {[
+                { flag: '🇦🇪', name: 'UAE' },
+                { flag: '🇸🇦', name: 'Saudi Arabia' },
+                { flag: '🇷🇺', name: 'Russia' },
+                { flag: '🇨🇳', name: 'China' },
+                { flag: '🇹🇷', name: 'Turkey' },
+                { flag: '🇪🇺', name: 'EU' },
+                { flag: '🇺🇸', name: 'USA' },
+                { flag: '🇮🇳', name: 'India' }
+              ].map((country, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.2, y: -5 }}
+                  className="cursor-pointer"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                    className="text-4xl mb-2"
+                  >
+                    {country.flag}
+                  </motion.div>
+                  <p className="text-xs font-semibold">{country.name}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Quality Control Process Section */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Quality Control Process</h2>
+            <p className="text-lg text-muted-foreground">
+              7-step verification ensuring premium quality from farm to export
+            </p>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto">
+            {[
+              { icon: '🌱', title: 'Farm Selection', desc: 'Partnering with certified organic farms', color: 'from-green-400 to-emerald-600' },
+              { icon: '🚜', title: 'Harvesting', desc: 'Optimal timing for peak freshness', color: 'from-yellow-400 to-orange-600' },
+              { icon: '🧼', title: 'Sorting & Cleaning', desc: 'Rigorous quality inspection', color: 'from-blue-400 to-cyan-600' },
+              { icon: '📦', title: 'Packaging', desc: 'Export-grade protective packaging', color: 'from-purple-400 to-pink-600' },
+              { icon: '❄', title: 'Cold Storage', desc: 'Temperature-controlled preservation', color: 'from-cyan-400 to-blue-600' },
+              { icon: '✈', title: 'Export Logistics', desc: 'Fast & reliable shipping', color: 'from-indigo-400 to-purple-600' },
+              { icon: '✔', title: 'Final Quality Check', desc: 'Pre-shipment verification', color: 'from-green-500 to-teal-600' }
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative mb-8 last:mb-0"
+              >
+                <div className="flex items-center gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className={`flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br ${step.color} flex items-center justify-center text-3xl shadow-lg`}
+                  >
+                    {step.icon}
+                  </motion.div>
+                  <Card className="flex-1 hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold mb-1">{index + 1}. {step.title}</h3>
+                          <p className="text-muted-foreground">{step.desc}</p>
+                        </div>
+                        <motion.div
+                          animate={{ x: [0, 10, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                          className="text-2xl"
+                        >
+                          →
+                        </motion.div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                {index < 6 && (
+                  <motion.div
+                    initial={{ scaleY: 0 }}
+                    whileInView={{ scaleY: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                    className="w-1 h-8 bg-gradient-to-b from-blue-500 to-green-500 ml-10 my-2"
+                  />
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Client Testimonials Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-6xl mb-4"
+            >
+              ⭐
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">What Our Clients Say</h2>
+            <p className="text-lg text-muted-foreground">
+              Trusted by businesses worldwide
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {[
+              { name: 'Mohammed Al-Farsi', country: '🇦🇪', company: 'Dubai Fresh Markets', rating: 5, text: 'Outstanding quality and reliable delivery. Hafa Trading has been our trusted partner for 3 years.' },
+              { name: 'Elena Petrova', country: '🇷🇺', company: 'Moscow Import Co.', rating: 5, text: 'Excellent communication and premium products. Their logistics team is highly professional.' },
+              { name: 'James Wilson', country: '🇺🇸', company: 'US Organic Foods', rating: 5, text: 'Best Ethiopian coffee and spices supplier. Quality consistently exceeds expectations.' }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+              >
+                <Card className="h-full backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 border-2 border-purple-200 hover:border-purple-400 hover:shadow-2xl transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-2xl">
+                        👤
+                      </div>
+                      <div>
+                        <h3 className="font-bold">{testimonial.name}</h3>
+                        <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                        <div className="text-xl">{testimonial.country}</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-1 mb-3">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.3, delay: index * 0.2 + i * 0.1 }}
+                          className="text-yellow-500 text-xl"
+                        >
+                          ⭐
+                        </motion.span>
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground italic">"{testimonial.text}"</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h3 className="text-2xl font-bold mb-8">Trusted By Leading Companies</h3>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              {['🏢', '🏭', '🏪', '🏬', '🏛', '🏦'].map((icon, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.2, y: -5 }}
+                  className="text-6xl grayscale hover:grayscale-0 transition-all cursor-pointer"
+                >
+                  {icon}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Sustainability Section */}
+      <section className="py-20 bg-gradient-to-b from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-green-950 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-4xl"
+              initial={{ x: Math.random() * 100 + '%', y: Math.random() * 100 + '%' }}
+              animate={{
+                x: [null, Math.random() * 100 + '%'],
+                y: [null, Math.random() * 100 + '%'],
+                rotate: [0, 360]
+              }}
+              transition={{
+                duration: Math.random() * 20 + 10,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+              🍃
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="text-6xl mb-4 inline-block"
+            >
+              🌍
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-green-800 dark:text-green-400">
+              Sustainability & Social Impact
+            </h2>
+            <p className="text-lg text-green-700 dark:text-green-300 max-w-3xl mx-auto">
+              Building a better future through responsible farming and community empowerment
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: '♻',
+                title: 'Sustainable Farming',
+                items: ['Water conservation', 'Chemical-free harvesting', 'Farmer training programs', 'Soil health protection'],
+                color: 'from-green-400 to-emerald-600'
+              },
+              {
+                icon: '🤝',
+                title: 'Community Support',
+                items: ['Supporting smallholder farmers', 'Job creation', 'Women farmers empowerment', 'Fair trade practices'],
+                color: 'from-blue-400 to-cyan-600'
+              },
+              {
+                icon: '🌱',
+                title: 'Environmental Commitment',
+                items: ['Eco-friendly packaging', 'Reduced carbon footprint', 'Responsible waste management', 'Renewable energy use'],
+                color: 'from-teal-400 to-green-600'
+              }
+            ].map((section, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+              >
+                <Card className="h-full backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 border-2 border-green-200 hover:border-green-400 hover:shadow-2xl transition-all">
+                  <CardContent className="p-8">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className={`w-20 h-20 rounded-full bg-gradient-to-br ${section.color} flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg`}
+                    >
+                      {section.icon}
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-4 text-center text-green-800 dark:text-green-400">
+                      {section.title}
+                    </h3>
+                    <ul className="space-y-3">
+                      {section.items.map((item, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: index * 0.2 + i * 0.1 }}
+                          className="flex items-start gap-2"
+                        >
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{item}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Live Chat Floating Button */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 2, duration: 0.5 }}
+        className="fixed bottom-6 right-6 z-50"
+      >
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <Button
+            size="lg"
+            className="rounded-full w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 shadow-2xl"
+          >
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="text-2xl"
+            >
+              💬
+            </motion.span>
+          </Button>
+        </motion.div>
+      </motion.div>
 
       <Footer />
     </div>
