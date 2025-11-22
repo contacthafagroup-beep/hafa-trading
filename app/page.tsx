@@ -17,6 +17,7 @@ import {
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 import GlobalMap from '@/components/global-map';
+import LiveChatBox from '@/components/live-chat-box';
 
 export default function HomePage() {
   return (
@@ -1267,31 +1268,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Live Chat Floating Button */}
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 2, duration: 0.5 }}
-        className="fixed bottom-6 right-6 z-50"
-      >
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Button
-            size="lg"
-            className="rounded-full w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 shadow-2xl"
-          >
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-              className="text-2xl"
-            >
-              💬
-            </motion.span>
-          </Button>
-        </motion.div>
-      </motion.div>
+      {/* Live Chat Box with Real-time Messaging */}
+      <LiveChatBox />
 
       <Footer />
     </div>
