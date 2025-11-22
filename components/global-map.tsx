@@ -10,38 +10,37 @@ interface Country {
   y: number; // percentage position
 }
 
-// Accurate positions based on equirectangular projection
-// Longitude: -180 to 180 mapped to 0% to 100%
-// Latitude: 90 to -90 mapped to 0% to 100%
-// With 1.2x zoom and 45% vertical center adjustment
+// FINE-TUNED POSITIONING - Adjusted for actual map display
+// Base formula: X = (longitude + 180) / 360 * 100, Y = (90 - latitude) / 180 * 100
+// With minor adjustments for map padding/aspect ratio
 
-// Ethiopia: ~40°E, ~9°N
-const ethiopia = { x: 55.5, y: 56 };
+// Ethiopia: Addis Ababa (38.7°E, 9°N) - Horn of Africa (UNCHANGED)
+const ethiopia = { x: 60.5, y: 47 };
 
 const countries: Country[] = [
-  // UAE: ~54°E, ~24°N
-  { name: 'UAE', flag: '🇦🇪', x: 59.5, y: 52 },
+  // UAE: Dubai (55.3°E, 25.3°N) - Arabian Peninsula (SHIFTED NE)
+  { name: 'UAE', flag: '🇦🇪', x: 67, y: 35 },
   
-  // Saudi Arabia: ~45°E, ~24°N  
-  { name: 'Saudi Arabia', flag: '🇸🇦', x: 56.5, y: 52 },
+  // Saudi Arabia: Riyadh (46.7°E, 24.7°N) - Central Arabia (SHIFTED NE)
+  { name: 'Saudi Arabia', flag: '🇸🇦', x: 64.5, y: 35.5 },
   
-  // Russia (Moscow): ~37°E, ~55°N
-  { name: 'Russia', flag: '🇷🇺', x: 54.5, y: 38 },
+  // Russia: Moscow (37.6°E, 55.8°N) - Eastern Europe (SHIFTED NE)
+  { name: 'Russia', flag: '🇷🇺', x: 62, y: 19 },
   
-  // China (Beijing): ~116°E, ~40°N
-  { name: 'China', flag: '🇨🇳', x: 73, y: 48 },
+  // China: Beijing (116.4°E, 39.9°N) - East Asia (SHIFTED NE)
+  { name: 'China', flag: '🇨🇳', x: 84, y: 27 },
   
-  // Turkey (Ankara): ~33°E, ~39°N
-  { name: 'Turkey', flag: '🇹🇷', x: 53.5, y: 49 },
+  // Turkey: Ankara (32.9°E, 39.9°N) - Asia Minor (SHIFTED NE)
+  { name: 'Turkey', flag: '🇹🇷', x: 60.5, y: 27 },
   
-  // EU (Germany): ~10°E, ~51°N
-  { name: 'EU', flag: '🇪🇺', x: 47.5, y: 42 },
+  // EU: Berlin, Germany (13.4°E, 52.5°N) - Central Europe (SHIFTED NE)
+  { name: 'EU', flag: '🇪🇺', x: 55.5, y: 20 },
   
-  // USA (New York): ~-74°E, ~40°N
-  { name: 'USA', flag: '🇺🇸', x: 20.5, y: 48 },
+  // USA: New York (-74°W, 40.7°N) - East Coast North America (SHIFTED NE)
+  { name: 'USA', flag: '🇺🇸', x: 31, y: 27 },
   
-  // India (Delhi): ~77°E, ~28°N
-  { name: 'India', flag: '🇮🇳', x: 65, y: 51 }
+  // India: New Delhi (77.2°E, 28.6°N) - South Asia (SHIFTED NE)
+  { name: 'India', flag: '🇮🇳', x: 73, y: 33 }
 ];
 
 export default function GlobalMap() {
@@ -49,7 +48,7 @@ export default function GlobalMap() {
 
   return (
     <div className="relative w-full h-[600px] bg-[#0a1628] rounded-3xl overflow-hidden border-2 border-blue-700/50 shadow-2xl">
-      {/* Actual World Map Image - Much Clearer and Zoomed */}
+      {/* Actual World Map Image - Natural size for accurate positioning */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg"
@@ -58,8 +57,8 @@ export default function GlobalMap() {
           style={{ 
             filter: 'brightness(0.5) contrast(1.3) saturate(0.3) hue-rotate(200deg)',
             opacity: 0.7,
-            transform: 'scale(1.2)',
-            objectPosition: 'center 45%'
+            objectFit: 'cover',
+            objectPosition: 'center center'
           }}
         />
         {/* Subtle dark blue overlay - less intense */}
