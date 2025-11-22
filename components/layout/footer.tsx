@@ -70,12 +70,66 @@ export default function Footer() {
               <li className="flex items-start">
                 <Mail className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
                 <div>
-                  <a href="mailto:contact@hafatrading.com" className="hover:text-white transition-colors block">contact.hafatrading.com</a>
-                  <a href="mailto:contact@hafagroup.com" className="hover:text-white transition-colors block">contact.hafagroup.com</a>
-                  <a href="mailto:info@hafatrading.com" className="hover:text-white transition-colors block">info.hafatrading.com</a>
+                  <a href="mailto:contact.hafatrading@gmail.com" className="hover:text-white transition-colors block">contact.hafatrading@gmail.com</a>
+                  <a href="mailto:contact@hafagroup.com" className="hover:text-white transition-colors block">contact@hafagroup.com</a>
+                  <a href="mailto:info@hafatrading.com" className="hover:text-white transition-colors block">info@hafatrading.com</a>
                 </div>
               </li>
             </ul>
+
+            {/* Quick Contact Buttons */}
+            <div className="mt-6 space-y-2">
+              <h5 className="text-white font-semibold text-xs mb-3">Quick Connect</h5>
+              
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/251954742383"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 p-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors group"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg flex-shrink-0">
+                  📱
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-white">WhatsApp</p>
+                  <p className="text-xs text-green-100 truncate">+251 954 742 383</p>
+                </div>
+                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+              </a>
+
+              {/* Telegram */}
+              <a
+                href="https://t.me/hafatrading"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 p-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors group"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg flex-shrink-0">
+                  ✈️
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-white">Telegram</p>
+                  <p className="text-xs text-blue-100 truncate">@hafatrading</p>
+                </div>
+                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+              </a>
+
+              {/* Email */}
+              <a
+                href="mailto:contact.hafatrading@gmail.com"
+                className="flex items-center gap-2 p-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors group"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg flex-shrink-0">
+                  📧
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-white">Email Us</p>
+                  <p className="text-xs text-purple-100 truncate">contact.hafatrading@gmail.com</p>
+                </div>
+                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+              </a>
+            </div>
           </div>
         </div>
 
