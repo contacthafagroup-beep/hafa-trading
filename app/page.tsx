@@ -1736,92 +1736,193 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Client Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900">
-        <div className="container mx-auto px-4">
+      {/* Client Testimonials - Super Attractive Section */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.15, 0.3, 0.15],
+            }}
+            transition={{ duration: 12, repeat: Infinity }}
+            className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              opacity: [0.1, 0.25, 0.1],
+            }}
+            transition={{ duration: 15, repeat: Infinity, delay: 2 }}
+            className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-gradient-to-br from-blue-400 to-purple-500 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Stars */}
+          {[...Array(10)].map((_, i) => (
             <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-6xl mb-4"
+              key={i}
+              className="absolute text-3xl opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                rotate: [0, 360],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 5 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
             >
               ⭐
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">What Our Clients Say</h2>
-            <p className="text-lg text-muted-foreground">
-              Trusted by businesses worldwide
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <div className="flex justify-center gap-2 mb-6">
+              {[...Array(5)].map((_, i) => (
+                <motion.span
+                  key={i}
+                  animate={{ 
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                  className="text-5xl"
+                >
+                  ⭐
+                </motion.span>
+              ))}
+            </div>
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
+              What Our Clients Say
+            </h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300">
+              Trusted by <span className="font-bold text-purple-600 dark:text-purple-400">businesses worldwide</span>
             </p>
           </motion.div>
 
+          {/* Testimonial Cards */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
-              { name: 'Mohammed Al-Farsi', country: '🇦🇪', company: 'Dubai Fresh Markets', rating: 5, text: 'Outstanding quality and reliable delivery. Hafa Trading has been our trusted partner for 3 years.' },
-              { name: 'Elena Petrova', country: '🇷🇺', company: 'Moscow Import Co.', rating: 5, text: 'Excellent communication and premium products. Their logistics team is highly professional.' },
-              { name: 'James Wilson', country: '🇺🇸', company: 'US Organic Foods', rating: 5, text: 'Best Ethiopian coffee and spices supplier. Quality consistently exceeds expectations.' }
+              { name: 'Mohammed Al-Farsi', country: '🇦🇪', company: 'Dubai Fresh Markets', rating: 5, text: 'Outstanding quality and reliable delivery. Hafa Trading has been our trusted partner for 3 years.', color: 'from-purple-500 to-pink-500' },
+              { name: 'Elena Petrova', country: '🇷🇺', company: 'Moscow Import Co.', rating: 5, text: 'Excellent communication and premium products. Their logistics team is highly professional.', color: 'from-pink-500 to-rose-500' },
+              { name: 'James Wilson', country: '🇺🇸', company: 'US Organic Foods', rating: 5, text: 'Best Ethiopian coffee and spices supplier. Quality consistently exceeds expectations.', color: 'from-blue-500 to-purple-500' }
             ].map((testimonial, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                whileHover={{ y: -10, scale: 1.02 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                whileHover={{ y: -12, scale: 1.03 }}
+                className="group"
               >
-                <Card className="h-full backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 border-2 border-purple-200 hover:border-purple-400 hover:shadow-2xl transition-all">
-                  <CardContent className="p-6">
+                <Card className="h-full backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 border-2 border-purple-200/50 dark:border-purple-800/50 hover:border-purple-400 dark:hover:border-purple-600 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 relative overflow-hidden">
+                  {/* Quote mark background */}
+                  <div className="absolute top-4 right-4 text-8xl text-purple-200/20 dark:text-purple-800/20 font-serif">
+                    "
+                  </div>
+                  
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${testimonial.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+                  />
+                  
+                  <CardContent className="p-6 relative z-10">
+                    {/* Client Info */}
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-2xl">
-                        👤
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className={`w-16 h-16 rounded-full bg-gradient-to-br ${testimonial.color} flex items-center justify-center text-3xl shadow-lg relative overflow-hidden`}
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                          animate={{
+                            x: ['-100%', '200%']
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 3,
+                            delay: index * 0.5
+                          }}
+                        />
+                        <span className="relative z-10">👤</span>
+                      </motion.div>
                       <div>
-                        <h3 className="font-bold">{testimonial.name}</h3>
-                        <p className="text-sm text-muted-foreground">{testimonial.company}</p>
-                        <div className="text-xl">{testimonial.country}</div>
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-white">{testimonial.name}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.company}</p>
+                        <motion.div
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="text-2xl"
+                        >
+                          {testimonial.country}
+                        </motion.div>
                       </div>
                     </div>
-                    <div className="flex gap-1 mb-3">
+                    
+                    {/* Rating Stars */}
+                    <div className="flex gap-1 mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <motion.span
                           key={i}
-                          initial={{ opacity: 0, scale: 0 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
+                          initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                           viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: index * 0.2 + i * 0.1 }}
-                          className="text-yellow-500 text-xl"
+                          transition={{ duration: 0.4, delay: index * 0.15 + i * 0.1 }}
+                          whileHover={{ scale: 1.3, rotate: 20 }}
+                          className="text-yellow-500 text-2xl cursor-pointer"
                         >
                           ⭐
                         </motion.span>
                       ))}
                     </div>
-                    <p className="text-muted-foreground italic">"{testimonial.text}"</p>
+                    
+                    {/* Testimonial Text */}
+                    <p className="text-gray-700 dark:text-gray-300 italic leading-relaxed">
+                      "{testimonial.text}"
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
 
+          {/* Trusted Companies */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
             className="text-center"
           >
-            <h3 className="text-2xl font-bold mb-8">Trusted By Leading Companies</h3>
-            <div className="flex flex-wrap justify-center items-center gap-8">
+            <h3 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Trusted By Leading Companies
+            </h3>
+            <div className="flex flex-wrap justify-center items-center gap-10">
               {['🏢', '🏭', '🏪', '🏬', '🏛', '🏦'].map((icon, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.2, y: -5 }}
-                  className="text-6xl grayscale hover:grayscale-0 transition-all cursor-pointer"
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.3, y: -10, rotate: 10 }}
+                  className="text-7xl grayscale hover:grayscale-0 transition-all cursor-pointer filter drop-shadow-lg"
                 >
                   {icon}
                 </motion.div>
