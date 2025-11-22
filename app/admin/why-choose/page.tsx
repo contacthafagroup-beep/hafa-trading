@@ -6,10 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/auth-context';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { Save, Video, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -66,16 +64,7 @@ export default function WhyChooseAdminPage() {
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
   const { toast } = useToast();
-
-  // Check if user is admin
-  useEffect(() => {
-    if (!authLoading && (!user || user.email !== 'admin@hafatrading.com')) {
-      router.push('/');
-    }
-  }, [user, authLoading, router]);
 
   // Load data from Firestore
   useEffect(() => {
@@ -100,10 +89,8 @@ export default function WhyChooseAdminPage() {
       }
     };
 
-    if (user) {
-      loadData();
-    }
-  }, [user, toast]);
+    loadData();
+  }, [toast]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -133,7 +120,7 @@ export default function WhyChooseAdminPage() {
     setData({ ...data, features: newFeatures });
   };
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
