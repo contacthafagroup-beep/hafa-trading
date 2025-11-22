@@ -31,6 +31,45 @@ export default function WhyChooseSection() {
 
   useEffect(() => {
     const loadData = async () => {
+      const defaultData: WhyChooseData = {
+        title: 'Why Choose Hafa Trading PLC?',
+        subtitle: 'Trusted global exporter of premium agricultural products, herbs, livestock, and spices — delivering freshness, quality, and reliability worldwide.',
+        videoUrl: '',
+        videoCaption: 'Quality You Can Trust. From Farm to Market.',
+        ctaText: '🛒 Explore All Products',
+        ctaLink: '/export-products',
+        features: [
+          {
+            title: 'Direct Farm Sourcing',
+            subtitle: 'Freshness Guaranteed',
+            description: 'We partner directly with local farmers, cooperatives, and rural suppliers, ensuring 100% traceable, ethically-grown products — from fresh rosemary and spices to premium vegetables and cereals.',
+            icon: '🌱',
+            videoUrl: ''
+          },
+          {
+            title: 'Global Logistics Support',
+            subtitle: 'Air • Sea • Road',
+            description: 'From Ethiopia to the world — delivered with precision, speed, and temperature-controlled logistics. We coordinate air freight, sea freight, and inland transport with real-time tracking.',
+            icon: '🌐',
+            videoUrl: ''
+          },
+          {
+            title: 'Customized Packaging',
+            subtitle: 'Options',
+            description: 'Choose from vacuum-sealed, eco-friendly, private-label, and bulk export packaging options — all designed to keep products fresh and preserve aroma during long transport.',
+            icon: '📦',
+            videoUrl: ''
+          },
+          {
+            title: 'Competitive Wholesale Pricing',
+            subtitle: '',
+            description: 'By cutting middlemen and sourcing straight from farms, we deliver global market–competitive pricing with transparent quotes and stable supply.',
+            icon: '💲',
+            videoUrl: ''
+          }
+        ]
+      };
+
       try {
         const docRef = doc(db, 'siteContent', 'whyChoose');
         const docSnap = await getDoc(docRef);
@@ -38,48 +77,13 @@ export default function WhyChooseSection() {
         if (docSnap.exists()) {
           setData(docSnap.data() as WhyChooseData);
         } else {
-          // Default data if not found
-          setData({
-            title: 'Why Choose Hafa Trading PLC?',
-            subtitle: 'Trusted global exporter of premium agricultural products, herbs, livestock, and spices — delivering freshness, quality, and reliability worldwide.',
-            videoUrl: '',
-            videoCaption: 'Quality You Can Trust. From Farm to Market.',
-            ctaText: '🛒 Explore All Products',
-            ctaLink: '/export-products',
-            features: [
-              {
-                title: 'Direct Farm Sourcing',
-                subtitle: 'Freshness Guaranteed',
-                description: 'We partner directly with local farmers, cooperatives, and rural suppliers, ensuring 100% traceable, ethically-grown products — from fresh rosemary and spices to premium vegetables and cereals.',
-                icon: '🌱',
-                videoUrl: ''
-              },
-              {
-                title: 'Global Logistics Support',
-                subtitle: 'Air • Sea • Road',
-                description: 'From Ethiopia to the world — delivered with precision, speed, and temperature-controlled logistics. We coordinate air freight, sea freight, and inland transport with real-time tracking.',
-                icon: '🌐',
-                videoUrl: ''
-              },
-              {
-                title: 'Customized Packaging',
-                subtitle: 'Options',
-                description: 'Choose from vacuum-sealed, eco-friendly, private-label, and bulk export packaging options — all designed to keep products fresh and preserve aroma during long transport.',
-                icon: '📦',
-                videoUrl: ''
-              },
-              {
-                title: 'Competitive Wholesale Pricing',
-                subtitle: '',
-                description: 'By cutting middlemen and sourcing straight from farms, we deliver global market–competitive pricing with transparent quotes and stable supply.',
-                icon: '💲',
-                videoUrl: ''
-              }
-            ]
-          });
+          // Use default data if not found
+          setData(defaultData);
         }
       } catch (error) {
         console.error('Error loading Why Choose data:', error);
+        // Use default data on error
+        setData(defaultData);
       } finally {
         setLoading(false);
       }
@@ -108,7 +112,7 @@ export default function WhyChooseSection() {
     return url;
   };
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
@@ -119,8 +123,6 @@ export default function WhyChooseSection() {
       </section>
     );
   }
-
-  if (!data) return null;
 
   const embedUrl = getEmbedUrl(data.videoUrl);
   const isVideo = embedUrl && (embedUrl.includes('youtube.com') || embedUrl.includes('.mp4') || embedUrl.includes('.webm'));
