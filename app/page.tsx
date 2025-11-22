@@ -1030,85 +1030,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Hafa Trading Team Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
+      {/* Hafa Trading Team Section - Minimized */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
           >
             <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
+              animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="text-6xl mb-4"
+              className="text-5xl mb-3"
             >
               🧑‍💼
             </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, letterSpacing: '0.5em' }}
-              whileInView={{ opacity: 1, letterSpacing: '0.05em' }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
-            >
-              Meet the Hafa Trading Team
-            </motion.h2>
-            <p className="text-lg text-muted-foreground">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Meet Our Team
+            </h2>
+            <p className="text-base text-muted-foreground">
               Dedicated professionals connecting Ethiopia to the world
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
             {[
-              { name: 'Ahmed Hassan', position: 'CEO & Founder', country: '🇪🇹', bio: 'Leading Ethiopian agricultural exports with 15+ years of experience' },
-              { name: 'Sarah Mohammed', position: 'Export Director', country: '🇪🇹', bio: 'Managing international trade operations across 12 countries' },
-              { name: 'David Chen', position: 'Quality Assurance', country: '🇨🇳', bio: 'Ensuring premium quality standards for all products' },
-              { name: 'Fatima Al-Rashid', position: 'Logistics Manager', country: '🇦🇪', bio: 'Coordinating seamless global shipping operations' },
-              { name: 'John Smith', position: 'Business Development', country: '🇺🇸', bio: 'Expanding market reach and building partnerships' },
-              { name: 'Aisha Ibrahim', position: 'Sustainability Lead', country: '🇪🇹', bio: 'Championing eco-friendly farming practices' }
+              { name: 'Ahmed Hassan', position: 'CEO & Founder', country: '🇪🇹' },
+              { name: 'Sarah Mohammed', position: 'Export Director', country: '🇪🇹' },
+              { name: 'David Chen', position: 'Quality Assurance', country: '🇨🇳' }
             ].map((member, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5, scale: 1.02 }}
               >
-                <Card className="h-full backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 border-2 border-white/50 hover:border-purple-300 hover:shadow-2xl transition-all duration-300 group">
-                  <CardContent className="p-6 text-center">
+                <Card className="h-full backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 border-2 border-white/50 hover:border-purple-300 hover:shadow-xl transition-all duration-300 group">
+                  <CardContent className="p-5 text-center">
                     <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="relative inline-block mb-4"
+                      whileHover={{ scale: 1.05 }}
+                      className="relative inline-block mb-3"
                     >
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 mx-auto flex items-center justify-center text-4xl shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 mx-auto flex items-center justify-center text-3xl shadow-lg">
                         👤
                       </div>
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute inset-0 rounded-full bg-purple-400/30 blur-xl -z-10"
-                      />
                     </motion.div>
-                    <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
                     <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold mb-2">{member.position}</p>
-                    <div className="text-2xl mb-3">{member.country}</div>
-                    <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
-                    <div className="flex justify-center gap-3">
-                      {['💬', '📧', '🔗'].map((icon, i) => (
-                        <motion.button
-                          key={i}
-                          whileHover={{ scale: 1.2, y: -3 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg hover:shadow-purple-500/50 transition-shadow"
-                        >
-                          {icon}
-                        </motion.button>
-                      ))}
-                    </div>
+                    <div className="text-xl">{member.country}</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -1116,16 +1089,16 @@ export default function HomePage() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-center"
           >
             <Link href="/about">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">
-                ✨ Meet the Whole Team
+              <Button size="default" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">
+                Meet the Whole Team
                 <motion.span
-                  animate={{ x: [0, 5, 0] }}
+                  animate={{ x: [0, 3, 0] }}
                   transition={{ duration: 1, repeat: Infinity }}
                   className="ml-2"
                 >
