@@ -122,125 +122,297 @@ export default function HomePage() {
       </section>
 
       {/* Product Categories */}
-      <section className="py-16 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌿 Our Product Range</h2>
-            <p className="text-lg text-muted-foreground mb-2">Premium Quality • Ethically Sourced • Export-Ready</p>
-            <p className="text-base text-muted-foreground max-w-4xl mx-auto">
+      <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-green-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-block mb-4">
+              <span className="text-6xl">🌿</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Our Product Range
+            </h2>
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
+              <span className="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-sm font-semibold">
+                Premium Quality
+              </span>
+              <span className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
+                Ethically Sourced
+              </span>
+              <span className="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-semibold">
+                Export-Ready
+              </span>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               Hafa Trading PLC proudly supplies a diverse portfolio of high-quality agricultural products, fresh produce, 
               livestock, herbs, and spices, sourced directly from trusted Ethiopian farmers, cooperatives, and pastoralist communities.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {/* Fresh Vegetables */}
-            <Link href="/products/categories/fresh-vegetables" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-green-600">🥬 Fresh Vegetables</h3>
-                  <p className="text-sm text-muted-foreground mb-3">Premium & Commercial Grade</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Tomatoes, Onions, Cabbage</li>
-                    <li>• Carrots, Potatoes, Green Beans</li>
-                    <li>• Peppers, Eggplant, Beetroots</li>
-                    <li>• Lettuce, Spinach, Kale, Garlic</li>
-                    <li>• Ginger, Okra, Celery, Leeks</li>
-                  </ul>
-                  <p className="text-sm text-green-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/fresh-vegetables" className="block h-full">
+                <Card className="h-full border-2 border-green-100 dark:border-green-900 hover:border-green-300 dark:hover:border-green-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🥬</div>
+                    <h3 className="text-2xl font-bold mb-2 text-green-600 dark:text-green-400">Fresh Vegetables</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">Premium & Commercial Grade</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span>Tomatoes, Onions, Cabbage</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span>Carrots, Potatoes, Green Beans</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span>Peppers, Eggplant, Beetroots</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span>Lettuce, Spinach, Kale, Garlic</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-green-600 dark:text-green-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
 
             {/* Fresh Fruits */}
-            <Link href="/products/categories/fresh-fruits" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-orange-600">🍊 Fresh Fruits</h3>
-                  <p className="text-sm text-muted-foreground mb-3">Naturally Grown & Export Ready</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Avocado (Hass & Ettinger)</li>
-                    <li>• Bananas, Mangoes, Papaya</li>
-                    <li>• Pineapple, Oranges, Lemons</li>
-                    <li>• Watermelon, Guava, Grapes</li>
-                    <li>• Strawberries, Pomegranate</li>
-                  </ul>
-                  <p className="text-sm text-orange-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/fresh-fruits" className="block h-full">
+                <Card className="h-full border-2 border-orange-100 dark:border-orange-900 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950 dark:to-amber-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🍊</div>
+                    <h3 className="text-2xl font-bold mb-2 text-orange-600 dark:text-orange-400">Fresh Fruits</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">Naturally Grown & Export Ready</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <span>Avocado (Hass & Ettinger)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <span>Bananas, Mangoes, Papaya</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <span>Pineapple, Oranges, Lemons</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <span>Watermelon, Guava, Grapes</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
 
             {/* Herbs & Spices */}
-            <Link href="/products/categories/herbs-spices" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-purple-600">🌿 Herbs & Spices</h3>
-                  <p className="text-sm text-muted-foreground mb-3">Fresh & Dried</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Rosemary, Basil, Mint, Thyme</li>
-                    <li>• Black Cumin, Turmeric, Ginger</li>
-                    <li>• Cardamom, Black Pepper, Cloves</li>
-                    <li>• Cinnamon, Fenugreek, Bay Leaves</li>
-                    <li>• Chili Powder & Paprika</li>
-                  </ul>
-                  <p className="text-sm text-purple-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/herbs-spices" className="block h-full">
+                <Card className="h-full border-2 border-purple-100 dark:border-purple-900 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🌿</div>
+                    <h3 className="text-2xl font-bold mb-2 text-purple-600 dark:text-purple-400">Herbs & Spices</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">Fresh & Dried</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                        <span>Rosemary, Basil, Mint, Thyme</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                        <span>Black Cumin, Turmeric, Ginger</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                        <span>Cardamom, Black Pepper, Cloves</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                        <span>Cinnamon, Fenugreek, Bay Leaves</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-purple-600 dark:text-purple-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
 
             {/* Grains & Legumes */}
-            <Link href="/products/categories/grains-legumes" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-amber-600">🌾 Grains & Legumes</h3>
-                  <p className="text-sm text-muted-foreground mb-3">Bulk Export Quality</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Teff (White, Red, Mixed)</li>
-                    <li>• Maize, Wheat, Barley, Sorghum</li>
-                    <li>• Chickpeas, Lentils, Peas, Beans</li>
-                    <li>• Sesame Seeds, Soybeans</li>
-                    <li>• Niger Seed, Peanuts</li>
-                  </ul>
-                  <p className="text-sm text-amber-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/grains-legumes" className="block h-full">
+                <Card className="h-full border-2 border-amber-100 dark:border-amber-900 hover:border-amber-300 dark:hover:border-amber-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🌾</div>
+                    <h3 className="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Grains & Legumes</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">Bulk Export Quality</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                        <span>Teff (White, Red, Mixed)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                        <span>Maize, Wheat, Barley, Sorghum</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                        <span>Chickpeas, Lentils, Peas, Beans</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                        <span>Sesame Seeds, Soybeans</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
 
             {/* Livestock & Meat */}
-            <Link href="/products/categories/livestock-meat" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-red-600">🐑 Livestock & Meat</h3>
-                  <p className="text-sm text-muted-foreground mb-3">Export-Standard & Halal Certified</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Live: Goats, Sheep, Cattle</li>
-                    <li>• Oxen, Calves, Camels</li>
-                    <li>• Fresh/Frozen: Goat Meat</li>
-                    <li>• Mutton, Beef</li>
-                    <li>• Liver, Kidney, Tripe</li>
-                  </ul>
-                  <p className="text-sm text-red-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/livestock-meat" className="block h-full">
+                <Card className="h-full border-2 border-red-100 dark:border-red-900 hover:border-red-300 dark:hover:border-red-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950 dark:to-rose-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">🐑</div>
+                    <h3 className="text-2xl font-bold mb-2 text-red-600 dark:text-red-400">Livestock & Meat</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">Export-Standard & Halal Certified</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                        <span>Live: Goats, Sheep, Cattle</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                        <span>Oxen, Calves, Camels</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                        <span>Fresh/Frozen: Goat Meat</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                        <span>Mutton, Beef, Organs</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-red-600 dark:text-red-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
 
             {/* Specialty Products */}
-            <Link href="/products/categories/specialty-products" className="block">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-yellow-600">⭐ Specialty Products</h3>
-                  <p className="text-sm text-muted-foreground mb-3">High-Demand Items</p>
-                  <ul className="text-sm space-y-1">
-                    <li>• Honey (White, Red, Forest)</li>
-                    <li>• Coffee Beans (Washed/Unwashed)</li>
-                    <li>• Aloe Vera Leaves</li>
-                    <li>• Moringa Leaves & Powder</li>
-                    <li>• Sesame & Niger Seed Oil</li>
-                  </ul>
-                  <p className="text-sm text-yellow-600 font-semibold mt-4">Learn more →</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+            >
+              <Link href="/products/categories/specialty-products" className="block h-full">
+                <Card className="h-full border-2 border-yellow-100 dark:border-yellow-900 hover:border-yellow-300 dark:hover:border-yellow-700 hover:shadow-2xl transition-all duration-300 overflow-hidden group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950 dark:to-amber-950 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <CardContent className="p-8 relative z-10">
+                    <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">⭐</div>
+                    <h3 className="text-2xl font-bold mb-2 text-yellow-600 dark:text-yellow-400">Specialty Products</h3>
+                    <p className="text-sm text-muted-foreground mb-4 font-medium">High-Demand Items</p>
+                    <ul className="text-sm space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <span>Honey (White, Red, Forest)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <span>Coffee Beans (Washed/Unwashed)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <span>Aloe Vera Leaves</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <span>Moringa Leaves & Powder</span>
+                      </li>
+                    </ul>
+                    <div className="flex items-center text-yellow-600 dark:text-yellow-400 font-semibold group-hover:gap-3 gap-2 transition-all">
+                      <span>Explore Range</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
           </div>
 
           <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-8">
