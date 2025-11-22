@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { db } from '@/lib/firebase';
 import { collection, query, orderBy, limit, onSnapshot, where } from 'firebase/firestore';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Sun, Moon, Globe } from 'lucide-react';
 
 interface Insight {
   id: string;
@@ -34,6 +34,9 @@ const categoryIcons: { [key: string]: string } = {
 export default function InsightsSection() {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
+  const [brightness, setBrightness] = useState(100);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [language, setLanguage] = useState('English');
 
   // Default sample insights if Firebase is not configured
   const defaultInsights: Insight[] = [
@@ -137,19 +140,22 @@ export default function InsightsSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent"
+                className="text-4xl md:text-5xl font-bold mb-6"
               >
-                Bringing you the latest insights
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                  Bringing you the latest insights
+                </span>
+                <br />
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="text-2xl md:text-3xl font-normal bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 dark:from-gray-300 dark:via-gray-400 dark:to-gray-500 bg-clip-text text-transparent"
+                >
+                  from the export industry
+                </motion.span>
               </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-lg text-muted-foreground"
-              >
-                from the export industry
-              </motion.p>
             </motion.div>
 
             {/* Article List */}
@@ -251,7 +257,13 @@ export default function InsightsSection() {
                       </div>
 
                       {/* Content Area */}
-                      <div className="h-[600px] overflow-y-auto custom-scrollbar">
+                      <div 
+                        className="h-[600px] overflow-y-auto custom-scrollbar"
+                        style={{ 
+                          filter: `brightness(${brightness}%)`,
+                          backgroundColor: isDarkMode ? '#000' : '#fff'
+                        }}
+                      >
                         {selectedInsight ? (
                           <motion.div
                             key={selectedInsight.id}
@@ -259,7 +271,77 @@ export default function InsightsSection() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                             className="p-6"
+                            style={{ color: isDarkMode ? '#fff' : '#000' }}
                           >
+                            {/* Mobile Controls */}
+                            <motion.div
+                              initial={{ y: -20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ duration: 0.5 }}
+                              className="mb-6 space-y-3 p-4 rounded-xl"
+                              style={{ backgroundColor: isDarkMode ? '#1a1a1a' : '#f3f4f6' }}
+                            >
+                              {/* Brightness Control */}
+                              <div>
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="text-xs font-semibold flex items-center gap-1">
+                                    ☀️ Brightness
+                                  </span>
+                                  <span className="text-xs">{brightness}%</span>
+                                </div>
+                                <input
+                                  type="range"
+                                  min="50"
+                                  max="150"
+                                  value={brightness}
+                                  onChange={(e) => setBrightness(Number(e.target.value))}
+                                  className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                  style={{
+                                    background: `linear-gradient(to right, #a855f7 0%, #a855f7 ${(brightness - 50) / 1}%, #e5e7eb ${(brightness - 50) / 1}%, #e5e7eb 100%)`
+                                  }}
+                                />
+                              </div>
+
+                              {/* Day/Night Mode */}
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-semibold">
+                                  {isDarkMode ? '🌙' : '☀️'} {isDarkMode ? 'Night' : 'Day'} Mode
+                                </span>
+                                <button
+                                  onClick={() => setIsDarkMode(!isDarkMode)}
+                                  className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                                  style={{ backgroundColor: isDarkMode ? '#a855f7' : '#d1d5db' }}
+                                >
+                                  <span
+                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                      isDarkMode ? 'translate-x-6' : 'translate-x-1'
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+
+                              {/* Language Preference */}
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-semibold">🌐 Language</span>
+                                <select
+                                  value={language}
+                                  onChange={(e) => setLanguage(e.target.value)}
+                                  className="text-xs px-2 py-1 rounded-lg border"
+                                  style={{
+                                    backgroundColor: isDarkMode ? '#2a2a2a' : '#fff',
+                                    color: isDarkMode ? '#fff' : '#000',
+                                    borderColor: isDarkMode ? '#444' : '#d1d5db'
+                                  }}
+                                >
+                                  <option value="English">English</option>
+                                  <option value="Amharic">አማርኛ (Amharic)</option>
+                                  <option value="Arabic">العربية (Arabic)</option>
+                                  <option value="French">Français</option>
+                                  <option value="Chinese">中文 (Chinese)</option>
+                                </select>
+                              </div>
+                            </motion.div>
+
                             {/* Thumbnail */}
                             {selectedInsight.thumbnail && (
                               <motion.div
@@ -286,7 +368,13 @@ export default function InsightsSection() {
                               <span className="text-2xl">
                                 {categoryIcons[selectedInsight.category] || '📰'}
                               </span>
-                              <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-semibold">
+                              <span 
+                                className="px-3 py-1 rounded-full text-sm font-semibold"
+                                style={{
+                                  backgroundColor: isDarkMode ? '#7c3aed' : '#f3e8ff',
+                                  color: isDarkMode ? '#e9d5ff' : '#7c3aed'
+                                }}
+                              >
                                 {selectedInsight.category}
                               </span>
                             </motion.div>
@@ -306,7 +394,8 @@ export default function InsightsSection() {
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.4 }}
-                              className="flex items-center gap-2 text-sm text-muted-foreground mb-6"
+                              className="flex items-center gap-2 text-sm mb-6"
+                              style={{ opacity: 0.7 }}
                             >
                               <Calendar className="w-4 h-4" />
                               {new Date(selectedInsight.date).toLocaleDateString('en-US', {
@@ -321,9 +410,9 @@ export default function InsightsSection() {
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.5 }}
-                              className="prose prose-sm dark:prose-invert max-w-none"
+                              className="prose prose-sm max-w-none mb-8"
                             >
-                              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                              <p className="leading-relaxed whitespace-pre-wrap" style={{ opacity: 0.8 }}>
                                 {selectedInsight.content}
                               </p>
                             </motion.div>
@@ -333,11 +422,16 @@ export default function InsightsSection() {
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.6 }}
-                              className="mt-8"
+                              className="mt-8 mb-6"
                             >
-                              <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-shadow">
+                              <a
+                                href={`/insights/${selectedInsight.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all text-center hover:scale-105"
+                              >
                                 Read Full Report →
-                              </button>
+                              </a>
                             </motion.div>
                           </motion.div>
                         ) : (
