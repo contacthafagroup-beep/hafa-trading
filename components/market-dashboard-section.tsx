@@ -132,7 +132,8 @@ export default function MarketDashboardSection() {
     };
 
     animate();
-  }, [selectedCommodity]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCommodity.price]);
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
