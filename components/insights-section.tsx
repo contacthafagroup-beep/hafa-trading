@@ -37,6 +37,24 @@ export default function InsightsSection() {
   const [brightness, setBrightness] = useState(100);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [language, setLanguage] = useState('English');
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Update time every second
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      setCurrentTime(`${displayHours}:${displayMinutes} ${ampm}`);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Helper function to get translated content
   const getTranslatedContent = (insight: Insight | null) => {
@@ -352,14 +370,8 @@ export default function InsightsSection() {
               transition={{ duration: 0.8 }}
               className="sticky top-24"
             >
-              {/* Premium Floating animation */}
-              <motion.div
-                animate={{ 
-                  y: [0, -15, 0],
-                  rotate: [0, 1, -1, 0]
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
+              {/* Mobile Preview Container - Fixed in place */}
+              <div>
                 {/* iPhone Mockup */}
                 <div className="relative mx-auto max-w-sm">
                   {/* Glowing aura */}
@@ -390,7 +402,7 @@ export default function InsightsSection() {
                     <div className="relative bg-white dark:bg-gray-950 rounded-[2.5rem] overflow-hidden shadow-inner">
                       {/* Status Bar */}
                       <div className="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 flex items-center justify-between text-white text-xs">
-                        <span>9:41</span>
+                        <span className="font-semibold">{currentTime || '12:00 PM'}</span>
                         <div className="flex items-center gap-1">
                           <span>📶</span>
                           <span>📡</span>
@@ -600,7 +612,7 @@ export default function InsightsSection() {
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   />
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
