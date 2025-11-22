@@ -1580,72 +1580,155 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quality Control Process Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-        <div className="container mx-auto px-4">
+      {/* Quality Control Process - Super Attractive Section */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{ duration: 10, repeat: Infinity }}
+            className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-green-400 to-blue-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.08, 0.18, 0.08],
+            }}
+            transition={{ duration: 12, repeat: Infinity, delay: 2 }}
+            className="absolute bottom-20 left-20 w-[500px] h-[500px] bg-gradient-to-br from-purple-400 to-pink-500 rounded-full blur-3xl"
+          />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Quality Control Process</h2>
-            <p className="text-lg text-muted-foreground">
-              7-step verification ensuring premium quality from farm to export
+            <motion.div
+              animate={{ 
+                rotate: [0, 360],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="text-6xl mb-4"
+            >
+              🛡️
+            </motion.div>
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 dark:from-green-400 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+              Quality Control Process
+            </h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+              <span className="font-bold text-green-600 dark:text-green-400">7-step verification</span> ensuring premium quality from farm to export
             </p>
           </motion.div>
 
+          {/* Process Steps */}
           <div className="max-w-5xl mx-auto">
             {[
-              { icon: '🌱', title: 'Farm Selection', desc: 'Partnering with certified organic farms', color: 'from-green-400 to-emerald-600' },
-              { icon: '🚜', title: 'Harvesting', desc: 'Optimal timing for peak freshness', color: 'from-yellow-400 to-orange-600' },
-              { icon: '🧼', title: 'Sorting & Cleaning', desc: 'Rigorous quality inspection', color: 'from-blue-400 to-cyan-600' },
-              { icon: '📦', title: 'Packaging', desc: 'Export-grade protective packaging', color: 'from-purple-400 to-pink-600' },
-              { icon: '❄', title: 'Cold Storage', desc: 'Temperature-controlled preservation', color: 'from-cyan-400 to-blue-600' },
-              { icon: '✈', title: 'Export Logistics', desc: 'Fast & reliable shipping', color: 'from-indigo-400 to-purple-600' },
-              { icon: '✔', title: 'Final Quality Check', desc: 'Pre-shipment verification', color: 'from-green-500 to-teal-600' }
+              { icon: '🌱', title: 'Farm Selection', desc: 'Partnering with certified organic farms', color: 'from-green-400 to-emerald-600', bgColor: 'from-green-500/10 to-emerald-500/10', borderColor: 'border-green-200 dark:border-green-800' },
+              { icon: '🚜', title: 'Harvesting', desc: 'Optimal timing for peak freshness', color: 'from-yellow-400 to-orange-600', bgColor: 'from-yellow-500/10 to-orange-500/10', borderColor: 'border-yellow-200 dark:border-yellow-800' },
+              { icon: '🧼', title: 'Sorting & Cleaning', desc: 'Rigorous quality inspection', color: 'from-blue-400 to-cyan-600', bgColor: 'from-blue-500/10 to-cyan-500/10', borderColor: 'border-blue-200 dark:border-blue-800' },
+              { icon: '📦', title: 'Packaging', desc: 'Export-grade protective packaging', color: 'from-purple-400 to-pink-600', bgColor: 'from-purple-500/10 to-pink-500/10', borderColor: 'border-purple-200 dark:border-purple-800' },
+              { icon: '❄️', title: 'Cold Storage', desc: 'Temperature-controlled preservation', color: 'from-cyan-400 to-blue-600', bgColor: 'from-cyan-500/10 to-blue-500/10', borderColor: 'border-cyan-200 dark:border-cyan-800' },
+              { icon: '✈️', title: 'Export Logistics', desc: 'Fast & reliable shipping', color: 'from-indigo-400 to-purple-600', bgColor: 'from-indigo-500/10 to-purple-500/10', borderColor: 'border-indigo-200 dark:border-indigo-800' },
+              { icon: '✅', title: 'Final Quality Check', desc: 'Pre-shipment verification', color: 'from-green-500 to-teal-600', bgColor: 'from-green-500/10 to-teal-500/10', borderColor: 'border-green-200 dark:border-green-800' }
             ].map((step, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative mb-8 last:mb-0"
+                transition={{ duration: 0.7, delay: index * 0.1 }}
+                className="relative mb-6 last:mb-0"
               >
-                <div className="flex items-center gap-6">
-                  <motion.div
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                    className={`flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br ${step.color} flex items-center justify-center text-3xl shadow-lg`}
-                  >
-                    {step.icon}
-                  </motion.div>
-                  <Card className="flex-1 hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6">
+                <motion.div
+                  whileHover={{ scale: 1.02, x: 10 }}
+                  className="flex items-center gap-6 group"
+                >
+                  {/* Step Number & Icon */}
+                  <div className="flex-shrink-0 relative">
+                    <motion.div
+                      whileHover={{ scale: 1.15, rotate: 10 }}
+                      className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${step.color} flex flex-col items-center justify-center shadow-xl relative overflow-hidden`}
+                    >
+                      {/* Shine effect */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                        animate={{
+                          x: ['-100%', '200%']
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 3,
+                          delay: index * 0.3
+                        }}
+                      />
+                      <span className="text-4xl mb-1 relative z-10">{step.icon}</span>
+                      <span className="text-white text-xs font-bold relative z-10">STEP {index + 1}</span>
+                    </motion.div>
+                    
+                    {/* Pulsing glow */}
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.2, 1], 
+                        opacity: [0.3, 0.6, 0.3] 
+                      }}
+                      transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                      className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.color} blur-xl -z-10`}
+                    />
+                  </div>
+                  
+                  {/* Content Card */}
+                  <Card className={`flex-1 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 border-2 ${step.borderColor} hover:shadow-2xl transition-all duration-500 relative overflow-hidden`}>
+                    {/* Animated gradient background */}
+                    <motion.div
+                      className={`absolute inset-0 bg-gradient-to-br ${step.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                    />
+                    
+                    <CardContent className="p-6 relative z-10">
                       <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-xl font-bold mb-1">{index + 1}. {step.title}</h3>
-                          <p className="text-muted-foreground">{step.desc}</p>
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+                            {step.title}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 text-lg">{step.desc}</p>
                         </div>
                         <motion.div
-                          animate={{ x: [0, 10, 0] }}
+                          animate={{ x: [0, 8, 0] }}
                           transition={{ duration: 1.5, repeat: Infinity }}
-                          className="text-2xl"
+                          className="text-3xl ml-4"
                         >
                           →
                         </motion.div>
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                </motion.div>
+                
+                {/* Connecting Line */}
                 {index < 6 && (
                   <motion.div
-                    initial={{ scaleY: 0 }}
-                    whileInView={{ scaleY: 1 }}
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    whileInView={{ scaleY: 1, opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                    className="w-1 h-8 bg-gradient-to-b from-blue-500 to-green-500 ml-10 my-2"
-                  />
+                    transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                    className="relative ml-12 my-3"
+                  >
+                    <div className={`w-2 h-10 bg-gradient-to-b ${step.color} rounded-full`} />
+                    <motion.div
+                      animate={{ y: [0, 10, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
+                      className="absolute top-0 left-0 w-2 h-3 bg-white rounded-full"
+                    />
+                  </motion.div>
                 )}
               </motion.div>
             ))}
