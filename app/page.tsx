@@ -20,7 +20,7 @@ import GlobalMap from '@/components/global-map';
 import LiveChatBox from '@/components/live-chat-box';
 import InsightsSection from '@/components/insights-section';
 import WhyChooseSection from '@/components/why-choose-section';
-import MarketDashboardSection from '@/components/market-dashboard-section';
+import MarketDashboard from '@/components/market-dashboard';
 
 export default function HomePage() {
   return (
@@ -2347,7 +2347,7 @@ export default function HomePage() {
       </section>
 
       {/* Market Trends & Price Dashboard */}
-      <MarketDashboardSection />
+      <MarketDashboard />
 
       {/* Insights Section - Latest Industry News */}
       <InsightsSection />
