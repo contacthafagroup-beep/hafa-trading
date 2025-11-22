@@ -26,39 +26,240 @@ export default function HomePage() {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-20 md:py-32">
-        <div className="container mx-auto px-4">
+      {/* Premium Hero Section */}
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-24 md:py-40 overflow-hidden">
+        {/* Premium Animated Background */}
+        <div className="absolute inset-0">
+          {/* Large Gradient Orbs */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, 50, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 20, repeat: Infinity }}
+            className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              x: [0, -60, 0],
+              opacity: [0.15, 0.35, 0.15],
+            }}
+            transition={{ duration: 25, repeat: Infinity, delay: 3 }}
+            className="absolute -bottom-40 -right-40 w-[700px] h-[700px] bg-gradient-to-br from-blue-500 to-purple-600 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              y: [0, 40, 0],
+              opacity: [0.1, 0.25, 0.1],
+            }}
+            transition={{ duration: 18, repeat: Infinity, delay: 1.5 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Icons */}
+          {['🌿', '🌾', '🐑', '✈️', '🌍', '📦', '🚚', '⭐'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-5xl opacity-10"
+              style={{
+                left: `${10 + i * 11}%`,
+                top: `${15 + (i % 3) * 25}%`,
+              }}
+              animate={{
+                y: [0, -40, 0],
+                rotate: [0, 15, -15, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 6 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+          
+          {/* Animated Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
+            transition={{ duration: 1 }}
+            className="max-w-5xl mx-auto text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Hafa General Trading PLC
-            </h1>
-            <p className="text-xl md:text-2xl mb-4 text-blue-100">
-              Trading Beyond Borders
-            </p>
-            <p className="text-lg mb-8 text-blue-50">
-              Premium Ethiopian agricultural products, livestock, and herbs exported worldwide. 
-              Connecting Ethiopia's finest products to global markets.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            {/* Animated Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/20 mb-8"
+            >
+              <motion.span
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="text-2xl"
+              >
+                🌍
+              </motion.span>
+              <span className="text-sm font-semibold text-blue-100">Premium Ethiopian Exports</span>
+            </motion.div>
+
+            {/* Main Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+            >
+              <motion.span
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className="bg-gradient-to-r from-white via-blue-100 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
+              >
+                Hafa General Trading
+              </motion.span>
+            </motion.h1>
+
+            {/* Tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-2xl md:text-4xl mb-6 font-bold"
+            >
+              <span className="bg-gradient-to-r from-cyan-300 via-blue-200 to-emerald-300 bg-clip-text text-transparent">
+                Trading Beyond Borders
+              </span>
+            </motion.p>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="text-lg md:text-xl mb-10 text-blue-100 max-w-3xl mx-auto leading-relaxed"
+            >
+              Premium <span className="font-bold text-white">Ethiopian agricultural products</span>, livestock, and herbs exported worldwide. 
+              Connecting Ethiopia's finest products to <span className="font-bold text-cyan-300">global markets</span>.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="flex flex-wrap gap-6 justify-center"
+            >
               <Link href="/export-products">
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-                  Explore Our Products
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div
+                    animate={{
+                      boxShadow: [
+                        '0 0 20px rgba(255, 255, 255, 0.3)',
+                        '0 0 40px rgba(255, 255, 255, 0.5)',
+                        '0 0 20px rgba(255, 255, 255, 0.3)',
+                      ],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="inline-block rounded-full"
+                  >
+                    <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-7 text-lg font-bold shadow-2xl relative overflow-hidden group">
+                      {/* Shimmer effect */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200/30 to-transparent"
+                        animate={{
+                          x: ['-100%', '200%']
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 1
+                        }}
+                      />
+                      <span className="relative z-10 flex items-center gap-2">
+                        Explore Our Products
+                        <motion.span
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          <ArrowRight className="h-5 w-5" />
+                        </motion.span>
+                      </span>
+                    </Button>
+                  </motion.div>
+                </motion.div>
               </Link>
+              
               <Link href="/contact">
-                <Button size="lg" className="border-2 border-white !bg-transparent text-white hover:!bg-white hover:text-blue-600">
-                  Contact Us
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button size="lg" className="border-2 border-white !bg-white/10 backdrop-blur-xl text-white hover:!bg-white hover:text-blue-600 px-8 py-7 text-lg font-bold shadow-xl transition-all duration-300">
+                    Contact Us
+                  </Button>
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="mt-16 flex flex-wrap items-center justify-center gap-8 text-blue-100"
+            >
+              {[
+                { icon: '✅', text: 'ISO Certified' },
+                { icon: '🌍', text: '50+ Countries' },
+                { icon: '⭐', text: '15+ Years Experience' },
+                { icon: '🚚', text: 'Fast Shipping' }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.2 + i * 0.1 }}
+                  whileHover={{ scale: 1.1, y: -5 }}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-xl rounded-full border border-white/20"
+                >
+                  <span className="text-2xl">{item.icon}</span>
+                  <span className="text-sm font-semibold">{item.text}</span>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
+        </div>
+
+        {/* Bottom Wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <motion.path
+              d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+              fill="currentColor"
+              className="text-emerald-50 dark:text-gray-900"
+              animate={{
+                d: [
+                  "M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z",
+                  "M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z",
+                  "M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+                ]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
         </div>
       </section>
 
