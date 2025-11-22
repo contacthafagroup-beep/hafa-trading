@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -8,12 +8,23 @@ import { Menu, X, ChevronDown, Moon, Sun, ShoppingCart } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/lib/store/cart-store';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { items } = useCartStore();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -33,139 +44,329 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-300",
+        scrolled 
+          ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg" 
+          : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md"
+      )}
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">H</span>
-            </div>
+          {/* Premium Logo */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
+                {/* Animated shine effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  animate={{
+                    x: ['-100%', '200%']
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                />
+                <span className="text-white font-bold text-2xl relative z-10">H</span>
+              </div>
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 bg-blue-500/30 rounded-xl blur-md -z-10"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.8, 0.5]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
             <div className="hidden md:block">
-              <div className="font-bold text-lg">Hafa General Trading</div>
-              <div className="text-xs text-muted-foreground">Trading Beyond Borders</div>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="font-bold text-lg bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent"
+              >
+                Hafa General Trading
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-xs text-muted-foreground flex items-center gap-1"
+              >
+                <span>🌍</span>
+                <span>Trading Beyond Borders</span>
+              </motion.div>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Premium Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => (
-              <div key={item.name} className="relative group">
+            {navigation.map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="relative group"
+              >
                 {item.submenu ? (
                   <>
-                    <button className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30 flex items-center transition-all"
+                    >
                       {item.name}
-                      <ChevronDown className="ml-1 h-4 w-4" />
-                    </button>
-                    <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                      {item.submenu.map((subitem) => (
-                        <Link
+                      <motion.div
+                        animate={{ rotate: [0, 180] }}
+                        transition={{ duration: 0.3 }}
+                        className="group-hover:rotate-180"
+                      >
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                      </motion.div>
+                    </motion.button>
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      className="absolute left-0 mt-2 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all overflow-hidden"
+                    >
+                      {item.submenu.map((subitem, subIndex) => (
+                        <motion.div
                           key={subitem.name}
-                          href={subitem.href}
-                          className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-md last:rounded-b-md"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileHover={{ x: 5, backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
+                          transition={{ delay: subIndex * 0.05 }}
                         >
-                          {subitem.name}
-                        </Link>
+                          <Link
+                            href={subitem.href}
+                            className="block px-4 py-3 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 first:rounded-t-xl last:rounded-b-xl transition-colors"
+                          >
+                            {subitem.name}
+                          </Link>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   </>
                 ) : (
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800",
-                      pathname === item.href && "bg-blue-100 dark:bg-blue-900 text-blue-600"
-                    )}
-                  >
-                    {item.name}
+                  <Link href={item.href}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition-all relative overflow-hidden",
+                        pathname === item.href 
+                          ? "bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 text-blue-600 dark:text-blue-400 shadow-md" 
+                          : "hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30"
+                      )}
+                    >
+                      {pathname === item.href && (
+                        <motion.div
+                          layoutId="navbar-indicator"
+                          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-lg"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10">{item.name}</span>
+                    </motion.div>
                   </Link>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          {/* Right Side Actions */}
+          {/* Premium Right Side Actions */}
           <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-
-            <Link href="/cart">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                {items.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {items.length}
-                  </span>
-                )}
+            {/* Theme Toggle */}
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="rounded-full hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30"
+              >
+                <AnimatePresence mode="wait">
+                  {theme === 'dark' ? (
+                    <motion.div
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Sun className="h-5 w-5 text-yellow-500" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Moon className="h-5 w-5 text-blue-600" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </Button>
+            </motion.div>
+
+            {/* Cart */}
+            <Link href="/cart">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button variant="ghost" size="icon" className="relative rounded-full hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30">
+                  <ShoppingCart className="h-5 w-5" />
+                  <AnimatePresence>
+                    {items.length > 0 && (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg"
+                      >
+                        {items.length}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </motion.div>
             </Link>
             
+            {/* Get Quote Button */}
             <Link href="/rfq" className="hidden md:block">
-              <Button>Get Quote</Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg">
+                  Get Quote
+                </Button>
+              </motion.div>
             </Link>
 
+            {/* Login Button */}
             <Link href="/auth/login" className="hidden md:block">
-              <Button variant="outline">Login</Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button variant="outline" className="border-2 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30">
+                  Login
+                </Button>
+              </motion.div>
             </Link>
 
             {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden rounded-full"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <AnimatePresence mode="wait">
+                  {isOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="h-6 w-6" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="h-6 w-6" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Button>
+            </motion.div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="lg:hidden py-4 border-t">
-            {navigation.map((item) => (
-              <div key={item.name}>
-                {item.submenu ? (
-                  <>
-                    <div className="px-3 py-2 font-medium text-sm">{item.name}</div>
-                    {item.submenu.map((subitem) => (
-                      <Link
-                        key={subitem.name}
-                        href={subitem.href}
-                        className="block px-6 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {subitem.name}
-                      </Link>
-                    ))}
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="block px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                )}
-              </div>
-            ))}
-            <div className="mt-4 px-3 space-y-2">
-              <Link href="/rfq" className="block">
-                <Button className="w-full">Get Quote</Button>
-              </Link>
-              <Link href="/auth/login" className="block">
-                <Button variant="outline" className="w-full">Login</Button>
-              </Link>
-            </div>
-          </div>
-        )}
+        {/* Premium Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:hidden py-4 border-t border-gray-200/50 dark:border-gray-700/50"
+            >
+              {navigation.map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {item.submenu ? (
+                    <>
+                      <div className="px-3 py-2 font-medium text-sm text-gray-600 dark:text-gray-400">{item.name}</div>
+                      {item.submenu.map((subitem, subIndex) => (
+                        <motion.div
+                          key={subitem.name}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (index + subIndex) * 0.05 }}
+                        >
+                          <Link
+                            href={subitem.href}
+                            className="block px-6 py-2 text-sm hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30 rounded-lg mx-2"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {subitem.name}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "block px-3 py-2 text-sm font-medium rounded-lg mx-2 transition-all",
+                        pathname === item.href
+                          ? "bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 text-blue-600 dark:text-blue-400"
+                          : "hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30"
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navigation.length * 0.05 }}
+                className="mt-4 px-3 space-y-2"
+              >
+                <Link href="/rfq" className="block">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg">
+                    Get Quote
+                  </Button>
+                </Link>
+                <Link href="/auth/login" className="block">
+                  <Button variant="outline" className="w-full border-2">Login</Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
