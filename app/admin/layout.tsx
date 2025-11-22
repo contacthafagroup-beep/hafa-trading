@@ -22,7 +22,8 @@ import {
   FolderTree,
   Video,
   Lightbulb,
-  MessagesSquare
+  MessagesSquare,
+  Sparkles
 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: FolderTree },
     { name: 'Category Content', href: '/admin/category-content', icon: Video },
+    { name: 'Why Choose', href: '/admin/why-choose', icon: Sparkles },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { name: 'RFQs', href: '/admin/rfqs', icon: FileText },
     { name: 'Shipments', href: '/admin/shipments', icon: Truck },
