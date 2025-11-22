@@ -1278,58 +1278,180 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Global Market Reach Section */}
-      <section className="py-20 bg-gradient-to-b from-blue-900 via-blue-950 to-black text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500 rounded-full blur-3xl"></div>
+      {/* Global Market Reach - Super Attractive Section */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-b from-blue-900 via-blue-950 to-black text-white">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* Gradient Orbs */}
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, 50, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 15, repeat: Infinity }}
+            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              x: [0, -50, 0],
+              opacity: [0.15, 0.35, 0.15],
+            }}
+            transition={{ duration: 18, repeat: Infinity, delay: 2 }}
+            className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-green-500 to-emerald-500 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Globe Icons */}
+          {['🌍', '🌎', '🌏', '✈️', '🚢'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-5xl opacity-10"
+              style={{
+                left: `${10 + i * 20}%`,
+                top: `${15 + (i % 3) * 30}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 360],
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+          
+          {/* Animated Connection Lines */}
+          <svg className="absolute inset-0 w-full h-full opacity-20">
+            {[...Array(10)].map((_, i) => (
+              <motion.line
+                key={i}
+                x1={`${Math.random() * 100}%`}
+                y1={`${Math.random() * 100}%`}
+                x2={`${Math.random() * 100}%`}
+                y2={`${Math.random() * 100}%`}
+                stroke="url(#gradient)"
+                strokeWidth="2"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: [0, 0.5, 0] }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: i * 0.3,
+                }}
+              />
+            ))}
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#10b981" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="text-6xl mb-4 inline-block"
+            {/* Animated Globe Icons */}
+            <div className="flex justify-center items-center gap-4 mb-6">
+              {['🌍', '🌎', '🌏'].map((globe, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ 
+                    rotate: 360,
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{ 
+                    rotate: { duration: 20, repeat: Infinity, ease: "linear", delay: i * 0.5 },
+                    scale: { duration: 2, repeat: Infinity, delay: i * 0.3 }
+                  }}
+                  className="text-6xl"
+                >
+                  {globe}
+                </motion.div>
+              ))}
+            </div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-green-400 bg-clip-text text-transparent">
+              Global Market Reach
+            </h2>
+            
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed"
             >
-              🌍
-            </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Global Market Reach</h2>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-              Exporting premium Ethiopian agricultural products to more than 12 countries worldwide
-            </p>
+              Exporting <span className="font-bold text-cyan-400">premium Ethiopian agricultural products</span> to more than <span className="font-bold text-green-400">12 countries</span> worldwide
+            </motion.p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {/* Freight Options */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
-              { icon: '✈', title: 'Air Freight', desc: '48–72 hours', color: 'from-blue-500 to-cyan-500' },
-              { icon: '🚢', title: 'Sea Freight', desc: '15–40 days', color: 'from-green-500 to-emerald-500' },
-              { icon: '🚚', title: 'Road Freight', desc: 'Across East Africa', color: 'from-orange-500 to-red-500' }
+              { icon: '✈️', title: 'Air Freight', desc: '48–72 hours delivery', color: 'from-blue-500 to-cyan-500', shadow: 'hover:shadow-blue-500/50' },
+              { icon: '🚢', title: 'Sea Freight', desc: '15–40 days transit', color: 'from-green-500 to-emerald-500', shadow: 'hover:shadow-green-500/50' },
+              { icon: '🚚', title: 'Road Freight', desc: 'Across East Africa', color: 'from-orange-500 to-red-500', shadow: 'hover:shadow-orange-500/50' }
             ].map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                whileHover={{ y: -10, scale: 1.05 }}
+                className="group"
               >
-                <Card className={`bg-gradient-to-br ${item.color} border-0 text-white`}>
-                  <CardContent className="p-6 text-center">
+                <Card className={`bg-gradient-to-br ${item.color} border-0 text-white hover:shadow-2xl ${item.shadow} transition-all duration-500 relative overflow-hidden`}>
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    animate={{
+                      x: ['-100%', '200%']
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                      delay: index * 0.5
+                    }}
+                  />
+                  
+                  <CardContent className="p-8 text-center relative z-10">
                     <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="text-5xl mb-3"
+                      animate={{ 
+                        y: [0, -12, 0],
+                        rotate: index === 0 ? [0, 10, -10, 0] : 0
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-6xl mb-4"
                     >
                       {item.icon}
                     </motion.div>
-                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-white/90">{item.desc}</p>
+                    <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-white/90 text-lg">{item.desc}</p>
+                    
+                    {/* Hover indicator */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      className="mt-4 text-sm font-bold"
+                    >
+                      Learn More →
+                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -1347,44 +1469,112 @@ export default function HomePage() {
             <GlobalMap />
           </motion.div>
 
-          {/* Country Grid */}
+          {/* Export Destinations */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20"
+            transition={{ duration: 0.8 }}
+            className="bg-white/10 backdrop-blur-xl rounded-3xl p-10 border-2 border-white/20 relative overflow-hidden"
           >
-            <h3 className="text-2xl font-bold text-center mb-6">Our Export Destinations</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 text-center">
-              {[
-                { flag: '🇦🇪', name: 'UAE' },
-                { flag: '🇸🇦', name: 'Saudi Arabia' },
-                { flag: '🇷🇺', name: 'Russia' },
-                { flag: '🇨🇳', name: 'China' },
-                { flag: '🇹🇷', name: 'Turkey' },
-                { flag: '🇪🇺', name: 'EU' },
-                { flag: '🇺🇸', name: 'USA' },
-                { flag: '🇮🇳', name: 'India' }
-              ].map((country, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.2, y: -5 }}
-                  className="cursor-pointer"
-                >
+            {/* Animated background gradient */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-green-500/10"
+              animate={{
+                opacity: [0.1, 0.3, 0.1]
+              }}
+              transition={{ duration: 5, repeat: Infinity }}
+            />
+            
+            <div className="relative z-10">
+              <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent"
+              >
+                🌐 Our Export Destinations
+              </motion.h3>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 text-center">
+                {[
+                  { flag: '🇦🇪', name: 'UAE', region: 'Middle East' },
+                  { flag: '🇸🇦', name: 'Saudi Arabia', region: 'Middle East' },
+                  { flag: '🇷🇺', name: 'Russia', region: 'Europe' },
+                  { flag: '🇨🇳', name: 'China', region: 'Asia' },
+                  { flag: '🇹🇷', name: 'Turkey', region: 'Europe' },
+                  { flag: '🇪🇺', name: 'EU', region: 'Europe' },
+                  { flag: '🇺🇸', name: 'USA', region: 'Americas' },
+                  { flag: '🇮🇳', name: 'India', region: 'Asia' }
+                ].map((country, index) => (
                   <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
-                    className="text-4xl mb-2"
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                    whileHover={{ scale: 1.15, y: -8 }}
+                    className="cursor-pointer group"
                   >
-                    {country.flag}
+                    <motion.div
+                      className="relative"
+                    >
+                      {/* Pulsing glow on hover */}
+                      <motion.div
+                        className="absolute inset-0 bg-cyan-400/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                        animate={{
+                          scale: [1, 1.2, 1]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.05, 1],
+                          rotate: [0, 5, -5, 0]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, delay: index * 0.2 }}
+                        className="text-5xl mb-2 relative z-10"
+                      >
+                        {country.flag}
+                      </motion.div>
+                    </motion.div>
+                    <p className="text-sm font-bold mb-1">{country.name}</p>
+                    <p className="text-xs text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {country.region}
+                    </p>
                   </motion.div>
-                  <p className="text-xs font-semibold">{country.name}</p>
-                </motion.div>
-              ))}
+                ))}
+              </div>
+              
+              {/* Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8 }}
+                className="mt-10 pt-8 border-t border-white/20 grid grid-cols-3 gap-6 text-center"
+              >
+                {[
+                  { number: '12+', label: 'Countries' },
+                  { number: '50+', label: 'Products' },
+                  { number: '24/7', label: 'Support' }
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                      className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent mb-2"
+                    >
+                      {stat.number}
+                    </motion.div>
+                    <p className="text-sm text-blue-200">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
             </div>
           </motion.div>
         </div>
