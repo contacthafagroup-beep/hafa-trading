@@ -69,34 +69,80 @@ export default function AdminInsightsPage() {
     featured: false,
     visible: true
   });
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const [isDemo, setIsDemo] = useState(false);
 
-  // Check if user is admin
+  // Check if user is admin or show demo mode
   useEffect(() => {
-    if (user && user.email !== 'admin@hafatrading.com') {
-      router.push('/');
+    if (!authLoading) {
+      if (!user) {
+        // No user logged in - show demo mode
+        setIsDemo(true);
+      } else if (user.email !== 'admin@hafatrading.com') {
+        router.push('/');
+      }
     }
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
-  // Fetch insights
+  // Fetch insights or use demo data
   useEffect(() => {
-    const insightsRef = collection(db, 'insights');
-    const q = query(insightsRef, orderBy('date', 'desc'));
+    if (isDemo) {
+      // Demo mode - show sample insights
+      setInsights([
+        {
+          id: '1',
+          title: 'UAE Increases Demand for Fresh Rosemary & Herbs',
+          summary: 'Export opportunities rise for East African suppliers.',
+          category: 'Herbs & Spices',
+          date: '2025-03-22',
+          content: 'Sample content...',
+          featured: true,
+          visible: true
+        },
+        {
+          id: '2',
+          title: 'Saudi Arabia Introduces New Quality Requirements',
+          summary: 'Updated regulations for agricultural exports.',
+          category: 'Regulations',
+          date: '2025-03-20',
+          content: 'Sample content...',
+          featured: false,
+          visible: true
+        }
+      ]);
+      return;
+    }
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const insightsData: Insight[] = [];
-      snapshot.forEach((doc) => {
-        insightsData.push({ id: doc.id, ...doc.data() } as Insight);
+    try {
+      const insightsRef = collection(db, 'insights');
+      const q = query(insightsRef, orderBy('date', 'desc'));
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const insightsData: Insight[] = [];
+        snapshot.forEach((doc) => {
+          insightsData.push({ id: doc.id, ...doc.data() } as Insight);
+        });
+        setInsights(insightsData);
+      }, (error) => {
+        console.log('Firebase error, using demo mode');
+        setIsDemo(true);
       });
-      setInsights(insightsData);
-    });
 
-    return () => unsubscribe();
-  }, []);
+      return () => unsubscribe();
+    } catch (error) {
+      console.log('Firebase not configured, using demo mode');
+      setIsDemo(true);
+    }
+  }, [isDemo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isDemo) {
+      toast.error('Demo mode - Firebase not configured. Please set up Firebase to save insights.');
+      return;
+    }
 
     try {
       if (editingId) {
@@ -186,8 +232,21 @@ export default function AdminInsightsPage() {
     setIsEditing(false);
   };
 
-  if (!user || user.email !== 'admin@hafatrading.com') {
-    return null;
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="text-6xl mb-4"
+          >
+            ⏳
+          </motion.div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -200,6 +259,15 @@ export default function AdminInsightsPage() {
         >
           <h1 className="text-3xl font-bold mb-2">Insights Management</h1>
           <p className="text-muted-foreground">Manage industry insights and news articles</p>
+          
+          {isDemo && (
+            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                <strong>⚠️ Demo Mode:</strong> Firebase is not configured. You can view the interface but cannot save changes. 
+                Please configure Firebase to enable full functionality.
+              </p>
+            </div>
+          )}
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-6">
