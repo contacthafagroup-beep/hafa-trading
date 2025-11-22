@@ -1030,81 +1030,249 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Hafa Trading Team Section - Minimized */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900 relative overflow-hidden">
-        <div className="container mx-auto px-4">
+      {/* Meet Our Team - Super Attractive Premium Section */}
+      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-gray-900">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* Gradient Orbs */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              scale: [1, 1.2, 1],
+              x: [0, 30, 0],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 12, repeat: Infinity }}
+            className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, -40, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 15, repeat: Infinity, delay: 2 }}
+            className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-gradient-to-br from-pink-400 to-purple-500 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Team Icons */}
+          {['👨‍💼', '👩‍💼', '🤝', '🌍', '⭐'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-4xl opacity-10"
+              style={{
+                left: `${15 + i * 18}%`,
+                top: `${20 + (i % 2) * 40}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                rotate: [0, 10, -10, 0],
+                opacity: [0.1, 0.2, 0.1],
+              }}
+              transition={{
+                duration: 4 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
           >
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-5xl mb-3"
-            >
-              🧑‍💼
-            </motion.div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Meet Our Team
+            {/* Animated Icon Group */}
+            <div className="flex justify-center items-center gap-3 mb-6">
+              {['👨‍💼', '👩‍💼', '🤝'].map((emoji, i) => (
+                <motion.span
+                  key={i}
+                  className="text-5xl"
+                  animate={{
+                    y: [0, -8, 0],
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                >
+                  {emoji}
+                </motion.span>
+              ))}
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              Meet Our Expert Team
             </h2>
-            <p className="text-base text-muted-foreground">
-              Dedicated professionals connecting Ethiopia to the world
-            </p>
+            
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto"
+            >
+              Dedicated professionals with <span className="font-bold text-purple-600 dark:text-purple-400">decades of experience</span> connecting Ethiopia to the world
+            </motion.p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          {/* Team Cards */}
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
-              { name: 'Ahmed Hassan', position: 'CEO & Founder', country: '🇪🇹' },
-              { name: 'Sarah Mohammed', position: 'Export Director', country: '🇪🇹' },
-              { name: 'David Chen', position: 'Quality Assurance', country: '🇨🇳' }
+              { name: 'Ahmed Hassan', position: 'CEO & Founder', country: '🇪🇹', color: 'from-blue-500 to-cyan-500', bgColor: 'from-blue-500/10 to-cyan-500/10', borderColor: 'border-blue-200/50 dark:border-blue-800/50 hover:border-blue-400' },
+              { name: 'Sarah Mohammed', position: 'Export Director', country: '🇪🇹', color: 'from-purple-500 to-pink-500', bgColor: 'from-purple-500/10 to-pink-500/10', borderColor: 'border-purple-200/50 dark:border-purple-800/50 hover:border-purple-400' },
+              { name: 'David Chen', position: 'Quality Assurance', country: '🇨🇳', color: 'from-pink-500 to-rose-500', bgColor: 'from-pink-500/10 to-rose-500/10', borderColor: 'border-pink-200/50 dark:border-pink-800/50 hover:border-pink-400' }
             ].map((member, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                whileHover={{ y: -10, scale: 1.03 }}
+                className="group"
               >
-                <Card className="h-full backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 border-2 border-white/50 hover:border-purple-300 hover:shadow-xl transition-all duration-300 group">
-                  <CardContent className="p-5 text-center">
+                <Card className={`h-full backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 border-2 ${member.borderColor} hover:shadow-2xl transition-all duration-500 overflow-hidden relative`}>
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${member.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
+                  
+                  {/* Glowing border effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px rgba(168, 85, 247, 0)',
+                        '0 0 25px rgba(168, 85, 247, 0.3)',
+                        '0 0 0px rgba(168, 85, 247, 0)',
+                      ],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}
+                  />
+                  
+                  <CardContent className="p-6 text-center relative z-10">
+                    {/* Avatar with animations */}
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      className="relative inline-block mb-3"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="relative inline-block mb-4"
                     >
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 mx-auto flex items-center justify-center text-3xl shadow-lg">
-                        👤
-                      </div>
+                      <motion.div
+                        animate={{
+                          scale: [1, 1.05, 1],
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className={`w-24 h-24 rounded-full bg-gradient-to-br ${member.color} mx-auto flex items-center justify-center text-4xl shadow-xl relative overflow-hidden`}
+                      >
+                        {/* Shine effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                          animate={{
+                            x: ['-100%', '200%']
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 3
+                          }}
+                        />
+                        <span className="relative z-10">👤</span>
+                      </motion.div>
+                      
+                      {/* Pulsing glow */}
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.3, 1], 
+                          opacity: [0.3, 0.6, 0.3] 
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className={`absolute inset-0 rounded-full bg-gradient-to-br ${member.color} blur-xl -z-10`}
+                      />
                     </motion.div>
-                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                    <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold mb-2">{member.position}</p>
-                    <div className="text-xl">{member.country}</div>
+                    
+                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{member.name}</h3>
+                    <p className={`text-sm font-bold mb-3 bg-gradient-to-r ${member.color} bg-clip-text text-transparent`}>
+                      {member.position}
+                    </p>
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-3xl"
+                    >
+                      {member.country}
+                    </motion.div>
+                    
+                    {/* Hover indicator */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      className="mt-4 text-sm font-semibold text-purple-600 dark:text-purple-400"
+                    >
+                      View Profile →
+                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
 
+          {/* CTA Button */}
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
             className="text-center"
           >
             <Link href="/about">
-              <Button size="default" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">
-                Meet the Whole Team
-                <motion.span
-                  animate={{ x: [0, 3, 0] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                  className="ml-2"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  animate={{
+                    boxShadow: [
+                      '0 0 20px rgba(168, 85, 247, 0.3)',
+                      '0 0 40px rgba(168, 85, 247, 0.5)',
+                      '0 0 20px rgba(168, 85, 247, 0.3)',
+                    ],
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="inline-block rounded-full"
                 >
-                  →
-                </motion.span>
-              </Button>
+                  <Button size="lg" className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg font-bold shadow-2xl relative overflow-hidden group">
+                    {/* Shimmer effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      animate={{
+                        x: ['-100%', '200%']
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 1
+                      }}
+                    />
+                    <span className="relative z-10 flex items-center gap-2">
+                      Meet the Whole Team
+                      <motion.span
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        →
+                      </motion.span>
+                    </span>
+                  </Button>
+                </motion.div>
+              </motion.div>
             </Link>
           </motion.div>
         </div>
