@@ -131,6 +131,11 @@ export default function AdminInsightsPage() {
     }
 
     try {
+      if (!db) {
+        console.log('Firebase not initialized, using demo mode');
+        setIsDemo(true);
+        return;
+      }
       const insightsRef = collection(db, 'insights');
       const q = query(insightsRef, orderBy('date', 'desc'));
 
