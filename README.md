@@ -347,3 +347,5 @@ Copyright © 2024 Hafa General Trading PLC. All rights reserved.
 ---
 
 **Built with ❤️ for Hafa General Trading PLC**
+
+*Last updated: November 2024*
