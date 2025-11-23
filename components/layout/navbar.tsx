@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { items } = useCartStore();
@@ -32,7 +33,7 @@ export default function Navbar() {
     { name: 'Products', href: '/export-products' },
     { 
       name: 'Services', 
-      href: '#',
+      href: '/services',
       submenu: [
         { name: 'Export Services', href: '/services/export' },
         { name: 'Logistics & Shipping', href: '/services/logistics' },
@@ -121,41 +122,55 @@ export default function Navbar() {
               >
                 {item.submenu ? (
                   <>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30 flex items-center transition-all"
-                    >
-                      {item.name}
-                      <motion.div
-                        animate={{ rotate: [0, 180] }}
-                        transition={{ duration: 0.3 }}
-                        className="group-hover:rotate-180"
+                    <Link href={item.href}>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onMouseEnter={() => setOpenDropdown(item.name)}
+                        className={cn(
+                          "px-4 py-2 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30 flex items-center transition-all",
+                          pathname === item.href && "bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 text-blue-600 dark:text-blue-400"
+                        )}
                       >
-                        <ChevronDown className="ml-1 h-4 w-4" />
-                      </motion.div>
-                    </motion.button>
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      whileHover={{ opacity: 1, y: 0 }}
-                      className="absolute left-0 mt-2 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all overflow-hidden"
-                    >
-                      {item.submenu.map((subitem, subIndex) => (
+                        {item.name}
                         <motion.div
-                          key={subitem.name}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileHover={{ x: 5, backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
-                          transition={{ delay: subIndex * 0.05 }}
+                          animate={{ rotate: openDropdown === item.name ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
                         >
-                          <Link
-                            href={subitem.href}
-                            className="block px-4 py-3 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 first:rounded-t-xl last:rounded-b-xl transition-colors"
-                          >
-                            {subitem.name}
-                          </Link>
+                          <ChevronDown className="ml-1 h-4 w-4" />
                         </motion.div>
-                      ))}
-                    </motion.div>
+                      </motion.button>
+                    </Link>
+                    <AnimatePresence>
+                      {openDropdown === item.name && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          onMouseLeave={() => setOpenDropdown(null)}
+                          className="absolute left-0 mt-2 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden z-50"
+                        >
+                          {item.submenu.map((subitem, subIndex) => (
+                            <motion.div
+                              key={subitem.name}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: subIndex * 0.05 }}
+                              whileHover={{ x: 5, backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
+                            >
+                              <Link
+                                href={subitem.href}
+                                className="block px-4 py-3 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 first:rounded-t-xl last:rounded-b-xl transition-colors"
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                {subitem.name}
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </>
                 ) : (
                   <Link href={item.href}>

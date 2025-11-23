@@ -67,3 +67,44 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Scrollbar Styles for Blog Page */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-200 dark:bg-gray-800 rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-blue-500 rounded-full hover:bg-blue-600;
+  }
+  
+  .scrollbar-thumb-blue-500::-webkit-scrollbar-thumb {
+    @apply bg-blue-500;
+  }
+  
+  .scrollbar-track-gray-200::-webkit-scrollbar-track {
+    @apply bg-gray-200;
+  }
+  
+  .scrollbar-track-gray-800::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+  
+  .scrollbar-track-gray-900::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+}
