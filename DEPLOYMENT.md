@@ -1,399 +1,240 @@
-# Deployment Guide - Hafa General Trading PLC
+# Deployment Guide
 
-Complete step-by-step deployment instructions for production.
+## Prerequisites
 
-## 📋 Pre-Deployment Checklist
+- Node.js 18+ installed
+- Firebase CLI installed (`npm install -g firebase-tools`)
+- Firebase project created
+- Cloudinary account created
+- Vercel account (for deployment)
 
-- [ ] Firebase project created
-- [ ] All Firebase services enabled
-- [ ] Environment variables configured
-- [ ] Email SMTP configured
-- [ ] Domain name purchased (optional)
-- [ ] SSL certificate ready (Firebase provides free SSL)
+## Step 1: Environment Setup
 
-## 🔥 Firebase Setup (Detailed)
-
-### 1. Create Firebase Project
-
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Click "Add project"
-3. Enter project name: `hafa-trading`
-4. Enable/disable Google Analytics (recommended: enable)
-5. Click "Create project"
-
-### 2. Enable Authentication
-
-1. In Firebase Console, go to **Authentication**
-2. Click "Get started"
-3. Enable sign-in methods:
-   - **Email/Password**: Enable
-   - **Phone**: Enable (requires verification)
-   - **Google**: Enable and configure OAuth consent screen
-
-### 3. Create Firestore Database
-
-1. Go to **Firestore Database**
-2. Click "Create database"
-3. Select location: `us-central` or closest to your users
-4. Start in **production mode**
-5. Click "Enable"
-
-### 4. Enable Storage
-
-1. Go to **Storage**
-2. Click "Get started"
-3. Start in **production mode**
-4. Select same location as Firestore
-5. Click "Done"
-
-### 5. Set up Cloud Functions
-
-1. Go to **Functions**
-2. Click "Get started"
-3. Upgrade to **Blaze (Pay as you go)** plan
-   - Required for Cloud Functions
-   - Free tier includes: 2M invocations/month
-4. Set up billing account
-
-### 6. Get Service Account Key
-
-1. Go to **Project Settings** (gear icon)
-2. Click **Service accounts** tab
-3. Click "Generate new private key"
-4. Save the JSON file securely
-5. Extract values for `.env.local`:
-   - `project_id` → `FIREBASE_ADMIN_PROJECT_ID`
-   - `client_email` → `FIREBASE_ADMIN_CLIENT_EMAIL`
-   - `private_key` → `FIREBASE_ADMIN_PRIVATE_KEY`
-
-## 🌐 Domain Configuration (Optional)
-
-### Using Firebase Hosting with Custom Domain
-
-1. Go to **Hosting** in Firebase Console
-2. Click "Add custom domain"
-3. Enter your domain: `hafatrading.com`
-4. Follow DNS configuration instructions:
-   - Add A records pointing to Firebase IPs
-   - Add TXT record for verification
-5. Wait for SSL certificate provisioning (automatic)
-
-### DNS Records Example
-
-```
-Type    Name    Value
-A       @       151.101.1.195
-A       @       151.101.65.195
-TXT     @       [verification-code]
-CNAME   www     hafa-trading.web.app
-```
-
-## 📧 Email Configuration
-
-### Using Gmail SMTP
-
-1. Enable 2-Factor Authentication on Gmail
-2. Generate App Password:
-   - Go to Google Account Settings
-   - Security → 2-Step Verification → App passwords
-   - Select "Mail" and "Other (Custom name)"
-   - Copy the 16-character password
-3. Add to `.env.local`:
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-16-char-app-password
-```
-
-### Alternative: SendGrid
-
-```env
-SMTP_HOST=smtp.sendgrid.net
-SMTP_PORT=587
-SMTP_USER=apikey
-SMTP_PASSWORD=your-sendgrid-api-key
-```
-
-## 🚀 Deployment Steps
-
-### Step 1: Install Firebase CLI
+1. Copy `.env.local.example` to `.env.local`
+2. Fill in all required environment variables:
 
 ```bash
-npm install -g firebase-tools
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+
+# Cloudinary Configuration
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+NEXT_PUBLIC_CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_preset
 ```
 
-### Step 2: Login to Firebase
+## Step 2: Firebase Setup
 
+### Initialize Firebase
 ```bash
 firebase login
-```
-
-### Step 3: Initialize Firebase
-
-```bash
 firebase init
-
-# Select:
-# - Firestore
-# - Functions
-# - Hosting
-# - Storage
-
-# Use existing project: hafa-trading
-# Accept default file names
-# Configure as single-page app: Yes
-# Set up automatic builds: No
 ```
 
-### Step 4: Deploy Firestore Rules
+Select:
+- Firestore
+- Storage
+- Hosting (optional)
 
+### Deploy Security Rules
 ```bash
+# Deploy Firestore rules
 firebase deploy --only firestore:rules
-firebase deploy --only firestore:indexes
+
+# Deploy Storage rules
+firebase deploy --only storage:rules
+
+# Deploy both
+firebase deploy --only firestore:rules,storage:rules
 ```
 
-### Step 5: Deploy Storage Rules
+### Create Admin User
+1. Go to Firebase Console > Authentication
+2. Add user with email: `admin@hafatrading.com`
+3. Set a strong password
+4. Enable email verification (optional)
 
-```bash
-firebase deploy --only storage
-```
+## Step 3: Cloudinary Setup
 
-### Step 6: Deploy Cloud Functions
+1. Go to Cloudinary Dashboard
+2. Create an unsigned upload preset:
+   - Settings > Upload > Upload presets
+   - Click "Add upload preset"
+   - Set signing mode to "Unsigned"
+   - Name it (e.g., "hafa_unsigned")
+   - Configure folder structure (optional)
+3. Copy the preset name to `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`
 
-```bash
-# Install function dependencies
-cd functions
-npm install
-
-# Return to root
-cd ..
-
-# Deploy functions
-firebase deploy --only functions
-```
-
-### Step 7: Build Next.js App
+## Step 4: Local Development
 
 ```bash
 # Install dependencies
 npm install
 
+# Run development server
+npm run dev
+
+# Open http://localhost:3000
+```
+
+## Step 5: Build and Test
+
+```bash
 # Build for production
 npm run build
 
-# Export static files
-npx next export -o out
+# Test production build locally
+npm start
 ```
 
-### Step 8: Deploy to Firebase Hosting
+## Step 6: Deploy to Vercel
+
+### Option A: Deploy via Vercel CLI
 
 ```bash
-firebase deploy --only hosting
+# Install Vercel CLI
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel
+
+# Deploy to production
+vercel --prod
 ```
 
-### Step 9: Verify Deployment
+### Option B: Deploy via GitHub
 
-1. Visit your Firebase Hosting URL: `https://hafa-trading.web.app`
-2. Test all pages and features
-3. Check admin panel access
-4. Verify email notifications
-5. Test authentication flows
+1. Push code to GitHub
+2. Go to Vercel Dashboard
+3. Click "New Project"
+4. Import your GitHub repository
+5. Configure environment variables
+6. Deploy
 
-## 🔄 Continuous Deployment
+### Environment Variables in Vercel
 
-### GitHub Actions (Recommended)
+Add all environment variables from `.env.local` to Vercel:
+1. Go to Project Settings > Environment Variables
+2. Add each variable
+3. Select environments (Production, Preview, Development)
+4. Save
 
-Create `.github/workflows/deploy.yml`:
+## Step 7: Post-Deployment
 
-```yaml
-name: Deploy to Firebase
+### Verify Deployment
+- [ ] Website loads correctly
+- [ ] Authentication works
+- [ ] Admin panel is accessible
+- [ ] Products are displayed
+- [ ] Blog posts are visible
+- [ ] Forms submit correctly
+- [ ] Images upload successfully
 
-on:
-  push:
-    branches:
-      - main
+### Configure Custom Domain (Optional)
+1. Go to Vercel Project Settings > Domains
+2. Add your custom domain
+3. Configure DNS records
+4. Wait for SSL certificate
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build
-        run: npm run build
-        env:
-          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          # Add other env variables
-      
-      - name: Export
-        run: npx next export -o out
-      
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-```
+### Enable Analytics
+1. Firebase Analytics is already configured
+2. Verify events in Firebase Console
+3. Set up custom events (optional)
 
-Generate Firebase token:
+## Step 8: Monitoring
 
-```bash
-firebase login:ci
-# Copy the token and add to GitHub Secrets
-```
+### Firebase Console
+- Monitor authentication
+- Check Firestore usage
+- Review Storage usage
+- Monitor errors
 
-## 📊 Post-Deployment Tasks
+### Vercel Dashboard
+- Monitor deployments
+- Check build logs
+- Review analytics
+- Monitor performance
 
-### 1. Create Admin User
-
-```javascript
-// Run in Firebase Console > Firestore
-// Create document in 'users' collection:
-{
-  id: "admin-user-id",
-  email: "admin@hafatrading.com",
-  displayName: "Admin User",
-  role: "superadmin",
-  createdAt: new Date(),
-  updatedAt: new Date()
-}
-```
-
-### 2. Seed Initial Data
-
-Option A: Use Admin Panel to add products manually
-
-Option B: Create seed script:
-
-```bash
-# Create seed script
-node scripts/seed-data.js
-```
-
-### 3. Configure Analytics
-
-1. Go to Firebase Console > Analytics
-2. Set up conversion events
-3. Link to Google Analytics 4
-
-### 4. Set up Monitoring
-
-1. Enable Firebase Performance Monitoring
-2. Set up error tracking
-3. Configure alerts for:
-   - High error rates
-   - Slow page loads
-   - Function failures
-
-## 🔐 Security Hardening
-
-### 1. Review Security Rules
-
-```bash
-# Test rules locally
-firebase emulators:start --only firestore,storage
-```
-
-### 2. Enable App Check
-
-1. Go to Firebase Console > App Check
-2. Register your web app
-3. Enable reCAPTCHA v3
-4. Enforce App Check for:
-   - Firestore
-   - Storage
-   - Functions
-
-### 3. Set up CORS
-
-Add to `firebase.json`:
-
-```json
-{
-  "hosting": {
-    "headers": [
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          },
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-## 💰 Cost Optimization
-
-### Firebase Pricing (Blaze Plan)
-
-**Free Tier Includes:**
-- Firestore: 50K reads, 20K writes, 20K deletes per day
-- Storage: 5GB, 1GB downloads per day
-- Functions: 2M invocations, 400K GB-seconds per month
-- Hosting: 10GB storage, 360MB/day transfer
-
-**Optimization Tips:**
-1. Use Firestore indexes efficiently
-2. Implement pagination for large lists
-3. Cache static content
-4. Optimize images before upload
-5. Use Cloud Functions sparingly
-
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Build Errors
 
+**Error: Missing environment variables**
+- Solution: Add all required variables to Vercel
+
+**Error: Firebase not initialized**
+- Solution: Check Firebase configuration in `.env.local`
+
+**Error: Cloudinary upload failed**
+- Solution: Verify Cloudinary credentials and upload preset
+
+### Runtime Errors
+
+**Error: Permission denied (Firestore)**
+- Solution: Deploy security rules with `firebase deploy --only firestore:rules`
+
+**Error: Storage upload failed**
+- Solution: Deploy storage rules with `firebase deploy --only storage:rules`
+
+**Error: Admin access denied**
+- Solution: Verify admin user email is exactly `admin@hafatrading.com`
+
+## Maintenance
+
+### Regular Tasks
+- Update dependencies monthly
+- Review Firebase usage
+- Check for security updates
+- Monitor error logs
+- Backup Firestore data
+
+### Backup Strategy
 ```bash
-# Clear cache
-rm -rf .next node_modules
-npm install
-npm run build
+# Export Firestore data
+firebase firestore:export gs://your-bucket/backups/$(date +%Y%m%d)
+
+# Export Storage files (use Firebase Console or gsutil)
 ```
 
-### Function Deployment Fails
+## Rollback
 
+If deployment fails:
 ```bash
-# Check Node version
-node --version  # Should be 18+
+# Revert to previous deployment in Vercel
+vercel rollback
 
-# Reinstall function dependencies
-cd functions
-rm -rf node_modules
-npm install
-cd ..
+# Or redeploy previous commit
+git revert HEAD
+git push
 ```
 
-### Authentication Issues
-
-1. Check Firebase Auth configuration
-2. Verify authorized domains in Firebase Console
-3. Check browser console for errors
-
-## 📞 Support
+## Support
 
 For deployment issues:
-- Firebase Support: https://firebase.google.com/support
-- Next.js Docs: https://nextjs.org/docs
+- Check Vercel documentation: https://vercel.com/docs
+- Check Firebase documentation: https://firebase.google.com/docs
+- Contact: admin@hafatrading.com
 
----
+## Checklist
 
-**Deployment completed! Your app is now live! 🎉**
+Before going live:
+- [ ] All environment variables configured
+- [ ] Firebase rules deployed
+- [ ] Admin account created
+- [ ] SSL certificate active
+- [ ] Custom domain configured (if applicable)
+- [ ] Analytics enabled
+- [ ] Backup strategy in place
+- [ ] Monitoring configured
+- [ ] Error tracking enabled
+- [ ] Performance optimized
