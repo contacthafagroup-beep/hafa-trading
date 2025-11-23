@@ -17,6 +17,13 @@ interface Insight {
   content: string;
   featured: boolean;
   visible: boolean;
+  translations?: {
+    [key: string]: {
+      title: string;
+      summary: string;
+      content: string;
+    };
+  };
 }
 
 const categoryIcons: { [key: string]: string } = {
