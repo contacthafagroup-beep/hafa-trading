@@ -222,7 +222,14 @@ export default function AdminInsightsPage() {
       thumbnail: insight.thumbnail || '',
       content: insight.content,
       featured: insight.featured,
-      visible: insight.visible
+      visible: insight.visible,
+      autoTranslate: insight.autoTranslate || true,
+      translations: insight.translations || {
+        amharic: { title: '', summary: '', content: '' },
+        arabic: { title: '', summary: '', content: '' },
+        french: { title: '', summary: '', content: '' },
+        chinese: { title: '', summary: '', content: '' }
+      }
     });
     setEditingId(insight.id);
     setIsEditing(true);
@@ -273,7 +280,14 @@ export default function AdminInsightsPage() {
       thumbnail: '',
       content: '',
       featured: false,
-      visible: true
+      visible: true,
+      autoTranslate: true,
+      translations: {
+        amharic: { title: '', summary: '', content: '' },
+        arabic: { title: '', summary: '', content: '' },
+        french: { title: '', summary: '', content: '' },
+        chinese: { title: '', summary: '', content: '' }
+      }
     });
     setEditingId(null);
     setIsEditing(false);
