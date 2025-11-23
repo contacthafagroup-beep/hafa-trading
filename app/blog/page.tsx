@@ -14,7 +14,7 @@ import {
   TrendingUp, Search, Mic, Play, Clock, Bookmark,
   Package, Plane, Ship, Leaf, Filter, ChevronLeft, ChevronRight,
   BarChart3, Globe, Scale, Box, Award, MapPin, DollarSign,
-  TrendingDown, Phone, MessageCircle
+  TrendingDown, Phone, MessageCircle, CheckCircle
 } from 'lucide-react';
 import { getPublishedBlogPosts, formatBlogDate } from '@/lib/firebase/blog';
 
@@ -630,6 +630,283 @@ export default function BlogPage() {
               </motion.div>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* International Trade News Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 px-6 py-2">
+              <Globe className="w-4 h-4 mr-2" />
+              Live Updates
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              International Trade News
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Stay updated with the latest global trade developments and market insights
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* LEFT: News Articles List */}
+            <div className="space-y-4 max-h-[700px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 dark:scrollbar-track-gray-800">
+              {[
+                {
+                  id: 1,
+                  title: 'Global Coffee Prices Surge 25% Amid Supply Concerns',
+                  source: 'Reuters',
+                  time: '2 hours ago',
+                  category: 'Commodities',
+                  excerpt: 'International coffee prices have reached a 10-year high as major producing countries face climate challenges affecting crop yields...',
+                  image: '☕',
+                  trending: true
+                },
+                {
+                  id: 2,
+                  title: 'New EU Import Regulations Take Effect January 2025',
+                  source: 'Bloomberg',
+                  time: '5 hours ago',
+                  category: 'Regulations',
+                  excerpt: 'The European Union has announced new import regulations affecting agricultural products, requiring enhanced documentation and sustainability certifications...',
+                  image: '📋',
+                  trending: false
+                },
+                {
+                  id: 3,
+                  title: 'Middle East Spice Demand Increases by 40%',
+                  source: 'Trade Finance',
+                  time: '8 hours ago',
+                  category: 'Market Trends',
+                  excerpt: 'Saudi Arabia and UAE lead the surge in spice imports from East Africa, with Ethiopian exports showing remarkable growth in Q4 2024...',
+                  image: '🌶️',
+                  trending: true
+                },
+                {
+                  id: 4,
+                  title: 'Air Freight Costs Drop 15% for African Routes',
+                  source: 'Freight News',
+                  time: '12 hours ago',
+                  category: 'Logistics',
+                  excerpt: 'Major airlines announce reduced cargo rates for African export routes, making air freight more competitive for time-sensitive shipments...',
+                  image: '✈️',
+                  trending: false
+                },
+                {
+                  id: 5,
+                  title: 'Ethiopia Signs New Trade Agreement with Asian Markets',
+                  source: 'African Business',
+                  time: '1 day ago',
+                  category: 'Trade Policy',
+                  excerpt: 'Ethiopian government finalizes trade agreements with China, Japan, and South Korea, opening new opportunities for agricultural exports...',
+                  image: '🤝',
+                  trending: true
+                },
+                {
+                  id: 6,
+                  title: 'Organic Certification Demand Rises in European Markets',
+                  source: 'Organic Trade',
+                  time: '1 day ago',
+                  category: 'Quality Standards',
+                  excerpt: 'European buyers increasingly require organic certifications for imported agricultural products, driving certification demand in producing countries...',
+                  image: '🌱',
+                  trending: false
+                },
+              ].map((news, index) => (
+                <motion.div
+                  key={news.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ x: 5 }}
+                  onClick={() => setSelectedPost({ ...news, content: news.excerpt })}
+                  className={`
+                    cursor-pointer backdrop-blur-xl rounded-2xl p-5 border transition-all duration-300
+                    ${selectedPost?.id === news.id
+                      ? 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/50 shadow-xl'
+                      : 'bg-white/60 dark:bg-gray-900/60 border-white/20 hover:border-blue-500/30 shadow-lg hover:shadow-xl'
+                    }
+                  `}
+                >
+                  <div className="flex gap-4">
+                    {/* News Icon */}
+                    <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center text-3xl">
+                      {news.image}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 text-xs">
+                          {news.category}
+                        </Badge>
+                        {news.trending && (
+                          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 text-xs">
+                            <TrendingUp className="w-3 h-3 mr-1" />
+                            Trending
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      <h3 className="text-base font-bold mb-2 line-clamp-2 text-gray-900 dark:text-white">
+                        {news.title}
+                      </h3>
+                      
+                      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+                        {news.excerpt}
+                      </p>
+                      
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span className="font-medium">{news.source}</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {news.time}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* RIGHT: Laptop Preview */}
+            <div className="lg:sticky lg:top-24 h-fit">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="relative"
+              >
+                {/* Laptop Frame */}
+                <div className="relative mx-auto max-w-3xl">
+                  {/* Laptop Shadow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl" />
+                  
+                  {/* Laptop Body */}
+                  <div className="relative backdrop-blur-xl bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-2xl p-4 border-8 border-gray-800 shadow-2xl">
+                    {/* Webcam */}
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full" />
+                    
+                    {/* Screen */}
+                    <div className="relative bg-white dark:bg-gray-950 rounded-lg overflow-hidden h-[500px]">
+                      {selectedPost ? (
+                        <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 dark:scrollbar-track-gray-900">
+                          {/* Article Preview */}
+                          <div className="relative">
+                            {/* Header */}
+                            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Badge className="bg-white/20 text-white border-0">
+                                  {selectedPost.category}
+                                </Badge>
+                                {selectedPost.trending && (
+                                  <Badge className="bg-orange-500 text-white border-0">
+                                    <TrendingUp className="w-3 h-3 mr-1" />
+                                    Trending
+                                  </Badge>
+                                )}
+                              </div>
+                              
+                              <motion.h2
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-2xl font-bold mb-3"
+                              >
+                                {selectedPost.title}
+                              </motion.h2>
+                              
+                              <div className="flex items-center gap-4 text-sm text-white/90">
+                                <span className="font-medium">{selectedPost.source}</span>
+                                <span>•</span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4" />
+                                  {selectedPost.time}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {/* Content */}
+                            <div className="p-6">
+                              <div className="text-6xl mb-6 text-center">{selectedPost.image}</div>
+                              
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="prose prose-sm max-w-none"
+                              >
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                  {selectedPost.excerpt}
+                                </p>
+                                
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                  This development marks a significant shift in the international trade landscape, 
+                                  affecting exporters and importers across multiple regions. Industry experts suggest 
+                                  that businesses should closely monitor these changes and adapt their strategies accordingly.
+                                </p>
+                                
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                  Key stakeholders in the supply chain are advised to review their current operations 
+                                  and ensure compliance with evolving regulations and market demands. The impact of 
+                                  these changes is expected to be felt across the entire value chain.
+                                </p>
+
+                                <div className="bg-blue-50 dark:bg-gray-800 rounded-xl p-4 my-6">
+                                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">Key Takeaways:</h3>
+                                  <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <li className="flex items-start gap-2">
+                                      <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                      <span>Market conditions continue to evolve rapidly</span>
+                                    </li>
+                                    <li className="flex items-start gap-2">
+                                      <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                      <span>Exporters should stay informed about regulatory changes</span>
+                                    </li>
+                                    <li className="flex items-start gap-2">
+                                      <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                      <span>Strategic planning is essential for long-term success</span>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                  For more detailed information and expert analysis, businesses are encouraged to 
+                                  consult with trade specialists and stay updated through reliable industry sources.
+                                </p>
+                              </motion.div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="h-full flex items-center justify-center p-6 text-center">
+                          <div>
+                            <Globe className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                            <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
+                              Select a news article to read
+                            </p>
+                            <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">
+                              Click on any article from the list
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Laptop Base */}
+                  <div className="relative h-4 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-3xl shadow-2xl">
+                    <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-3xl" />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 

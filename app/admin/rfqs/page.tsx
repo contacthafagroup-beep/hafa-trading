@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, Eye, Send, FileText, Loader2, Edit, Trash2 } from 'lucide-react';
+import { Search, Eye, Send, FileText, Loader2, Edit, Trash2, Mail, Reply } from 'lucide-react';
 import { getAllRFQs, updateRFQStatus, deleteRFQ, formatRFQDate, RFQ } from '@/lib/firebase/rfqs';
 import { formatCurrency } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -18,8 +18,12 @@ export default function RFQsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRFQ, setSelectedRFQ] = useState<RFQ | null>(null);
   const [quoteDialog, setQuoteDialog] = useState(false);
+  const [replyDialog, setReplyDialog] = useState(false);
   const [quotedPrice, setQuotedPrice] = useState('');
   const [quotedNotes, setQuotedNotes] = useState('');
+  const [replySubject, setReplySubject] = useState('');
+  const [replyMessage, setReplyMessage] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
   const [newStatus, setNewStatus] = useState<RFQ['status']>('new');
 
   useEffect(() => {
@@ -59,6 +63,47 @@ export default function RFQsPage() {
       console.error('Error sending quote:', error);
       toast.error('Failed to send quote');
     }
+  };
+
+  const handleSendReply = async () => {
+    if (!selectedRFQ || !replyMessage) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    
+    setSendingReply(true);
+    try {
+      // Create mailto link with pre-filled content
+      const subject = encodeURIComponent(replySubject || `Re: RFQ #${selectedRFQ.id.slice(0, 8)} - ${selectedRFQ.productName}`);
+      const body = encodeURIComponent(replyMessage);
+      const mailtoLink = `mailto:${selectedRFQ.customerEmail}?subject=${subject}&body=${body}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Update RFQ status to reviewing if it's new
+      if (selectedRFQ.status === 'new') {
+        await updateRFQStatus(selectedRFQ.id, 'reviewing');
+      }
+      
+      toast.success('Email client opened! Reply has been prepared.');
+      setReplyDialog(false);
+      setReplySubject('');
+      setReplyMessage('');
+      loadRFQs();
+    } catch (error) {
+      console.error('Error sending reply:', error);
+      toast.error('Failed to open email client');
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  const openReplyDialog = (rfq: RFQ) => {
+    setSelectedRFQ(rfq);
+    setReplySubject(`Re: RFQ #${rfq.id.slice(0, 8)} - ${rfq.productName}`);
+    setReplyMessage(`Dear ${rfq.customerName},\n\nThank you for your quotation request for ${rfq.productName}.\n\n[Your message here]\n\nBest regards,\nHafa General Trading PLC\nHossana, Ethiopia\nPhone: +251 954 742 383\nEmail: contact@hafatrading.com`);
+    setReplyDialog(true);
   };
 
   const handleUpdateStatus = async (id: string, status: RFQ['status']) => {
@@ -222,6 +267,14 @@ export default function RFQsPage() {
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            title="Reply to Customer"
+                            onClick={() => openReplyDialog(rfq)}
+                          >
+                            <Reply className="h-4 w-4 text-green-600" />
+                          </Button>
                           {rfq.status === 'new' || rfq.status === 'reviewing' ? (
                             <Button 
                               variant="ghost" 
@@ -364,6 +417,16 @@ export default function RFQsPage() {
               )}
 
               <div className="flex gap-2 pt-4 border-t">
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    openReplyDialog(selectedRFQ);
+                    setSelectedRFQ(null);
+                  }}
+                >
+                  <Reply className="h-4 w-4 mr-2" />
+                  Reply to Customer
+                </Button>
                 {selectedRFQ.status === 'new' && (
                   <Button onClick={() => handleUpdateStatus(selectedRFQ.id, 'reviewing')}>
                     Mark as Reviewing
@@ -424,6 +487,133 @@ export default function RFQsPage() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reply Dialog */}
+      <Dialog open={replyDialog} onOpenChange={setReplyDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="h-5 w-5" />
+              Reply to Customer
+            </DialogTitle>
+          </DialogHeader>
+          {selectedRFQ && (
+            <div className="space-y-4">
+              {/* Customer Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">To:</span>
+                    <p className="font-medium">{selectedRFQ.customerName}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Email:</span>
+                    <p className="font-medium">{selectedRFQ.customerEmail}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">RFQ:</span>
+                    <p className="font-medium">#{selectedRFQ.id.slice(0, 8)}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Product:</span>
+                    <p className="font-medium">{selectedRFQ.productName}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Email Subject */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Subject *</label>
+                <Input 
+                  value={replySubject}
+                  onChange={(e) => setReplySubject(e.target.value)}
+                  placeholder="Email subject"
+                  required
+                />
+              </div>
+              
+              {/* Email Message */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Message *</label>
+                <Textarea 
+                  value={replyMessage}
+                  onChange={(e) => setReplyMessage(e.target.value)}
+                  placeholder="Type your reply message..."
+                  rows={12}
+                  className="font-mono text-sm"
+                  required
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  This will open your default email client with the message pre-filled
+                </p>
+              </div>
+
+              {/* Quick Templates */}
+              <div className="border-t pt-4">
+                <p className="text-sm font-medium mb-2">Quick Templates:</p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setReplyMessage(`Dear ${selectedRFQ.customerName},\n\nThank you for your interest in ${selectedRFQ.productName}.\n\nWe have received your quotation request and are currently reviewing it. We will get back to you with a detailed quote within 24-48 hours.\n\nIf you have any urgent questions, please don't hesitate to contact us.\n\nBest regards,\nHafa General Trading PLC`)}
+                  >
+                    Acknowledgment
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setReplyMessage(`Dear ${selectedRFQ.customerName},\n\nThank you for your quotation request for ${selectedRFQ.productName}.\n\nWe are pleased to inform you that we can fulfill your order. Please find our quotation details below:\n\nProduct: ${selectedRFQ.productName}\nQuantity: ${selectedRFQ.quantity} ${selectedRFQ.unit}\nPrice: [Your Price]\nDelivery Time: [Estimated Time]\nPayment Terms: [Your Terms]\n\nPlease let us know if you need any additional information.\n\nBest regards,\nHafa General Trading PLC`)}
+                  >
+                    Quote Template
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setReplyMessage(`Dear ${selectedRFQ.customerName},\n\nThank you for your inquiry about ${selectedRFQ.productName}.\n\nWe need some additional information to provide you with an accurate quotation:\n\n1. [Question 1]\n2. [Question 2]\n3. [Question 3]\n\nOnce we receive this information, we'll be able to send you a detailed quote.\n\nBest regards,\nHafa General Trading PLC`)}
+                  >
+                    Request Info
+                  </Button>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 justify-end pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setReplyDialog(false);
+                    setReplySubject('');
+                    setReplyMessage('');
+                  }}
+                  disabled={sendingReply}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSendReply} 
+                  disabled={!replyMessage || sendingReply}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  {sendingReply ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Opening...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="h-4 w-4 mr-2" />
+                      Open Email Client
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Eye, Download, Package, Loader2, Edit } from 'lucide-react';
+import { Search, Eye, Download, Package, Loader2, Edit, Truck, Mail } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { getAllOrders, updateOrderStatus, formatOrderDate, Order } from '@/lib/firebase/orders';
+import { createShipment } from '@/lib/firebase/shipments';
 import { formatCurrency } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
@@ -17,8 +18,15 @@ export default function OrdersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusDialog, setStatusDialog] = useState(false);
+  const [shipmentDialog, setShipmentDialog] = useState(false);
   const [newStatus, setNewStatus] = useState<Order['status']>('pending');
   const [trackingNumber, setTrackingNumber] = useState('');
+  const [creatingShipment, setCreatingShipment] = useState(false);
+  const [shipmentData, setShipmentData] = useState({
+    carrier: 'DHL',
+    estimatedDelivery: '',
+    notes: ''
+  });
 
   useEffect(() => {
     loadOrders();
@@ -50,6 +58,83 @@ export default function OrdersPage() {
     } catch (error) {
       console.error('Error updating order:', error);
       toast.error('Failed to update order status');
+    }
+  };
+
+  const generateTrackingNumber = () => {
+    const prefix = 'HFT';
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    return `${prefix}${timestamp}${random}`;
+  };
+
+  const handleCreateShipment = async () => {
+    if (!selectedOrder) return;
+    
+    setCreatingShipment(true);
+    try {
+      const generatedTrackingNumber = generateTrackingNumber();
+      
+      // Create shipment
+      await createShipment({
+        orderId: selectedOrder.id,
+        trackingNumber: generatedTrackingNumber,
+        customerName: selectedOrder.userName,
+        customerEmail: selectedOrder.userEmail,
+        origin: {
+          city: 'Hossana',
+          country: 'Ethiopia',
+          address: 'Gofer Meda Subcity, Jelo Naremo District'
+        },
+        destination: {
+          city: selectedOrder.shippingAddress.city || 'N/A',
+          country: selectedOrder.shippingAddress.country || 'N/A',
+          address: selectedOrder.shippingAddress.address,
+          postalCode: selectedOrder.shippingAddress.postalCode
+        },
+        carrier: shipmentData.carrier,
+        status: 'preparing',
+        estimatedDelivery: shipmentData.estimatedDelivery || undefined,
+        updates: [{
+          status: 'preparing',
+          location: 'Hossana, Ethiopia',
+          timestamp: new Date(),
+          notes: 'Shipment created and preparing for dispatch'
+        }],
+        notes: shipmentData.notes || undefined
+      });
+
+      // Update order status to processing with tracking number
+      await updateOrderStatus(selectedOrder.id, 'processing', generatedTrackingNumber);
+
+      // Send email notification (opens email client)
+      const subject = encodeURIComponent(`Your Order #${selectedOrder.id.slice(0, 8)} Has Been Shipped`);
+      const body = encodeURIComponent(
+        `Dear ${selectedOrder.userName},\n\n` +
+        `Your order #${selectedOrder.id.slice(0, 8)} has been shipped!\n\n` +
+        `Tracking Number: ${generatedTrackingNumber}\n` +
+        `Carrier: ${shipmentData.carrier}\n` +
+        `${shipmentData.estimatedDelivery ? `Estimated Delivery: ${shipmentData.estimatedDelivery}\n` : ''}` +
+        `\nYou can track your shipment at: ${window.location.origin}/track\n\n` +
+        `Thank you for your order!\n\n` +
+        `Best regards,\n` +
+        `Hafa General Trading PLC\n` +
+        `Phone: +251 954 742 383\n` +
+        `Email: contact@hafatrading.com`
+      );
+      
+      window.location.href = `mailto:${selectedOrder.userEmail}?subject=${subject}&body=${body}`;
+
+      toast.success(`Shipment created! Tracking #: ${generatedTrackingNumber}`);
+      setShipmentDialog(false);
+      setSelectedOrder(null);
+      setShipmentData({ carrier: 'DHL', estimatedDelivery: '', notes: '' });
+      loadOrders();
+    } catch (error) {
+      console.error('Error creating shipment:', error);
+      toast.error('Failed to create shipment');
+    } finally {
+      setCreatingShipment(false);
     }
   };
 
@@ -191,6 +276,20 @@ export default function OrdersPage() {
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
+                          {!order.trackingNumber && order.status !== 'cancelled' && (
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              title="Create Shipment"
+                              onClick={() => {
+                                setSelectedOrder(order);
+                                setShipmentData({ carrier: 'DHL', estimatedDelivery: '', notes: '' });
+                                setShipmentDialog(true);
+                              }}
+                            >
+                              <Truck className="h-4 w-4 text-green-600" />
+                            </Button>
+                          )}
                           <Button 
                             variant="ghost" 
                             size="icon" 
@@ -356,6 +455,145 @@ export default function OrdersPage() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Shipment Dialog */}
+      <Dialog open={shipmentDialog} onOpenChange={setShipmentDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Truck className="h-5 w-5" />
+              Create Shipment & Send Tracking Number
+            </DialogTitle>
+          </DialogHeader>
+          {selectedOrder && (
+            <div className="space-y-4">
+              {/* Order Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Order ID:</span>
+                    <p className="font-medium">#{selectedOrder.id.slice(0, 8)}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Customer:</span>
+                    <p className="font-medium">{selectedOrder.userName}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Email:</span>
+                    <p className="font-medium">{selectedOrder.userEmail}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Total:</span>
+                    <p className="font-medium">{formatCurrency(selectedOrder.total)}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Shipping Details */}
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <Package className="h-4 w-4" />
+                  Shipping Address
+                </h4>
+                <p className="text-sm">
+                  {selectedOrder.shippingAddress.address}<br />
+                  {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state}<br />
+                  {selectedOrder.shippingAddress.country} - {selectedOrder.shippingAddress.postalCode}
+                </p>
+              </div>
+
+              {/* Shipment Form */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Carrier *</label>
+                  <select
+                    value={shipmentData.carrier}
+                    onChange={(e) => setShipmentData({ ...shipmentData, carrier: e.target.value })}
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
+                  >
+                    <option value="DHL">DHL Express</option>
+                    <option value="FedEx">FedEx International</option>
+                    <option value="UPS">UPS Worldwide</option>
+                    <option value="Ethiopian Airlines">Ethiopian Airlines Cargo</option>
+                    <option value="Maersk">Maersk Sea Freight</option>
+                    <option value="MSC">MSC Sea Freight</option>
+                    <option value="Local Courier">Local Courier</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Estimated Delivery Date</label>
+                  <Input
+                    type="date"
+                    value={shipmentData.estimatedDelivery}
+                    onChange={(e) => setShipmentData({ ...shipmentData, estimatedDelivery: e.target.value })}
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Notes (Optional)</label>
+                  <Input
+                    value={shipmentData.notes}
+                    onChange={(e) => setShipmentData({ ...shipmentData, notes: e.target.value })}
+                    placeholder="Add any special instructions..."
+                  />
+                </div>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 border border-yellow-200 dark:border-yellow-800">
+                <div className="flex items-start gap-2">
+                  <Mail className="h-5 w-5 text-yellow-600 mt-0.5" />
+                  <div className="text-sm">
+                    <p className="font-medium text-yellow-900 dark:text-yellow-100 mb-1">
+                      What happens next:
+                    </p>
+                    <ul className="text-yellow-800 dark:text-yellow-200 space-y-1 list-disc list-inside">
+                      <li>A unique tracking number will be generated automatically</li>
+                      <li>Shipment will be created with status "Preparing"</li>
+                      <li>Order status will be updated to "Processing"</li>
+                      <li>Email notification will be prepared for the customer</li>
+                      <li>You can track and update shipment status in Shipments page</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 justify-end pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShipmentDialog(false);
+                    setShipmentData({ carrier: 'DHL', estimatedDelivery: '', notes: '' });
+                  }}
+                  disabled={creatingShipment}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleCreateShipment}
+                  disabled={creatingShipment}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  {creatingShipment ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Truck className="h-4 w-4 mr-2" />
+                      Create Shipment & Notify Customer
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
