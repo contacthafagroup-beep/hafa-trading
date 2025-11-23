@@ -197,6 +197,11 @@ export default function AdminInsightsPage() {
         dataToSave.translations = translations;
       }
 
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
+
       if (editingId) {
         await updateDoc(doc(db, 'insights', editingId), {
           ...dataToSave,
@@ -243,6 +248,10 @@ export default function AdminInsightsPage() {
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this insight?')) {
       try {
+        if (!db) {
+          toast.error('Firebase not initialized');
+          return;
+        }
         await deleteDoc(doc(db, 'insights', id));
         toast.success('Insight deleted successfully');
       } catch (error) {
@@ -254,6 +263,10 @@ export default function AdminInsightsPage() {
 
   const toggleVisibility = async (id: string, currentVisibility: boolean) => {
     try {
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
       await updateDoc(doc(db, 'insights', id), {
         visible: !currentVisibility
       });
@@ -266,6 +279,10 @@ export default function AdminInsightsPage() {
 
   const toggleFeatured = async (id: string, currentFeatured: boolean) => {
     try {
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
       await updateDoc(doc(db, 'insights', id), {
         featured: !currentFeatured
       });
