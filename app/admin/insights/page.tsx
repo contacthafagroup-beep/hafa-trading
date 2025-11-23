@@ -165,7 +165,7 @@ export default function AdminInsightsPage() {
 
       // If auto-translate is enabled, generate translations
       if (formData.autoTranslate) {
-        toast.info('Generating translations...');
+        toast.loading('Generating translations...');
         
         // Import translator dynamically
         const { translateInsight, languages } = await import('@/lib/translator');
