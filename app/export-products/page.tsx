@@ -110,40 +110,135 @@ function ExportProductsContent() {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Header */}
-      <section className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
-        <div className="container mx-auto px-4">
+      {/* Premium Hero Section */}
+      <section className="relative bg-gradient-to-br from-green-600 via-emerald-700 to-teal-800 text-white py-24 md:py-32 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 20, repeat: Infinity }}
+            className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-br from-green-400 to-emerald-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.4, 1], opacity: [0.15, 0.35, 0.15] }}
+            transition={{ duration: 25, repeat: Infinity, delay: 3 }}
+            className="absolute bottom-0 right-0 w-[700px] h-[700px] bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Product Icons */}
+          {['🌿', '☕', '🌾', '🫚', '🧅', '🌶️', '🍯', '🐑'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-5xl opacity-20"
+              style={{ left: `${10 + i * 11}%`, top: `${15 + (i % 3) * 25}%` }}
+              animate={{ y: [0, -40, 0], rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
+              transition={{ duration: 6 + i, repeat: Infinity, delay: i * 0.5 }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+          
+          {/* Animated Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl"
+            transition={{ duration: 0.8 }}
+            className="max-w-5xl mx-auto text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
-            <p className="text-xl text-green-100 mb-8">
-              Premium Ethiopian agricultural products, livestock, and herbs exported worldwide
-            </p>
+            {/* Animated Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/20 mb-8"
+            >
+              <motion.span
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="text-2xl"
+              >
+                🌍
+              </motion.span>
+              <span className="text-sm font-semibold text-green-100">Premium Ethiopian Exports</span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              <motion.span
+                animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className="bg-gradient-to-r from-white via-green-100 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
+              >
+                Discover Our Premium Products
+              </motion.span>
+            </h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-xl md:text-2xl text-green-100 mb-10 leading-relaxed"
+            >
+              Premium Ethiopian <span className="font-bold text-white">agricultural products</span>, livestock, and herbs exported worldwide
+            </motion.p>
             
             {!loading && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-3xl font-bold">{products.length}</div>
-                  <div className="text-sm text-green-100">Total Products</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-3xl font-bold">{categories.length}</div>
-                  <div className="text-sm text-green-100">Categories</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-3xl font-bold">{products.filter(p => p.featured).length}</div>
-                  <div className="text-sm text-green-100">Featured</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-3xl font-bold">{products.filter(p => p.inStock !== false).length}</div>
-                  <div className="text-sm text-green-100">In Stock</div>
-                </div>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12"
+              >
+                {[
+                  { value: products.length, label: 'Total Products', icon: '📦' },
+                  { value: categories.length, label: 'Categories', icon: '🏷️' },
+                  { value: products.filter(p => p.featured).length, label: 'Featured', icon: '⭐' },
+                  { value: products.filter(p => p.inStock !== false).length, label: 'In Stock', icon: '✅' }
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.8 + i * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all"
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                      className="text-3xl mb-2"
+                    >
+                      {stat.icon}
+                    </motion.div>
+                    <div className="text-4xl font-bold mb-1">{stat.value}</div>
+                    <div className="text-sm text-green-100">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </motion.div>
             )}
           </motion.div>
+        </div>
+
+        {/* Bottom Wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <motion.path
+              d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+              fill="currentColor"
+              className="text-gray-50 dark:text-gray-900"
+              animate={{
+                d: [
+                  "M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z",
+                  "M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z",
+                  "M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+                ]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
         </div>
       </section>
 
