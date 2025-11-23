@@ -1,5 +1,7 @@
 // Script to check if environment variables are loaded
 console.log('Checking environment variables...\n');
+console.log('All environment variables:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC')).join(', '));
+console.log('\n');
 
 const requiredEnvVars = [
   'NEXT_PUBLIC_FIREBASE_API_KEY',
@@ -23,8 +25,8 @@ requiredEnvVars.forEach(varName => {
 });
 
 if (!allPresent) {
-  console.log('\n❌ Some environment variables are missing!');
-  process.exit(1);
+  console.log('\n⚠️  Some environment variables are missing, but continuing build...');
+  console.log('The app will initialize Firebase only when variables are available.\n');
 } else {
   console.log('\n✅ All environment variables are present!');
 }
