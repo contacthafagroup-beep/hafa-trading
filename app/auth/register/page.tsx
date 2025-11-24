@@ -84,6 +84,11 @@ export default function RegisterPage() {
   const handleGoogleSignup = async () => {
     setLoading(true);
     try {
+      if (!auth) {
+        toast.error('Firebase not initialized');
+        setLoading(false);
+        return;
+      }
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
