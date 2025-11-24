@@ -40,7 +40,7 @@ export default function LiveChatBox() {
 
   // Listen to messages in real-time
   useEffect(() => {
-    if (!user || !isOpen) return;
+    if (!user || !isOpen || !db) return;
 
     const messagesRef = collection(db, 'chatMessages');
     const q = query(
@@ -61,7 +61,7 @@ export default function LiveChatBox() {
   }, [user, isOpen]);
 
   const sendMessage = async () => {
-    if (!message.trim() || !user) return;
+    if (!message.trim() || !user || !db) return;
 
     setLoading(true);
     try {
