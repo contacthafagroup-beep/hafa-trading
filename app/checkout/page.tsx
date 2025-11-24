@@ -74,7 +74,7 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const user = auth.currentUser;
+      const user = auth?.currentUser;
       
       // Create order in Firebase
       const orderId = await createOrder({

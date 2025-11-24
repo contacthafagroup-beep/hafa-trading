@@ -139,7 +139,7 @@ export default function AdminBlogPage() {
         category: formData.category,
         tags: formData.tags.split(',').map((t) => t.trim()).filter((t) => t),
         author: formData.author,
-        authorId: auth.currentUser?.uid || 'admin',
+        authorId: auth?.currentUser?.uid || 'admin',
         status: formData.status
       });
       const message = formData.status === 'published' ? 'Blog post published successfully!' : 'Blog post saved as draft successfully!';
