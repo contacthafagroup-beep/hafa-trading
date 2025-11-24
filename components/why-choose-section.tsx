@@ -71,6 +71,13 @@ export default function WhyChooseSection() {
       };
 
       try {
+        if (!db) {
+          console.log('Firestore not initialized, using defaults');
+          setData(defaultData);
+          setLoading(false);
+          return;
+        }
+        
         const docRef = doc(db, 'siteContent', 'whyChoose');
         const docSnap = await getDoc(docRef);
         
