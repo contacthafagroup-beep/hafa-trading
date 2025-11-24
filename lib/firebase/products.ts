@@ -52,6 +52,10 @@ const PRODUCTS_COLLECTION = 'products';
 
 // Get all products
 export async function getAllProducts(): Promise<Product[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const productsRef = collection(db, PRODUCTS_COLLECTION);
     const q = query(productsRef, orderBy('createdAt', 'desc'));
@@ -69,6 +73,10 @@ export async function getAllProducts(): Promise<Product[]> {
 
 // Get single product by ID
 export async function getProductById(id: string): Promise<Product | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
@@ -88,6 +96,9 @@ export async function getProductById(id: string): Promise<Product | null> {
 
 // Add new product
 export async function addProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const productsRef = collection(db, PRODUCTS_COLLECTION);
     const docRef = await addDoc(productsRef, {
@@ -105,6 +116,9 @@ export async function addProduct(product: Omit<Product, 'id' | 'createdAt' | 'up
 
 // Update product
 export async function updateProduct(id: string, product: Partial<Product>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     await updateDoc(docRef, {
@@ -119,6 +133,9 @@ export async function updateProduct(id: string, product: Partial<Product>): Prom
 
 // Delete product
 export async function deleteProduct(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     await deleteDoc(docRef);
@@ -130,6 +147,10 @@ export async function deleteProduct(id: string): Promise<void> {
 
 // Get products by category
 export async function getProductsByCategory(category: string): Promise<Product[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const productsRef = collection(db, PRODUCTS_COLLECTION);
     const q = query(
