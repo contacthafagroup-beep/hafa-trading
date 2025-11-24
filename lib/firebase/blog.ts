@@ -39,6 +39,10 @@ export interface BlogPost {
 const COLLECTION_NAME = 'blog_posts';
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -53,6 +57,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -71,6 +79,10 @@ export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -89,6 +101,10 @@ export async function getBlogPostById(id: string): Promise<BlogPost | null> {
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -111,6 +127,9 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 export async function createBlogPost(data: Omit<BlogPost, 'id' | 'views' | 'likes' | 'comments' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -129,6 +148,9 @@ export async function createBlogPost(data: Omit<BlogPost, 'id' | 'views' | 'like
 }
 
 export async function updateBlogPost(id: string, data: Partial<BlogPost>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const updateData: any = {
@@ -152,6 +174,9 @@ export async function updateBlogPost(id: string, data: Partial<BlogPost>): Promi
 }
 
 export async function incrementBlogPostViews(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -164,6 +189,9 @@ export async function incrementBlogPostViews(id: string): Promise<void> {
 }
 
 export async function incrementBlogPostLikes(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -176,6 +204,9 @@ export async function incrementBlogPostLikes(id: string): Promise<void> {
 }
 
 export async function deleteBlogPost(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
