@@ -44,6 +44,11 @@ export default function CustomersPage() {
     try {
       setLoading(true);
       
+      if (!db) {
+        setLoading(false);
+        return;
+      }
+      
       // Load users
       const usersQuery = query(collection(db, 'users'), orderBy('createdAt', 'desc'));
       const usersSnapshot = await getDocs(usersQuery);

@@ -44,6 +44,11 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       
+      if (!db) {
+        setLoading(false);
+        return;
+      }
+      
       const [orders, products, rfqs, shipments, usersSnapshot] = await Promise.all([
         getAllOrders(),
         getAllProducts(),

@@ -33,6 +33,11 @@ export default function AnalyticsPage() {
     try {
       setLoading(true);
       
+      if (!db) {
+        setLoading(false);
+        return;
+      }
+      
       // Load all data
       const [orders, products, rfqs, shipments, usersSnapshot] = await Promise.all([
         getAllOrders(),

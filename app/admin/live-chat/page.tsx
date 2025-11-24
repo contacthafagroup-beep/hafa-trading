@@ -101,6 +101,10 @@ export default function AdminLiveChatPage() {
     }
 
     try {
+      if (!db) {
+        console.log('Firebase not initialized');
+        return;
+      }
       const messagesRef = collection(db, 'chatMessages');
       const q = query(messagesRef, orderBy('timestamp', 'desc'));
 
@@ -143,7 +147,7 @@ export default function AdminLiveChatPage() {
 
   // Listen to messages for selected user
   useEffect(() => {
-    if (!selectedUser) return;
+    if (!selectedUser || !db) return;
 
     const messagesRef = collection(db, 'chatMessages');
     const q = query(
@@ -162,7 +166,7 @@ export default function AdminLiveChatPage() {
       // Mark messages as read
       snapshot.forEach(async (docSnapshot) => {
         const data = docSnapshot.data();
-        if (!data.read && !data.isAdmin) {
+        if (!data.read && !data.isAdmin && db) {
           await updateDoc(doc(db, 'chatMessages', docSnapshot.id), { read: true });
         }
       });
@@ -172,7 +176,7 @@ export default function AdminLiveChatPage() {
   }, [selectedUser]);
 
   const sendMessage = async () => {
-    if (!message.trim() || !selectedUser || !user) return;
+    if (!message.trim() || !selectedUser || !user || !db) return;
 
     setLoading(true);
     try {
