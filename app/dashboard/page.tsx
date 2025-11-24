@@ -18,6 +18,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth) {
+      router.push('/auth/login');
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
@@ -31,6 +37,10 @@ export default function DashboardPage() {
   }, [router]);
 
   const handleLogout = async () => {
+    if (!auth) {
+      toast.error('Firebase not initialized');
+      return;
+    }
     try {
       await signOut(auth);
       toast.success('Logged out successfully');
