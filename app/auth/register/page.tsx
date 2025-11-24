@@ -38,6 +38,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!auth) {
+      toast.error('Firebase not initialized');
+      return;
+    }
+
     setLoading(true);
 
     try {
