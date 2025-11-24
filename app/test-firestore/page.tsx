@@ -14,6 +14,11 @@ export default function TestFirestorePage() {
     setLoading(true);
     setResult('Testing write...');
     try {
+      if (!db) {
+        setResult('❌ Firestore not initialized');
+        setLoading(false);
+        return;
+      }
       const testData = {
         test: 'Hello from test page',
         timestamp: new Date().toISOString()
@@ -33,6 +38,11 @@ export default function TestFirestorePage() {
     setLoading(true);
     setResult('Testing read...');
     try {
+      if (!db) {
+        setResult('❌ Firestore not initialized');
+        setLoading(false);
+        return;
+      }
       const docRef = doc(db, 'test', 'testDoc');
       const docSnap = await getDoc(docRef);
       
@@ -53,6 +63,11 @@ export default function TestFirestorePage() {
     setLoading(true);
     setResult('Testing Why Choose data...');
     try {
+      if (!db) {
+        setResult('❌ Firestore not initialized');
+        setLoading(false);
+        return;
+      }
       const docRef = doc(db, 'siteContent', 'whyChoose');
       const docSnap = await getDoc(docRef);
       
