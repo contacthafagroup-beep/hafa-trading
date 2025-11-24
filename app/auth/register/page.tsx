@@ -54,14 +54,16 @@ export default function RegisterPage() {
       });
 
       // Create user document in Firestore
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        id: userCredential.user.uid,
-        email: formData.email,
-        displayName: formData.name,
-        role: 'customer',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
+      if (db) {
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          id: userCredential.user.uid,
+          email: formData.email,
+          displayName: formData.name,
+          role: 'customer',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
 
       toast.success('Account created successfully!');
       router.push('/dashboard');
@@ -86,15 +88,17 @@ export default function RegisterPage() {
       const result = await signInWithPopup(auth, provider);
       
       // Create user document in Firestore
-      await setDoc(doc(db, 'users', result.user.uid), {
-        id: result.user.uid,
-        email: result.user.email,
-        displayName: result.user.displayName,
-        photoURL: result.user.photoURL,
-        role: 'customer',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+      if (db) {
+        await setDoc(doc(db, 'users', result.user.uid), {
+          id: result.user.uid,
+          email: result.user.email,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+          role: 'customer',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      }
 
       toast.success('Account created successfully!');
       router.push('/dashboard');

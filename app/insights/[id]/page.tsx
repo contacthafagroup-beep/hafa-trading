@@ -77,6 +77,16 @@ export default function InsightDetailPage() {
   useEffect(() => {
     const fetchInsight = async () => {
       try {
+        if (!db) {
+          // Use default insight if Firebase not initialized
+          const defaultInsight = defaultInsights[params.id as string];
+          if (defaultInsight) {
+            setInsight(defaultInsight);
+          }
+          setLoading(false);
+          return;
+        }
+        
         const insightDoc = await getDoc(doc(db, 'insights', params.id as string));
         if (insightDoc.exists()) {
           setInsight({ id: insightDoc.id, ...insightDoc.data() } as Insight);

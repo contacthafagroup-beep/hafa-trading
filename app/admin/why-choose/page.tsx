@@ -76,6 +76,10 @@ export default function WhyChooseAdminPage() {
     const loadData = async () => {
       setLoading(true);
       try {
+        if (!db) {
+          setLoading(false);
+          return;
+        }
         const docRef = doc(db, 'siteContent', 'whyChoose');
         const docSnap = await getDoc(docRef);
         
@@ -100,6 +104,15 @@ export default function WhyChooseAdminPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      if (!db) {
+        toast({
+          title: 'Error',
+          description: 'Firebase not initialized',
+          variant: 'destructive'
+        });
+        setSaving(false);
+        return;
+      }
       console.log('Saving data to Firestore:', data);
       const docRef = doc(db, 'siteContent', 'whyChoose');
       await setDoc(docRef, data, { merge: true });
@@ -300,6 +313,14 @@ export default function WhyChooseAdminPage() {
           <Button
             onClick={async () => {
               try {
+                if (!db) {
+                  toast({
+                    title: 'Error',
+                    description: 'Firebase not initialized',
+                    variant: 'destructive'
+                  });
+                  return;
+                }
                 const docRef = doc(db, 'siteContent', 'whyChoose');
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
