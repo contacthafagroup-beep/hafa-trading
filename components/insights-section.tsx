@@ -124,6 +124,10 @@ export default function InsightsSection() {
 
   useEffect(() => {
     try {
+      if (!db) {
+        // Use default insights if Firebase not initialized
+        return;
+      }
       const insightsRef = collection(db, 'insights');
       const q = query(
         insightsRef,
