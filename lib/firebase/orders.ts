@@ -55,6 +55,10 @@ export interface Order {
 const COLLECTION_NAME = 'orders';
 
 export async function getAllOrders(): Promise<Order[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -69,6 +73,10 @@ export async function getAllOrders(): Promise<Order[]> {
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -87,6 +95,10 @@ export async function getOrderById(id: string): Promise<Order | null> {
 }
 
 export async function getOrdersByUserId(userId: string): Promise<Order[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME), 
@@ -105,6 +117,9 @@ export async function getOrdersByUserId(userId: string): Promise<Order[]> {
 }
 
 export async function createOrder(data: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -119,6 +134,9 @@ export async function createOrder(data: Omit<Order, 'id' | 'createdAt' | 'update
 }
 
 export async function updateOrder(id: string, data: Partial<Order>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -136,6 +154,9 @@ export async function updateOrderStatus(
   status: Order['status'],
   trackingNumber?: string
 ): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const updateData: any = {
@@ -155,6 +176,9 @@ export async function updateOrderStatus(
 }
 
 export async function deleteOrder(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
