@@ -26,6 +26,10 @@ export interface Category {
 const COLLECTION_NAME = 'categories';
 
 export async function getAllCategories(): Promise<Category[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('name', 'asc'));
     const snapshot = await getDocs(q);
@@ -40,6 +44,10 @@ export async function getAllCategories(): Promise<Category[]> {
 }
 
 export async function getCategoryById(id: string): Promise<Category | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -58,6 +66,9 @@ export async function getCategoryById(id: string): Promise<Category | null> {
 }
 
 export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -72,6 +83,9 @@ export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | '
 }
 
 export async function updateCategory(id: string, data: Partial<Category>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -85,6 +99,9 @@ export async function updateCategory(id: string, data: Partial<Category>): Promi
 }
 
 export async function deleteCategory(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
