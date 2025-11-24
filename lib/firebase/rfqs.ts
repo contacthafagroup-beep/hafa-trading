@@ -37,6 +37,10 @@ export interface RFQ {
 const COLLECTION_NAME = 'rfqs';
 
 export async function getAllRFQs(): Promise<RFQ[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -51,6 +55,10 @@ export async function getAllRFQs(): Promise<RFQ[]> {
 }
 
 export async function getRFQById(id: string): Promise<RFQ | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -69,6 +77,9 @@ export async function getRFQById(id: string): Promise<RFQ | null> {
 }
 
 export async function createRFQ(data: Omit<RFQ, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -83,6 +94,9 @@ export async function createRFQ(data: Omit<RFQ, 'id' | 'createdAt' | 'updatedAt'
 }
 
 export async function updateRFQ(id: string, data: Partial<RFQ>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -101,6 +115,9 @@ export async function updateRFQStatus(
   quotedPrice?: number,
   quotedNotes?: string
 ): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const updateData: any = {
@@ -124,6 +141,9 @@ export async function updateRFQStatus(
 }
 
 export async function deleteRFQ(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
