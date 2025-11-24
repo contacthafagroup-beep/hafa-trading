@@ -60,6 +60,9 @@ export interface CategoryContent {
 const COLLECTION_NAME = 'categoryContent';
 
 export async function saveCategoryContent(content: CategoryContent): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, content.category);
     await setDoc(docRef, {
@@ -73,6 +76,10 @@ export async function saveCategoryContent(content: CategoryContent): Promise<voi
 }
 
 export async function getCategoryContent(categoryId: string): Promise<CategoryContent | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, categoryId);
     const docSnap = await getDoc(docRef);
@@ -88,6 +95,10 @@ export async function getCategoryContent(categoryId: string): Promise<CategoryCo
 }
 
 export async function getAllCategoryContent(): Promise<CategoryContent[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
     return querySnapshot.docs.map(doc => ({
