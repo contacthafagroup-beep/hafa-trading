@@ -42,6 +42,10 @@ export interface Supplier {
 const COLLECTION_NAME = 'suppliers';
 
 export async function getAllSuppliers(): Promise<Supplier[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -56,6 +60,10 @@ export async function getAllSuppliers(): Promise<Supplier[]> {
 }
 
 export async function getSupplierById(id: string): Promise<Supplier | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -74,6 +82,10 @@ export async function getSupplierById(id: string): Promise<Supplier | null> {
 }
 
 export async function getSuppliersByStatus(status: Supplier['status']): Promise<Supplier[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -92,6 +104,9 @@ export async function getSuppliersByStatus(status: Supplier['status']): Promise<
 }
 
 export async function createSupplier(data: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -106,6 +121,9 @@ export async function createSupplier(data: Omit<Supplier, 'id' | 'createdAt' | '
 }
 
 export async function updateSupplier(id: string, data: Partial<Supplier>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -123,6 +141,9 @@ export async function updateSupplierStatus(
   status: Supplier['status'],
   notes?: string
 ): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const updateData: any = {
@@ -166,6 +187,9 @@ export async function updateSupplierRating(
 }
 
 export async function deleteSupplier(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);

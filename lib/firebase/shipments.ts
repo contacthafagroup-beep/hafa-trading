@@ -57,6 +57,10 @@ export interface Shipment {
 const COLLECTION_NAME = 'shipments';
 
 export async function getAllShipments(): Promise<Shipment[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -71,6 +75,10 @@ export async function getAllShipments(): Promise<Shipment[]> {
 }
 
 export async function getShipmentById(id: string): Promise<Shipment | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
@@ -89,6 +97,10 @@ export async function getShipmentById(id: string): Promise<Shipment | null> {
 }
 
 export async function getShipmentByTracking(trackingNumber: string): Promise<Shipment | null> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return null;
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -111,6 +123,10 @@ export async function getShipmentByTracking(trackingNumber: string): Promise<Shi
 }
 
 export async function getShipmentsByOrderId(orderId: string): Promise<Shipment[]> {
+  if (!db) {
+    console.error('Firestore not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -129,6 +145,9 @@ export async function getShipmentsByOrderId(orderId: string): Promise<Shipment[]
 }
 
 export async function createShipment(data: Omit<Shipment, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
@@ -143,6 +162,9 @@ export async function createShipment(data: Omit<Shipment, 'id' | 'createdAt' | '
 }
 
 export async function updateShipment(id: string, data: Partial<Shipment>): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
@@ -186,6 +208,9 @@ export async function addShipmentUpdate(
 }
 
 export async function deleteShipment(id: string): Promise<void> {
+  if (!db) {
+    throw new Error('Firestore not initialized');
+  }
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
