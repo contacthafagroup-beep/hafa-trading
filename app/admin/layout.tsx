@@ -15,10 +15,15 @@ export default function AdminLayout({
 
   useEffect(() => {
     if (!loading) {
+      console.log('Admin Check:', { user: !!user, userData, role: userData?.role });
       if (!user) {
+        console.log('No user, redirecting to login');
         router.push('/auth/login');
       } else if (userData && userData.role !== 'admin') {
+        console.log('User role is not admin:', userData.role, 'redirecting to dashboard');
         router.push('/dashboard');
+      } else if (userData && userData.role === 'admin') {
+        console.log('User is admin, access granted');
       }
     }
   }, [user, userData, loading, router]);
