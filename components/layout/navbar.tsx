@@ -2,21 +2,38 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, Moon, Sun, ShoppingCart } from 'lucide-react';
+import { Menu, X, ChevronDown, Moon, Sun, ShoppingCart, User, LogOut } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/lib/store/cart-store';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/lib/contexts/auth-context';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { items } = useCartStore();
+  const { user, userData, loading } = useAuth();
+
+  const handleLogout = async () => {
+    if (!auth) return;
+    try {
+      await signOut(auth);
+      toast.success('Logged out successfully');
+      router.push('/');
+    } catch (error) {
+      toast.error('Logout failed');
+    }
+  };
 
   // Handle scroll effect
   useEffect(() => {
@@ -265,14 +282,30 @@ export default function Navbar() {
               </motion.div>
             </Link>
 
-            {/* Login Button */}
-            <Link href="/auth/login" className="hidden md:block">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button variant="outline" className="border-2 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30">
-                  Login
-                </Button>
-              </motion.div>
-            </Link>
+            {/* User Menu or Login Button */}
+            {!loading && (
+              user ? (
+                <div className="hidden md:flex items-center gap-2">
+                  <Link href="/dashboard">
+                    <Button variant="outline" className="border-2">
+                      <User className="mr-2 h-4 w-4" />
+                      {userData?.displayName || 'Dashboard'}
+                    </Button>
+                  </Link>
+                  <Button variant="ghost" size="icon" onClick={handleLogout}>
+                    <LogOut className="h-5 w-5" />
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/auth/login" className="hidden md:block">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button variant="outline" className="border-2 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30">
+                      Login
+                    </Button>
+                  </motion.div>
+                </Link>
+              )
+            )}
 
             {/* Mobile menu button */}
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
@@ -374,9 +407,24 @@ export default function Navbar() {
                     Get Quote
                   </Button>
                 </Link>
-                <Link href="/auth/login" className="block">
-                  <Button variant="outline" className="w-full border-2">Login</Button>
-                </Link>
+                {user ? (
+                  <>
+                    <Link href="/dashboard" className="block">
+                      <Button variant="outline" className="w-full border-2">
+                        <User className="mr-2 h-4 w-4" />
+                        {userData?.displayName || 'Dashboard'}
+                      </Button>
+                    </Link>
+                    <Button variant="outline" className="w-full border-2" onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Link href="/auth/login" className="block">
+                    <Button variant="outline" className="w-full border-2">Login</Button>
+                  </Link>
+                )}
               </motion.div>
             </motion.div>
           )}
