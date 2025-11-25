@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { X, Send, User } from 'lucide-react';
-import { useAuth } from '@/contexts/auth-context';
-import { db } from '@/lib/firebase';
+import { useAuth } from '@/lib/contexts/auth-context';
+import { db } from '@/lib/firebase/config';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where } from 'firebase/firestore';
 import Link from 'next/link';
 

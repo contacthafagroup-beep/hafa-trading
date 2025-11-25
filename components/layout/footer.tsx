@@ -4,6 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/lib/contexts/auth-context';
+import { db } from '@/lib/firebase/config';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where } from 'firebase/firestore';
 
 export default function Footer() {
   return (
@@ -281,10 +284,6 @@ function FooterLiveChat() {
   const [loading, setLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  // Import auth context and firebase
-  const { useAuth } = require('@/contexts/auth-context');
-  const { db } = require('@/lib/firebase');
-  const { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where } = require('firebase/firestore');
   const { user } = useAuth();
 
   // Scroll to bottom when new messages arrive
