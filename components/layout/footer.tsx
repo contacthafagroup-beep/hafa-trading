@@ -297,7 +297,7 @@ function FooterLiveChat() {
 
   // Listen to messages in real-time
   React.useEffect(() => {
-    if (!user || !isOpen) return;
+    if (!user || !isOpen || !db) return;
 
     const messagesRef = collection(db, 'chatMessages');
     const q = query(
@@ -318,7 +318,7 @@ function FooterLiveChat() {
   }, [user, isOpen]);
 
   const handleSend = async () => {
-    if (!message.trim() || !user) return;
+    if (!message.trim() || !user || !db) return;
 
     setLoading(true);
     try {
