@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getMessaging, isSupported } from 'firebase/messaging';
@@ -31,6 +31,14 @@ let storage: ReturnType<typeof getStorage> | undefined;
 if (isConfigValid) {
   app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
   auth = getAuth(app);
+  
+  // Set auth persistence to LOCAL (survives browser refresh)
+  if (auth && typeof window !== 'undefined') {
+    setPersistence(auth, browserLocalPersistence).catch((error) => {
+      console.error('Error setting auth persistence:', error);
+    });
+  }
+  
   db = getFirestore(app);
   storage = getStorage(app);
 }
