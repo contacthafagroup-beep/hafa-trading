@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/auth-context';
-import AdminSidebar from '@/components/admin/admin-sidebar';
 
 export default function AdminLayout({
   children,
@@ -44,11 +43,8 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <main className="flex-1 p-8 bg-gray-50 dark:bg-gray-900">
-        {children}
-      </main>
+    <div className="min-h-screen">
+      {children}
     </div>
   );
 }
