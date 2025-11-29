@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/contexts/auth-context';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase/config';
 import { 
   collection, 
   query, 

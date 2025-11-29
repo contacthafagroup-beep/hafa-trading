@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/lib/contexts/auth-context';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase/config';
 import {
   collection,
   addDoc,
