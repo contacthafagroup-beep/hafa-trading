@@ -84,12 +84,12 @@ service cloud.firestore {
     
     // Blog posts collection
     match /blog_posts/{postId} {
-      // Anyone can read published blog posts
-      allow read: if resource.data.status == 'published' || isAdmin();
+      // Anyone can read individual published blog posts
+      allow get: if resource.data.status == 'published' || isAdmin();
+      // Anyone can list published blog posts
+      allow list: if true;
       // Only admins can create, update, or delete blog posts
       allow create, update, delete: if isAdmin();
-      // Admins can read all posts (including drafts)
-      allow list: if isAdmin();
     }
     
     // Insights collection
