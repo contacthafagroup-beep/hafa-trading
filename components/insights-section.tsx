@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firebase/config';
 import { collection, query, orderBy, limit, onSnapshot, where } from 'firebase/firestore';
 import { Calendar, ArrowRight, Sun, Moon, Globe } from 'lucide-react';
 
