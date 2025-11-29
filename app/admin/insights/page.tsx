@@ -123,31 +123,51 @@ export default function AdminInsightsPage() {
 
       // If auto-translate is enabled, generate translations
       if (formData.autoTranslate) {
-        toast.loading('Generating translations...');
+        const loadingToast = toast.loading('Generating translations...');
         
-        // Import translator dynamically
-        const { translateInsight, languages } = await import('@/lib/translator');
-        
-        const translations: any = {};
-        
-        // Translate to each language
-        for (const [langKey, langCode] of Object.entries(languages)) {
-          if (langKey !== 'english') {
-            try {
-              const translated = await translateInsight(
-                formData.title,
-                formData.summary,
-                formData.content,
-                langCode
-              );
-              translations[langKey] = translated;
-            } catch (error) {
-              console.error(`Translation error for ${langKey}:`, error);
+        try {
+          // Import translator dynamically
+          const { translateInsight, languages } = await import('@/lib/translator');
+          
+          const translations: any = {};
+          let successCount = 0;
+          let failCount = 0;
+          
+          // Translate to each language
+          for (const [langKey, langCode] of Object.entries(languages)) {
+            if (langKey !== 'english') {
+              try {
+                const translated = await translateInsight(
+                  formData.title,
+                  formData.summary,
+                  formData.content,
+                  langCode
+                );
+                translations[langKey] = translated;
+                successCount++;
+              } catch (error) {
+                console.error(`Translation error for ${langKey}:`, error);
+                failCount++;
+                // Set empty translations for failed languages
+                translations[langKey] = { title: '', summary: '', content: '' };
+              }
             }
           }
+          
+          dataToSave.translations = translations;
+          toast.dismiss(loadingToast);
+          
+          if (failCount > 0) {
+            toast.error(`Translation partially failed (${successCount} succeeded, ${failCount} failed). Saving anyway...`);
+          } else {
+            toast.success('Translations generated successfully!');
+          }
+        } catch (error) {
+          toast.dismiss(loadingToast);
+          console.error('Translation module error:', error);
+          toast.error('Translation failed. Saving without translations...');
+          // Continue saving without translations
         }
-        
-        dataToSave.translations = translations;
       }
 
       if (editingId) {

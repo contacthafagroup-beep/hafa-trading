@@ -1,6 +1,6 @@
-# Deploy Firestore Rules
+# Deploy Firestore Rules and Indexes
 
-The admin live-chat page requires updated Firestore rules to work properly.
+The admin panel requires updated Firestore rules and indexes to work properly.
 
 ## Steps to Deploy:
 
@@ -14,9 +14,15 @@ The admin live-chat page requires updated Firestore rules to work properly.
    firebase login
    ```
 
-3. Deploy the Firestore rules:
+3. Deploy both rules and indexes:
+   ```bash
+   firebase deploy --only firestore
+   ```
+
+   Or deploy separately:
    ```bash
    firebase deploy --only firestore:rules
+   firebase deploy --only firestore:indexes
    ```
 
 ## What Changed:
