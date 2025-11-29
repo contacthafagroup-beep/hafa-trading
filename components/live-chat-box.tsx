@@ -10,6 +10,7 @@ import { useAuth } from '@/lib/contexts/auth-context';
 import { db } from '@/lib/firebase/config';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where } from 'firebase/firestore';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 interface Message {
   id: string;
@@ -49,20 +50,39 @@ export default function LiveChatBox() {
       orderBy('timestamp', 'asc')
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const msgs: Message[] = [];
-      snapshot.forEach((doc) => {
-        msgs.push({ id: doc.id, ...doc.data() } as Message);
-      });
-      setMessages(msgs);
-    });
+    const unsubscribe = onSnapshot(
+      q, 
+      (snapshot) => {
+        const msgs: Message[] = [];
+        snapshot.forEach((doc) => {
+          msgs.push({ id: doc.id, ...doc.data() } as Message);
+        });
+        console.log('Loaded messages:', msgs.length);
+        setMessages(msgs);
+      },
+      (error) => {
+        console.error('Error loading messages:', error);
+        toast.error('Cannot load chat history: ' + error.message);
+      }
+    );
 
     return () => unsubscribe();
   }, [user, isOpen]);
 
   const sendMessage = async () => {
-    if (!message.trim() || !user || !db) {
-      console.log('Cannot send:', { hasMessage: !!message.trim(), hasUser: !!user, hasDb: !!db });
+    if (!message.trim()) {
+      toast.error('Please type a message');
+      return;
+    }
+    
+    if (!user) {
+      toast.error('Please login to send messages');
+      return;
+    }
+    
+    if (!db) {
+      toast.error('Chat service not available');
+      console.error('Firebase not initialized');
       return;
     }
 
@@ -81,9 +101,11 @@ export default function LiveChatBox() {
       });
 
       setMessage('');
+      toast.success('Message sent!');
       console.log('Message sent successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
+      toast.error('Failed to send message: ' + error.message);
     } finally {
       setLoading(false);
     }
