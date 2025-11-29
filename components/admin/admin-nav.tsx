@@ -27,6 +27,10 @@ const navItems = [
   { href: '/admin/shipments', label: 'Shipments', icon: Truck },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/categories', label: 'Categories', icon: FolderTree },
+  { href: '/admin/category-content', label: 'Category Content', icon: FolderTree },
+  { href: '/admin/why-choose', label: 'Why Choose Us', icon: Settings },
+  { href: '/admin/insights', label: 'Insights', icon: BarChart3 },
+  { href: '/admin/live-chat', label: 'Live Chat', icon: MessageSquare },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
