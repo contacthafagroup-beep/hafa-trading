@@ -47,9 +47,12 @@ const dataCards = [
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<any[]>([]);
+  const [tradeNews, setTradeNews] = useState<any[]>([]);
+  const [videoInsights, setVideoInsights] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPost, setSelectedPost] = useState<any>(null);
+  const [selectedNewsPost, setSelectedNewsPost] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [savedArticles, setSavedArticles] = useState<string[]>([]);
   const categorySliderRef = useRef<HTMLDivElement>(null);
@@ -66,9 +69,21 @@ export default function BlogPage() {
     try {
       setLoading(true);
       const posts = await getPublishedBlogPosts();
-      setBlogPosts(posts);
-      if (posts.length > 0) {
-        setSelectedPost(posts[0]);
+      
+      // Separate posts by category
+      const regularBlogPosts = posts.filter(p => p.category !== 'Trade News' && p.category !== 'Video Insights');
+      const newsPost = posts.filter(p => p.category === 'Trade News');
+      const videoPosts = posts.filter(p => p.category === 'Video Insights');
+      
+      setBlogPosts(regularBlogPosts);
+      setTradeNews(newsPost);
+      setVideoInsights(videoPosts);
+      
+      if (regularBlogPosts.length > 0) {
+        setSelectedPost(regularBlogPosts[0]);
+      }
+      if (newsPost.length > 0) {
+        setSelectedNewsPost(newsPost[0]);
       }
     } catch (error) {
       console.error('Error loading blog posts:', error);
@@ -657,97 +672,35 @@ export default function BlogPage() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* LEFT: News Articles List */}
             <div className="space-y-4 max-h-[700px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 dark:scrollbar-track-gray-800">
-              {[
-                {
-                  id: 1,
-                  title: 'Global Coffee Prices Surge 25% Amid Supply Concerns',
-                  source: 'Reuters',
-                  time: '2 hours ago',
-                  category: 'Commodities',
-                  excerpt: 'International coffee prices have reached a 10-year high as major producing countries face climate challenges affecting crop yields...',
-                  image: '☕',
-                  trending: true
-                },
-                {
-                  id: 2,
-                  title: 'New EU Import Regulations Take Effect January 2025',
-                  source: 'Bloomberg',
-                  time: '5 hours ago',
-                  category: 'Regulations',
-                  excerpt: 'The European Union has announced new import regulations affecting agricultural products, requiring enhanced documentation and sustainability certifications...',
-                  image: '📋',
-                  trending: false
-                },
-                {
-                  id: 3,
-                  title: 'Middle East Spice Demand Increases by 40%',
-                  source: 'Trade Finance',
-                  time: '8 hours ago',
-                  category: 'Market Trends',
-                  excerpt: 'Saudi Arabia and UAE lead the surge in spice imports from East Africa, with Ethiopian exports showing remarkable growth in Q4 2024...',
-                  image: '🌶️',
-                  trending: true
-                },
-                {
-                  id: 4,
-                  title: 'Air Freight Costs Drop 15% for African Routes',
-                  source: 'Freight News',
-                  time: '12 hours ago',
-                  category: 'Logistics',
-                  excerpt: 'Major airlines announce reduced cargo rates for African export routes, making air freight more competitive for time-sensitive shipments...',
-                  image: '✈️',
-                  trending: false
-                },
-                {
-                  id: 5,
-                  title: 'Ethiopia Signs New Trade Agreement with Asian Markets',
-                  source: 'African Business',
-                  time: '1 day ago',
-                  category: 'Trade Policy',
-                  excerpt: 'Ethiopian government finalizes trade agreements with China, Japan, and South Korea, opening new opportunities for agricultural exports...',
-                  image: '🤝',
-                  trending: true
-                },
-                {
-                  id: 6,
-                  title: 'Organic Certification Demand Rises in European Markets',
-                  source: 'Organic Trade',
-                  time: '1 day ago',
-                  category: 'Quality Standards',
-                  excerpt: 'European buyers increasingly require organic certifications for imported agricultural products, driving certification demand in producing countries...',
-                  image: '🌱',
-                  trending: false
-                },
-              ].map((news, index) => (
-                <motion.div
-                  key={news.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ x: 5 }}
-                  onClick={() => setSelectedPost({ ...news, content: news.excerpt })}
-                  className={`
-                    cursor-pointer backdrop-blur-xl rounded-2xl p-5 border transition-all duration-300
-                    ${selectedPost?.id === news.id
-                      ? 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/50 shadow-xl'
-                      : 'bg-white/60 dark:bg-gray-900/60 border-white/20 hover:border-blue-500/30 shadow-lg hover:shadow-xl'
-                    }
-                  `}
-                >
+              {tradeNews.length === 0 ? (
+                <div className="text-center py-12">
+                  <Globe className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <p className="text-gray-600 dark:text-gray-400">No trade news available yet</p>
+                </div>
+              ) : (
+                tradeNews.map((news, index) => (
+                <Link key={news.id} href={`/blog/${news.slug}`}>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ x: 5 }}
+                    className="cursor-pointer backdrop-blur-xl rounded-2xl p-5 border transition-all duration-300 bg-white/60 dark:bg-gray-900/60 border-white/20 hover:border-blue-500/30 shadow-lg hover:shadow-xl"
+                  >
                   <div className="flex gap-4">
                     {/* News Icon */}
                     <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center text-3xl">
-                      {news.image}
+                      📰
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
                         <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 text-xs">
-                          {news.category}
+                          Trade News
                         </Badge>
-                        {news.trending && (
+                        {news.featured && (
                           <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 text-xs">
                             <TrendingUp className="w-3 h-3 mr-1" />
                             Trending
@@ -764,16 +717,17 @@ export default function BlogPage() {
                       </p>
                       
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span className="font-medium">{news.source}</span>
+                        <span className="font-medium">{news.author}</span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
-                          {news.time}
+                          {formatBlogDate(news.publishedAt)}
                         </span>
                       </div>
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                </Link>
+              )))}
             </div>
 
             {/* RIGHT: Laptop Preview */}
@@ -989,40 +943,87 @@ export default function BlogPage() {
           </motion.h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: 'Market Forecast for 2025', duration: '5:32', views: '12.5K' },
-              { title: 'How Hafa Trading Ensures Freshness', duration: '4:18', views: '8.3K' },
-              { title: 'Air vs Sea Shipping: What Buyers Prefer', duration: '6:45', views: '15.2K' },
-            ].map((video, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10, rotateY: 5 }}
-                style={{ transformStyle: 'preserve-3d' }}
-                className="group cursor-pointer"
-              >
-                <div className="relative backdrop-blur-xl bg-white/60 dark:bg-gray-900/60 rounded-2xl overflow-hidden border border-white/20 shadow-xl hover:shadow-2xl transition-all">
-                  {/* Thumbnail */}
-                  <div className="relative aspect-video bg-gradient-to-br from-blue-500 to-purple-500 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.2 }}
-                        className="relative"
-                      >
-                        <div className="absolute inset-0 bg-white/20 rounded-full blur-xl" />
-                        <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-2xl">
-                          <Play className="w-8 h-8 text-blue-600 ml-1" />
+            {videoInsights.length === 0 ? (
+              <div className="col-span-3 text-center py-12">
+                <Play className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-600 dark:text-gray-400">No video insights available yet</p>
+              </div>
+            ) : (
+              videoInsights.map((video, index) => (
+              <Link key={video.id} href={`/blog/${video.slug}`}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -10, rotateY: 5 }}
+                  style={{ transformStyle: 'preserve-3d' }}
+                  className="group cursor-pointer"
+                >
+                  <div className="relative backdrop-blur-xl bg-white/60 dark:bg-gray-900/60 rounded-2xl overflow-hidden border border-white/20 shadow-xl hover:shadow-2xl transition-all">
+                    {/* Thumbnail */}
+                    <div className="relative aspect-video bg-gradient-to-br from-blue-500 to-purple-500 overflow-hidden">
+                      {video.featuredImage ? (
+                        <>
+                          {/* Check if it's a YouTube URL */}
+                          {video.featuredImage.includes('youtube.com') || video.featuredImage.includes('youtu.be') ? (
+                            <img 
+                              src={`https://img.youtube.com/vi/${
+                                video.featuredImage.includes('youtube.com/watch') 
+                                  ? video.featuredImage.split('v=')[1]?.split('&')[0]
+                                  : video.featuredImage.split('youtu.be/')[1]?.split('?')[0]
+                              }/maxresdefault.jpg`}
+                              alt={video.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Fallback to default thumbnail if maxres doesn't exist
+                                e.currentTarget.src = `https://img.youtube.com/vi/${
+                                  video.featuredImage.includes('youtube.com/watch') 
+                                    ? video.featuredImage.split('v=')[1]?.split('&')[0]
+                                    : video.featuredImage.split('youtu.be/')[1]?.split('?')[0]
+                                }/hqdefault.jpg`;
+                              }}
+                            />
+                          ) : (
+                            <img 
+                              src={video.featuredImage} 
+                              alt={video.title}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                          {/* Play button overlay */}
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                            <motion.div
+                              whileHover={{ scale: 1.2 }}
+                              className="relative"
+                            >
+                              <div className="absolute inset-0 bg-white/20 rounded-full blur-xl" />
+                              <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-2xl">
+                                <Play className="w-8 h-8 text-blue-600 ml-1" />
+                              </div>
+                            </motion.div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <motion.div
+                            whileHover={{ scale: 1.2 }}
+                            className="relative"
+                          >
+                            <div className="absolute inset-0 bg-white/20 rounded-full blur-xl" />
+                            <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-2xl">
+                              <Play className="w-8 h-8 text-blue-600 ml-1" />
+                            </div>
+                          </motion.div>
                         </div>
-                      </motion.div>
-                    </div>
+                      )}
                     
-                    {/* Duration Badge */}
-                    <div className="absolute bottom-3 right-3 px-2 py-1 rounded-lg bg-black/70 text-white text-xs font-semibold">
-                      {video.duration}
-                    </div>
+                    {/* Featured Badge */}
+                    {video.featured && (
+                      <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-orange-500 text-white text-xs font-semibold">
+                        Featured
+                      </div>
+                    )}
                   </div>
                   
                   {/* Content */}
@@ -1030,16 +1031,24 @@ export default function BlogPage() {
                     <h3 className="text-lg font-bold mb-3 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {video.title}
                     </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+                      {video.excerpt}
+                    </p>
                     <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                       <span className="flex items-center gap-1">
+                        <User className="w-4 h-4" />
+                        {video.author}
+                      </span>
+                      <span className="flex items-center gap-1">
                         <Eye className="w-4 h-4" />
-                        {video.views} views
+                        {video.views || 0} views
                       </span>
                     </div>
                   </div>
                 </div>
               </motion.div>
-            ))}
+              </Link>
+            )))}
           </div>
         </div>
       </section>
