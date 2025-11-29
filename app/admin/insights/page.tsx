@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '@/lib/contexts/auth-context';
 import { db } from '@/lib/firebase';
 import {
   collection,
