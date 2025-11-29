@@ -125,9 +125,13 @@ export default function InsightsSection() {
   useEffect(() => {
     try {
       if (!db) {
-        // Use default insights if Firebase not initialized
+        console.log('Firebase not initialized, using default insights');
+        setInsights(defaultInsights);
+        setSelectedInsight(defaultInsights[0]);
         return;
       }
+      
+      console.log('Setting up insights listener...');
       const insightsRef = collection(db, 'insights');
       const q = query(
         insightsRef,
@@ -138,10 +142,15 @@ export default function InsightsSection() {
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
+        console.log('✅ Insights snapshot received, documents:', snapshot.size);
         const insightsData: Insight[] = [];
         snapshot.forEach((doc) => {
-          insightsData.push({ id: doc.id, ...doc.data() } as Insight);
+          const data = doc.data();
+          console.log('📰 Insight document:', doc.id, data);
+          insightsData.push({ id: doc.id, ...data } as Insight);
         });
+        
+        console.log('📊 Total insights loaded:', insightsData.length);
         
         // Use Firebase data if available, otherwise use defaults
         if (insightsData.length > 0) {
@@ -150,20 +159,29 @@ export default function InsightsSection() {
             setSelectedInsight(insightsData[0]);
           }
         } else {
+          console.log('No insights found in Firestore, using defaults');
           setInsights(defaultInsights);
           if (!selectedInsight) {
             setSelectedInsight(defaultInsights[0]);
           }
         }
       }, (error) => {
-        console.log('Firebase not configured, using default insights');
+        console.error('❌ Error loading insights:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        
+        if (error.code === 'failed-precondition') {
+          console.error('🚫 INDEX REQUIRED: The query needs a composite index');
+          console.error('Check the Firebase console for the index creation link');
+        }
+        
         setInsights(defaultInsights);
         setSelectedInsight(defaultInsights[0]);
       });
 
       return () => unsubscribe();
-    } catch (error) {
-      console.log('Firebase not configured, using default insights');
+    } catch (error: any) {
+      console.error('Firebase setup error:', error);
       setInsights(defaultInsights);
       setSelectedInsight(defaultInsights[0]);
     }
