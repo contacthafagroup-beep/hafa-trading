@@ -86,78 +86,35 @@ export default function AdminInsightsPage() {
   });
   const [showTranslations, setShowTranslations] = useState(false);
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const [isDemo, setIsDemo] = useState(false);
 
-  // Check if Firebase is available (layout handles admin auth)
+  // Fetch insights from Firestore
   useEffect(() => {
-    if (!authLoading && !user) {
-      // No user logged in - show demo mode
-      setIsDemo(true);
-    }
-  }, [user, authLoading]);
-
-  // Fetch insights or use demo data
-  useEffect(() => {
-    if (isDemo) {
-      // Demo mode - show sample insights
-      setInsights([
-        {
-          id: '1',
-          title: 'UAE Increases Demand for Fresh Rosemary & Herbs',
-          summary: 'Export opportunities rise for East African suppliers.',
-          category: 'Herbs & Spices',
-          date: '2025-03-22',
-          content: 'Sample content...',
-          featured: true,
-          visible: true
-        },
-        {
-          id: '2',
-          title: 'Saudi Arabia Introduces New Quality Requirements',
-          summary: 'Updated regulations for agricultural exports.',
-          category: 'Regulations',
-          date: '2025-03-20',
-          content: 'Sample content...',
-          featured: false,
-          visible: true
-        }
-      ]);
+    if (!db) {
+      console.error('Firebase not initialized');
       return;
     }
 
-    try {
-      if (!db) {
-        console.log('Firebase not initialized, using demo mode');
-        setIsDemo(true);
-        return;
-      }
-      const insightsRef = collection(db, 'insights');
-      const q = query(insightsRef, orderBy('date', 'desc'));
+    const insightsRef = collection(db, 'insights');
+    const q = query(insightsRef, orderBy('date', 'desc'));
 
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const insightsData: Insight[] = [];
-        snapshot.forEach((doc) => {
-          insightsData.push({ id: doc.id, ...doc.data() } as Insight);
-        });
-        setInsights(insightsData);
-      }, (error) => {
-        console.log('Firebase error, using demo mode');
-        setIsDemo(true);
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const insightsData: Insight[] = [];
+      snapshot.forEach((doc) => {
+        insightsData.push({ id: doc.id, ...doc.data() } as Insight);
       });
+      setInsights(insightsData);
+    }, (error) => {
+      console.error('Error loading insights:', error);
+    });
 
-      return () => unsubscribe();
-    } catch (error) {
-      console.log('Firebase not configured, using demo mode');
-      setIsDemo(true);
-    }
-  }, [isDemo]);
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isDemo) {
-      toast.error('Demo mode - Firebase not configured. Please set up Firebase to save insights.');
+    if (!db) {
+      toast.error('Firebase not initialized');
       return;
     }
 
@@ -191,11 +148,6 @@ export default function AdminInsightsPage() {
         }
         
         dataToSave.translations = translations;
-      }
-
-      if (!db) {
-        toast.error('Firebase not initialized');
-        return;
       }
 
       if (editingId) {
@@ -242,12 +194,12 @@ export default function AdminInsightsPage() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!db) {
+      toast.error('Firebase not initialized');
+      return;
+    }
     if (confirm('Are you sure you want to delete this insight?')) {
       try {
-        if (!db) {
-          toast.error('Firebase not initialized');
-          return;
-        }
         await deleteDoc(doc(db, 'insights', id));
         toast.success('Insight deleted successfully');
       } catch (error) {
@@ -258,11 +210,11 @@ export default function AdminInsightsPage() {
   };
 
   const toggleVisibility = async (id: string, currentVisibility: boolean) => {
+    if (!db) {
+      toast.error('Firebase not initialized');
+      return;
+    }
     try {
-      if (!db) {
-        toast.error('Firebase not initialized');
-        return;
-      }
       await updateDoc(doc(db, 'insights', id), {
         visible: !currentVisibility
       });
@@ -274,11 +226,11 @@ export default function AdminInsightsPage() {
   };
 
   const toggleFeatured = async (id: string, currentFeatured: boolean) => {
+    if (!db) {
+      toast.error('Firebase not initialized');
+      return;
+    }
     try {
-      if (!db) {
-        toast.error('Firebase not initialized');
-        return;
-      }
       await updateDoc(doc(db, 'insights', id), {
         featured: !currentFeatured
       });
@@ -338,15 +290,6 @@ export default function AdminInsightsPage() {
         >
           <h1 className="text-3xl font-bold mb-2">Insights Management</h1>
           <p className="text-muted-foreground">Manage industry insights and news articles</p>
-          
-          {isDemo && (
-            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>⚠️ Demo Mode:</strong> Firebase is not configured. You can view the interface but cannot save changes. 
-                Please configure Firebase to enable full functionality.
-              </p>
-            </div>
-          )}
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-6">

@@ -51,16 +51,6 @@ export default function AdminLiveChatPage() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const [isDemo, setIsDemo] = useState(false);
-
-  // Check if Firebase is available (layout handles admin auth)
-  useEffect(() => {
-    if (!authLoading && !user) {
-      // No user logged in - show demo mode
-      setIsDemo(true);
-    }
-  }, [user, authLoading]);
 
   // Scroll to bottom
   const scrollToBottom = () => {
@@ -71,75 +61,47 @@ export default function AdminLiveChatPage() {
     scrollToBottom();
   }, [messages]);
 
-  // Get all chat users or show demo
+  // Get all chat users
   useEffect(() => {
-    if (isDemo) {
-      // Demo mode - show sample chat users
-      setChatUsers([
-        {
-          userId: 'demo1',
-          userName: 'John Doe',
-          userEmail: 'john@example.com',
-          lastMessage: 'Hello, I have a question about your products',
-          unreadCount: 2,
-          lastTimestamp: new Date()
-        },
-        {
-          userId: 'demo2',
-          userName: 'Jane Smith',
-          userEmail: 'jane@example.com',
-          lastMessage: 'When will my order arrive?',
-          unreadCount: 0,
-          lastTimestamp: new Date()
-        }
-      ]);
+    if (!db) {
+      console.error('Firebase not initialized');
       return;
     }
 
-    try {
-      if (!db) {
-        console.log('Firebase not initialized');
-        return;
-      }
-      const messagesRef = collection(db, 'chatMessages');
-      const q = query(messagesRef, orderBy('timestamp', 'desc'));
+    const messagesRef = collection(db, 'chatMessages');
+    const q = query(messagesRef, orderBy('timestamp', 'desc'));
 
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const usersMap = new Map<string, ChatUser>();
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const usersMap = new Map<string, ChatUser>();
 
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const userId = data.userId;
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const userId = data.userId;
 
-          if (!usersMap.has(userId)) {
-            usersMap.set(userId, {
-              userId,
-              userName: data.senderName,
-              userEmail: data.senderEmail,
-              lastMessage: data.text,
-              unreadCount: !data.read && !data.isAdmin ? 1 : 0,
-              lastTimestamp: data.timestamp
-            });
-          } else {
-            const existing = usersMap.get(userId)!;
-            if (!data.read && !data.isAdmin) {
-              existing.unreadCount++;
-            }
+        if (!usersMap.has(userId)) {
+          usersMap.set(userId, {
+            userId,
+            userName: data.senderName,
+            userEmail: data.senderEmail,
+            lastMessage: data.text,
+            unreadCount: !data.read && !data.isAdmin ? 1 : 0,
+            lastTimestamp: data.timestamp
+          });
+        } else {
+          const existing = usersMap.get(userId)!;
+          if (!data.read && !data.isAdmin) {
+            existing.unreadCount++;
           }
-        });
-
-        setChatUsers(Array.from(usersMap.values()));
-      }, (error) => {
-        console.log('Firebase error, using demo mode');
-        setIsDemo(true);
+        }
       });
 
-      return () => unsubscribe();
-    } catch (error) {
-      console.log('Firebase not configured, using demo mode');
-      setIsDemo(true);
-    }
-  }, [isDemo]);
+      setChatUsers(Array.from(usersMap.values()));
+    }, (error) => {
+      console.error('Error loading chat users:', error);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Listen to messages for selected user
   useEffect(() => {
@@ -229,15 +191,6 @@ export default function AdminLiveChatPage() {
         >
           <h1 className="text-3xl font-bold mb-2">Live Chat Management</h1>
           <p className="text-muted-foreground">Respond to customer inquiries in real-time</p>
-          
-          {isDemo && (
-            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>⚠️ Demo Mode:</strong> Firebase is not configured. You can view the interface with sample data but cannot send real messages. 
-                Please configure Firebase to enable full functionality.
-              </p>
-            </div>
-          )}
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6">
