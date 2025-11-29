@@ -61,10 +61,14 @@ export default function LiveChatBox() {
   }, [user, isOpen]);
 
   const sendMessage = async () => {
-    if (!message.trim() || !user || !db) return;
+    if (!message.trim() || !user || !db) {
+      console.log('Cannot send:', { hasMessage: !!message.trim(), hasUser: !!user, hasDb: !!db });
+      return;
+    }
 
     setLoading(true);
     try {
+      console.log('Sending message...');
       await addDoc(collection(db, 'chatMessages'), {
         text: message.trim(),
         senderId: user.uid,
@@ -77,6 +81,7 @@ export default function LiveChatBox() {
       });
 
       setMessage('');
+      console.log('Message sent successfully!');
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
