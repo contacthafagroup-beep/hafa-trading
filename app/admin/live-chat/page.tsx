@@ -54,17 +54,13 @@ export default function AdminLiveChatPage() {
   const router = useRouter();
   const [isDemo, setIsDemo] = useState(false);
 
-  // Check if user is admin or show demo mode
+  // Check if Firebase is available (layout handles admin auth)
   useEffect(() => {
-    if (!authLoading) {
-      if (!user) {
-        // No user logged in - show demo mode
-        setIsDemo(true);
-      } else if (user.email !== 'admin@hafatrading.com') {
-        router.push('/');
-      }
+    if (!authLoading && !user) {
+      // No user logged in - show demo mode
+      setIsDemo(true);
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading]);
 
   // Scroll to bottom
   const scrollToBottom = () => {
