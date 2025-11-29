@@ -161,7 +161,7 @@ export default function LiveChatBox() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-24 right-2 left-2 sm:left-auto sm:right-4 z-50 sm:w-72 md:w-80 max-w-[calc(100vw-1rem)] max-h-[calc(100vh-7rem)] overflow-hidden"
+            className="fixed bottom-24 right-2 left-2 sm:left-auto sm:right-4 z-50 sm:w-72 md:w-80 max-w-[calc(100vw-1rem)] max-h-[5alc(100vh-7rem)] overflow-hidden"
           >
             <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-2 border-blue-200 dark:border-blue-800 shadow-2xl">
               <CardContent className="p-0">
@@ -304,7 +304,7 @@ export default function LiveChatBox() {
                   // Logged in - Show chat interface
                   <>
                     {/* Messages Area */}
-                    <div className="h-96 overflow-y-auto p-4 space-y-3">
+                    <div className="h-64 overflow-y-auto p-4 space-y-3">
                       {messages.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-center">
                           <motion.div
