@@ -69,13 +69,27 @@ export default function AdminLiveChatPage() {
     }
 
     const messagesRef = collection(db, 'chatMessages');
-    const q = query(messagesRef, orderBy('timestamp', 'desc'));
+    // Query without orderBy to avoid index requirement - we'll sort client-side
+    const q = query(messagesRef);
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const usersMap = new Map<string, ChatUser>();
+      const allMessages: any[] = [];
 
       snapshot.forEach((doc) => {
         const data = doc.data();
+        allMessages.push(data);
+      });
+
+      // Sort messages by timestamp (newest first)
+      allMessages.sort((a, b) => {
+        const aTime = a.timestamp?.toMillis?.() || 0;
+        const bTime = b.timestamp?.toMillis?.() || 0;
+        return bTime - aTime;
+      });
+
+      // Build users map from sorted messages
+      allMessages.forEach((data) => {
         const userId = data.userId;
 
         if (!usersMap.has(userId)) {
@@ -95,7 +109,9 @@ export default function AdminLiveChatPage() {
         }
       });
 
-      setChatUsers(Array.from(usersMap.values()));
+      const users = Array.from(usersMap.values());
+      console.log('Loaded chat users:', users.length, users);
+      setChatUsers(users);
     }, (error) => {
       console.error('Error loading chat users:', error);
     });
