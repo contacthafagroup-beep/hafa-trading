@@ -529,7 +529,7 @@ export default function WhyChooseSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-8"
           onClick={closeVideoModal}
         >
           <motion.div
@@ -537,13 +537,14 @@ export default function WhyChooseSection() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="relative w-full max-w-5xl bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={closeVideoModal}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors"
+              className="absolute top-2 right-2 md:top-4 md:right-4 z-20 w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-colors shadow-lg"
+              aria-label="Close video"
             >
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -551,15 +552,15 @@ export default function WhyChooseSection() {
             </button>
 
             {/* Feature title */}
-            <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">
-              <p className="text-white font-semibold flex items-center gap-2">
-                <span className="text-2xl">{data.features[selectedFeature].icon}</span>
-                {data.features[selectedFeature].title}
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 z-10 bg-black/70 backdrop-blur-sm px-3 py-2 rounded-lg max-w-[calc(100%-5rem)]">
+              <p className="text-white font-semibold flex items-center gap-2 text-sm md:text-base">
+                <span className="text-xl md:text-2xl">{data.features[selectedFeature].icon}</span>
+                <span className="truncate">{data.features[selectedFeature].title}</span>
               </p>
             </div>
 
             {/* Video */}
-            <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
+            <div className="relative w-full bg-black" style={{ aspectRatio: '16/9', maxHeight: 'calc(90vh - 2rem)' }}>
               {(() => {
                 const featureVideoUrl = getEmbedUrl(data.features[selectedFeature].videoUrl);
                 const isYouTube = featureVideoUrl.includes('youtube.com');
