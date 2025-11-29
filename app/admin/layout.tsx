@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/auth-context';
+import AdminNav from '@/components/admin/admin-nav';
 
 export default function AdminLayout({
   children,
@@ -52,8 +53,11 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen">
-      {children}
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+      <AdminNav />
+      <main className="flex-1 p-8">
+        {children}
+      </main>
     </div>
   );
 }
