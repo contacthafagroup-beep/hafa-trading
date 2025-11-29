@@ -302,14 +302,19 @@ function FooterLiveChat() {
     const messagesRef = collection(db, 'chatMessages');
     const q = query(
       messagesRef,
-      where('userId', '==', user.uid),
-      orderBy('timestamp', 'asc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot: any) => {
       const msgs: any[] = [];
       snapshot.forEach((doc: any) => {
         msgs.push({ id: doc.id, ...doc.data() });
+      });
+      // Sort by timestamp client-side
+      msgs.sort((a, b) => {
+        const aTime = a.timestamp?.toMillis?.() || 0;
+        const bTime = b.timestamp?.toMillis?.() || 0;
+        return aTime - bTime;
       });
       setMessages(msgs);
     });

@@ -46,8 +46,7 @@ export default function LiveChatBox() {
     const messagesRef = collection(db, 'chatMessages');
     const q = query(
       messagesRef,
-      where('userId', '==', user.uid),
-      orderBy('timestamp', 'asc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribe = onSnapshot(
@@ -56,6 +55,12 @@ export default function LiveChatBox() {
         const msgs: Message[] = [];
         snapshot.forEach((doc) => {
           msgs.push({ id: doc.id, ...doc.data() } as Message);
+        });
+        // Sort by timestamp client-side
+        msgs.sort((a, b) => {
+          const aTime = a.timestamp?.toMillis?.() || 0;
+          const bTime = b.timestamp?.toMillis?.() || 0;
+          return aTime - bTime;
         });
         console.log('Loaded messages:', msgs.length);
         setMessages(msgs);
