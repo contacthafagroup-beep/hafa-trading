@@ -157,6 +157,14 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    // Site Content collection (for homepage sections like Why Choose Us)
+    match /siteContent/{documentId} {
+      // Anyone can read site content
+      allow read: if true;
+      // Only admins can modify site content
+      allow write: if isAdmin();
+    }
+    
     // Default deny all other collections
     match /{document=**} {
       allow read, write: if false;
