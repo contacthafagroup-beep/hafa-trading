@@ -68,18 +68,24 @@ export default function AdminLiveChatPage() {
       return;
     }
 
+    console.log('Setting up chat users listener...');
     const messagesRef = collection(db, 'chatMessages');
     // Query without orderBy to avoid index requirement - we'll sort client-side
     const q = query(messagesRef);
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const usersMap = new Map<string, ChatUser>();
-      const allMessages: any[] = [];
+    const unsubscribe = onSnapshot(q, 
+      (snapshot) => {
+        console.log('✅ Snapshot received, total documents:', snapshot.size);
+        const usersMap = new Map<string, ChatUser>();
+        const allMessages: any[] = [];
 
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        allMessages.push(data);
-      });
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log('📨 Message document:', doc.id, data);
+          allMessages.push(data);
+        });
+
+        console.log('📊 Total messages loaded:', allMessages.length);
 
       // Sort messages by timestamp (newest first)
       allMessages.sort((a, b) => {
@@ -92,12 +98,17 @@ export default function AdminLiveChatPage() {
       allMessages.forEach((data) => {
         const userId = data.userId;
 
+        if (!userId) {
+          console.warn('Message without userId:', data);
+          return;
+        }
+
         if (!usersMap.has(userId)) {
           usersMap.set(userId, {
             userId,
-            userName: data.senderName,
-            userEmail: data.senderEmail,
-            lastMessage: data.text,
+            userName: data.senderName || 'Unknown User',
+            userEmail: data.senderEmail || 'No email',
+            lastMessage: data.text || '',
             unreadCount: !data.read && !data.isAdmin ? 1 : 0,
             lastTimestamp: data.timestamp
           });
@@ -110,10 +121,19 @@ export default function AdminLiveChatPage() {
       });
 
       const users = Array.from(usersMap.values());
-      console.log('Loaded chat users:', users.length, users);
+      console.log('👥 Chat users extracted:', users.length, users);
       setChatUsers(users);
-    }, (error) => {
-      console.error('Error loading chat users:', error);
+    }, 
+    (error) => {
+      console.error('❌ Error loading chat users:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      
+      // Check if it's a permission error
+      if (error.code === 'permission-denied') {
+        console.error('🚫 PERMISSION DENIED: You need to deploy the updated Firestore rules!');
+        console.error('Run: firebase deploy --only firestore:rules');
+      }
     });
 
     return () => unsubscribe();
