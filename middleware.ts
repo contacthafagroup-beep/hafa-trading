@@ -28,47 +28,8 @@ const publicRoutes = [
 ];
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  
-  // Check if the route is protected
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
-  const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
-  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route));
-  
-  // Get authentication token from cookies
-  const authToken = request.cookies.get('auth-token')?.value;
-  const userEmail = request.cookies.get('user-email')?.value;
-  
-  // If accessing admin route, check if user is admin
-  if (isAdminRoute) {
-    if (!authToken) {
-      // Redirect to login if not authenticated
-      const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-    
-    if (userEmail !== 'admin@hafatrading.com') {
-      // Redirect to home if not admin
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
-  
-  // If accessing protected route, check authentication
-  if (isProtectedRoute && !isPublicRoute) {
-    if (!authToken) {
-      // Redirect to login if not authenticated
-      const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-  }
-  
-  // If authenticated and trying to access login/register, redirect to home
-  if (authToken && (pathname === '/login' || pathname === '/register')) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-  
+  // Middleware disabled - auth is handled by client-side AuthContext and admin layout
+  // Firebase Auth uses its own token management, not cookies
   return NextResponse.next();
 }
 
