@@ -537,7 +537,7 @@ export default function WhyChooseSection() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="relative w-full max-w-4xl max-h-[90vh] bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -559,38 +559,41 @@ export default function WhyChooseSection() {
               </p>
             </div>
 
-            {/* Video */}
-            <div className="relative w-full bg-black" style={{ aspectRatio: '16/9', maxHeight: 'calc(90vh - 2rem)' }}>
-              {(() => {
-                const featureVideoUrl = getEmbedUrl(data.features[selectedFeature].videoUrl);
-                const isYouTube = featureVideoUrl.includes('youtube.com');
-                
-                return isYouTube ? (
-                  <iframe
-                    src={featureVideoUrl}
-                    className="absolute inset-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : (
-                  <video
-                    src={featureVideoUrl}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    controls
-                    autoPlay
-                  />
-                );
-              })()}
-            </div>
+            {/* Scrollable content container */}
+            <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
+              {/* Video */}
+              <div className="relative w-full bg-black" style={{ aspectRatio: '16/9' }}>
+                {(() => {
+                  const featureVideoUrl = getEmbedUrl(data.features[selectedFeature].videoUrl);
+                  const isYouTube = featureVideoUrl.includes('youtube.com');
+                  
+                  return isYouTube ? (
+                    <iframe
+                      src={featureVideoUrl}
+                      className="absolute inset-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      src={featureVideoUrl}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      controls
+                      autoPlay
+                    />
+                  );
+                })()}
+              </div>
 
-            {/* Feature description */}
-            <div className="p-6 bg-gradient-to-t from-gray-900 to-gray-800">
-              <h3 className="text-xl font-bold text-white mb-2">
-                {data.features[selectedFeature].subtitle}
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                {data.features[selectedFeature].description}
-              </p>
+              {/* Feature description */}
+              <div className="p-4 md:p-6 bg-gradient-to-t from-gray-900 to-gray-800">
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">
+                  {data.features[selectedFeature].subtitle}
+                </h3>
+                <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  {data.features[selectedFeature].description}
+                </p>
+              </div>
             </div>
           </motion.div>
         </motion.div>
