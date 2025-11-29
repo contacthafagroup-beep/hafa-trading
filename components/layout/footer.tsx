@@ -284,7 +284,7 @@ function FooterLiveChat() {
   const [loading, setLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   // Scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -364,7 +364,13 @@ function FooterLiveChat() {
 
         {isOpen && (
           <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-            {!user ? (
+            {authLoading ? (
+              // Loading auth state
+              <div className="p-8 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-3"></div>
+                <p className="text-sm text-gray-600">Loading...</p>
+              </div>
+            ) : !user ? (
               // Not logged in - Show login prompt
               <div className="p-4 text-center">
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">

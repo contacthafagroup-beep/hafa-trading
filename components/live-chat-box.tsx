@@ -27,7 +27,7 @@ export default function LiveChatBox() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   // Scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -186,7 +186,13 @@ export default function LiveChatBox() {
                 </div>
 
                 {/* Chat Content */}
-                {!user ? (
+                {authLoading ? (
+                  // Loading auth state
+                  <div className="p-8 text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                    <p className="text-xs text-muted-foreground">Loading...</p>
+                  </div>
+                ) : !user ? (
                   // Not logged in - Show login prompt
                   <div className="p-3 text-center max-h-[calc(100vh-12rem)] overflow-y-auto">
                     <motion.div
