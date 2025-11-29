@@ -46,20 +46,73 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 dark:from-gray-950 dark:via-purple-950 dark:to-gray-950">
       <Navbar />
       
-      {/* Hero */}
-      <section className="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-16">
-        <div className="container mx-auto px-4">
+      {/* Hero with Premium Background */}
+      <section className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 text-white py-16 overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 20, repeat: Infinity }}
+            className="absolute top-10 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              rotate: [0, -90, 0],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 25, repeat: Infinity }}
+            className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"
+          />
+          
+          {/* Floating Icons */}
+          {['🛒', '📦', '✨', '💳', '🚚', '✅'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-4xl opacity-20"
+              style={{
+                left: `${15 + i * 15}%`,
+                top: `${20 + (i % 3) * 20}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 10, -10, 0],
+              }}
+              transition={{
+                duration: 5 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl mx-auto text-center"
           >
-            <ShoppingCart className="h-16 w-16 mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Shopping Cart</h1>
-            <p className="text-xl text-purple-100">
+            <motion.div
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              <ShoppingCart className="h-20 w-20 mx-auto mb-6 drop-shadow-2xl" />
+            </motion.div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Shopping Cart</h1>
+            <p className="text-xl md:text-2xl text-purple-100">
               {items.length} {items.length === 1 ? 'item' : 'items'} in your cart
             </p>
           </motion.div>
@@ -67,8 +120,22 @@ export default function CartPage() {
       </section>
 
       {/* Cart Content */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
+      <section className="py-12 relative">
+        {/* Background Decoration */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-200 to-blue-200 dark:from-purple-900/20 dark:to-blue-900/20 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-br from-cyan-200 to-purple-200 dark:from-cyan-900/20 dark:to-purple-900/20 rounded-full blur-3xl"
+          />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           {items.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

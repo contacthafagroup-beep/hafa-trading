@@ -44,6 +44,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdown && !(event.target as Element).closest('.relative')) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openDropdown]);
+
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
@@ -285,16 +296,58 @@ export default function Navbar() {
             {/* User Menu or Login Button */}
             {!loading && (
               user ? (
-                <div className="hidden md:flex items-center gap-2">
-                  <Link href="/dashboard">
-                    <Button variant="outline" className="border-2">
-                      <User className="mr-2 h-4 w-4" />
-                      {userData?.displayName || 'Dashboard'}
-                    </Button>
-                  </Link>
-                  <Button variant="ghost" size="icon" onClick={handleLogout}>
-                    <LogOut className="h-5 w-5" />
+                <div className="hidden md:block relative">
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    className="border-2 relative"
+                    onClick={() => setOpenDropdown(openDropdown === 'user' ? null : 'user')}
+                  >
+                    <User className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
                   </Button>
+                  
+                  {/* User Dropdown */}
+                  <AnimatePresence>
+                    {openDropdown === 'user' && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+                      >
+                        {/* User Info */}
+                        <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
+                              {userData?.displayName?.charAt(0)?.toUpperCase() || 'U'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold truncate">{userData?.displayName || 'User'}</p>
+                              <p className="text-xs opacity-90 truncate">{user.email}</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Menu Items */}
+                        <div className="p-2">
+                          <Link href="/dashboard" onClick={() => setOpenDropdown(null)}>
+                            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
+                              <User className="w-4 h-4" />
+                              <span>Dashboard</span>
+                            </button>
+                          </Link>
+                          <button 
+                            onClick={() => { handleLogout(); setOpenDropdown(null); }}
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors text-left"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            <span>Logout</span>
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ) : (
                 <Link href="/auth/login" className="hidden md:block">
@@ -410,13 +463,13 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <Link href="/dashboard" className="block">
-                      <Button variant="outline" className="w-full border-2">
-                        <User className="mr-2 h-4 w-4" />
-                        {userData?.displayName || 'Dashboard'}
+                      <Button variant="outline" className="w-full border-2 justify-start">
+                        <User className="mr-2 h-4 w-4 flex-shrink-0" />
+                        <span className="truncate">{userData?.displayName || 'Dashboard'}</span>
                       </Button>
                     </Link>
-                    <Button variant="outline" className="w-full border-2" onClick={handleLogout}>
-                      <LogOut className="mr-2 h-4 w-4" />
+                    <Button variant="outline" className="w-full border-2 justify-start" onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4 flex-shrink-0" />
                       Logout
                     </Button>
                   </>

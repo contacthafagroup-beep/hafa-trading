@@ -248,11 +248,11 @@ export default function ProductCarousel() {
 
         {/* Carousel */}
         <div 
-          className="relative max-w-6xl mx-auto"
+          className="relative max-w-6xl mx-auto px-4 md:px-0 mt-8"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="relative h-[500px] flex items-center justify-center perspective-1000">
+          <div className="relative min-h-[800px] md:h-[500px] flex items-center justify-center perspective-1000 pt-4">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentIndex}
@@ -267,20 +267,20 @@ export default function ProductCarousel() {
                   rotateY: { duration: 0.5 },
                   scale: { duration: 0.5 }
                 }}
-                className="absolute w-full"
+                className="absolute w-full top-4"
               >
                 <motion.div
                   whileHover={{ scale: 1.05, rotateY: 5 }}
                   transition={{ duration: 0.3 }}
-                  className="mx-auto max-w-4xl"
+                  className="mx-auto max-w-4xl w-full"
                 >
                   <Card className="overflow-hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border-2 border-purple-200/50 dark:border-purple-800/50 shadow-2xl">
-                    <div className="grid md:grid-cols-2 gap-6 p-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
                       {/* Left: Image */}
                       <div className="relative">
                         <motion.div
                           whileHover={{ scale: 1.1, rotate: 2 }}
-                          className="relative h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800"
+                          className="relative h-64 md:h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800"
                         >
                           {/* Placeholder with icon */}
                           <div className="absolute inset-0 flex items-center justify-center">

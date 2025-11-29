@@ -208,7 +208,13 @@ export default function BlogPostPage() {
 
             {/* Main Content */}
             <div className="prose prose-lg dark:prose-invert max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }} />
+              {post.content.split('\n').map((paragraph: string, index: number) => (
+                paragraph.trim() ? (
+                  <p key={index} className="mb-4 leading-relaxed">
+                    {paragraph}
+                  </p>
+                ) : null
+              ))}
             </div>
 
             {/* Share Section */}

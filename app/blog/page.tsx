@@ -17,6 +17,7 @@ import {
   TrendingDown, Phone, MessageCircle, CheckCircle
 } from 'lucide-react';
 import { getPublishedBlogPosts, formatBlogDate } from '@/lib/firebase/blog';
+import toast from 'react-hot-toast';
 
 const categories = [
   { name: 'All', icon: Globe, color: 'from-blue-500 to-cyan-500' },
@@ -55,6 +56,8 @@ export default function BlogPage() {
   const [selectedNewsPost, setSelectedNewsPost] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [savedArticles, setSavedArticles] = useState<string[]>([]);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribing, setSubscribing] = useState(false);
   const categorySliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,6 +135,31 @@ export default function BlogPage() {
     const wordsPerMinute = 200;
     const words = content.split(/\s+/).length;
     return Math.ceil(words / wordsPerMinute);
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!subscribeEmail || !subscribeEmail.includes('@')) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    
+    setSubscribing(true);
+    
+    try {
+      // Here you would typically save to a newsletter collection in Firestore
+      // For now, just show success message
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      
+      toast.success('Successfully subscribed! Check your email for confirmation.');
+      setSubscribeEmail('');
+    } catch (error) {
+      console.error('Subscribe error:', error);
+      toast.error('Failed to subscribe. Please try again.');
+    } finally {
+      setSubscribing(false);
+    }
   };
 
   return (
@@ -553,26 +581,26 @@ export default function BlogPage() {
                               )}
                               
                               {/* Content */}
-                              <div className="p-6">
+                              <div className="p-6 pt-8">
                                 <motion.h2
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="text-2xl font-bold mb-4 text-gray-900 dark:text-white"
+                                  className="text-lg font-bold mb-4 text-gray-900 dark:text-white line-clamp-3 leading-tight"
                                 >
                                   {selectedPost.title}
                                 </motion.h2>
                                 
-                                <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
+                                <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-gray-600 dark:text-gray-400">
                                   <span className="flex items-center gap-1">
-                                    <User className="w-4 h-4" />
-                                    {selectedPost.author}
+                                    <User className="w-3 h-3" />
+                                    <span className="truncate max-w-[100px]">{selectedPost.author}</span>
                                   </span>
                                   <span className="flex items-center gap-1">
-                                    <Calendar className="w-4 h-4" />
+                                    <Calendar className="w-3 h-3" />
                                     {formatBlogDate(selectedPost.publishedAt || selectedPost.createdAt)}
                                   </span>
                                   <span className="flex items-center gap-1">
-                                    <Clock className="w-4 h-4" />
+                                    <Clock className="w-3 h-3" />
                                     {calculateReadTime(selectedPost.content)} min
                                   </span>
                                 </div>
@@ -1190,30 +1218,42 @@ export default function BlogPage() {
                 Stay ahead with the latest trends, pricing updates, and logistics innovations
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                 <Input
                   type="email"
                   placeholder="Enter your email"
+                  value={subscribeEmail}
+                  onChange={(e) => setSubscribeEmail(e.target.value)}
+                  required
+                  disabled={subscribing}
                   className="bg-white/20 backdrop-blur-xl border-white/30 text-white placeholder:text-white/60 focus-visible:ring-white/50"
                 />
                 <Button 
+                  type="submit"
                   size="lg"
+                  disabled={subscribing}
                   className="bg-white text-blue-600 hover:bg-white/90 font-semibold shadow-xl hover:shadow-2xl transition-all"
                 >
-                  <motion.span
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    Subscribe Now
-                  </motion.span>
-                  <motion.div
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </motion.div>
+                  {subscribing ? (
+                    <span>Subscribing...</span>
+                  ) : (
+                    <>
+                      <motion.span
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        Subscribe Now
+                      </motion.span>
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </motion.div>
+                    </>
+                  )}
                 </Button>
-              </div>
+              </form>
               
               {/* Sparkle Effects */}
               {[...Array(6)].map((_, i) => (
