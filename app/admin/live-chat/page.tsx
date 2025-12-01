@@ -63,7 +63,7 @@ export default function AdminLiveChatPage() {
   const [recordingTime, setRecordingTime] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const recorderRef = useRef<RecordRTC | null>(null);
+  const recorderRef = useRef<any>(null);
   const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const { user, loading: authLoading } = useAuth();
 
