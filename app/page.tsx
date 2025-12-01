@@ -17,7 +17,7 @@ import {
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 import GlobalMap from '@/components/global-map';
-import LiveChatBox from '@/components/live-chat-box';
+import EnhancedChatBox from '@/components/chat/enhanced-chat-box';
 import InsightsSection from '@/components/insights-section';
 import WhyChooseSection from '@/components/why-choose-section';
 import MarketDashboard from '@/components/market-dashboard';
@@ -2356,8 +2356,8 @@ export default function HomePage() {
       {/* Insights Section - Latest Industry News */}
       <InsightsSection />
 
-      {/* Live Chat Box with Real-time Messaging */}
-      <LiveChatBox />
+      {/* Enhanced Live Chat Box with File Attachments, Emojis, and Voice Messages */}
+      <EnhancedChatBox />
 
       <Footer />
     </div>

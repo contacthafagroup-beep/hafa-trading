@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { auth } from '@/lib/firebase/config';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { Package, FileText, Truck, User, LogOut } from 'lucide-react';
+import { Package, FileText, Truck, User, LogOut, Briefcase } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function DashboardPage() {
@@ -84,7 +84,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
+            <div className="grid md:grid-cols-5 gap-6 mb-8">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
@@ -97,14 +97,26 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push('/dashboard/rfqs')}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground">RFQs</p>
-                      <p className="text-2xl font-bold">0</p>
+                      <p className="text-sm text-muted-foreground">My RFQs</p>
+                      <p className="text-2xl font-bold">View</p>
                     </div>
                     <FileText className="h-8 w-8 text-green-600" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push('/dashboard/partnerships')}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Partnerships</p>
+                      <p className="text-2xl font-bold">View</p>
+                    </div>
+                    <Briefcase className="h-8 w-8 text-indigo-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -147,6 +159,18 @@ export default function DashboardPage() {
                       <span>Request Quote</span>
                     </div>
                   </Button>
+                  <Button className="h-24" variant="outline" onClick={() => router.push('/dashboard/rfqs')}>
+                    <div className="text-center">
+                      <FileText className="h-8 w-8 mx-auto mb-2" />
+                      <span>View My RFQs</span>
+                    </div>
+                  </Button>
+                  <Button className="h-24" variant="outline" onClick={() => router.push('/dashboard/partnerships')}>
+                    <div className="text-center">
+                      <Briefcase className="h-8 w-8 mx-auto mb-2" />
+                      <span>My Partnerships</span>
+                    </div>
+                  </Button>
                   <Button className="h-24" variant="outline" onClick={() => router.push('/track')}>
                     <div className="text-center">
                       <Truck className="h-8 w-8 mx-auto mb-2" />
@@ -157,6 +181,12 @@ export default function DashboardPage() {
                     <div className="text-center">
                       <Package className="h-8 w-8 mx-auto mb-2" />
                       <span>Browse Products</span>
+                    </div>
+                  </Button>
+                  <Button className="h-24 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700" onClick={() => router.push('/partnership')}>
+                    <div className="text-center">
+                      <Briefcase className="h-8 w-8 mx-auto mb-2" />
+                      <span>Apply for Partnership</span>
                     </div>
                   </Button>
                 </div>

@@ -8,23 +8,31 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Search, Eye, Send, FileText, Loader2, Edit, Trash2, Mail, Reply } from 'lucide-react';
-import { getAllRFQs, updateRFQStatus, deleteRFQ, formatRFQDate, RFQ } from '@/lib/firebase/rfqs';
+import { getAllRFQs, updateRFQStatus, deleteRFQ, formatRFQDate, sendRFQReplyEmail, RFQ } from '@/lib/firebase/rfqs';
+import { getRFQMessages, sendRFQMessage, formatMessageDate, RFQMessage } from '@/lib/firebase/rfq-messages';
 import { formatCurrency } from '@/lib/utils';
+import { useAuth } from '@/contexts/auth-context';
 import toast from 'react-hot-toast';
 
 export default function RFQsPage() {
+  const { user } = useAuth();
   const [rfqs, setRfqs] = useState<RFQ[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRFQ, setSelectedRFQ] = useState<RFQ | null>(null);
   const [quoteDialog, setQuoteDialog] = useState(false);
   const [replyDialog, setReplyDialog] = useState(false);
+  const [messagesDialog, setMessagesDialog] = useState(false);
   const [quotedPrice, setQuotedPrice] = useState('');
   const [quotedNotes, setQuotedNotes] = useState('');
   const [replySubject, setReplySubject] = useState('');
   const [replyMessage, setReplyMessage] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
   const [newStatus, setNewStatus] = useState<RFQ['status']>('new');
+  const [messages, setMessages] = useState<RFQMessage[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   useEffect(() => {
     loadRFQs();
@@ -66,36 +74,90 @@ export default function RFQsPage() {
   };
 
   const handleSendReply = async () => {
-    if (!selectedRFQ || !replyMessage) {
+    if (!selectedRFQ || !replyMessage || !replySubject) {
       toast.error('Please fill in all required fields');
       return;
     }
     
     setSendingReply(true);
     try {
-      // Create mailto link with pre-filled content
-      const subject = encodeURIComponent(replySubject || `Re: RFQ #${selectedRFQ.id.slice(0, 8)} - ${selectedRFQ.productName}`);
-      const body = encodeURIComponent(replyMessage);
-      const mailtoLink = `mailto:${selectedRFQ.customerEmail}?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.location.href = mailtoLink;
+      // Send email via Firebase Function
+      await sendRFQReplyEmail(
+        selectedRFQ.customerEmail,
+        replySubject,
+        replyMessage,
+        selectedRFQ.id,
+        selectedRFQ.customerName
+      );
       
       // Update RFQ status to reviewing if it's new
       if (selectedRFQ.status === 'new') {
         await updateRFQStatus(selectedRFQ.id, 'reviewing');
       }
       
-      toast.success('Email client opened! Reply has been prepared.');
+      toast.success('Reply sent successfully to customer!');
       setReplyDialog(false);
       setReplySubject('');
       setReplyMessage('');
+      setSelectedRFQ(null);
       loadRFQs();
     } catch (error) {
       console.error('Error sending reply:', error);
-      toast.error('Failed to open email client');
+      toast.error('Failed to send reply. Please try again.');
     } finally {
       setSendingReply(false);
+    }
+  };
+
+  const loadMessages = async (rfqId: string) => {
+    setLoadingMessages(true);
+    try {
+      const msgs = await getRFQMessages(rfqId);
+      setMessages(msgs);
+    } catch (error) {
+      console.error('Error loading messages:', error);
+      toast.error('Failed to load messages');
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const openMessagesDialog = async (rfq: RFQ) => {
+    setSelectedRFQ(rfq);
+    setMessagesDialog(true);
+    await loadMessages(rfq.id);
+  };
+
+  const handleSendMessage = async () => {
+    if (!selectedRFQ || !newMessage.trim() || !user) {
+      toast.error('Please enter a message');
+      return;
+    }
+    
+    setSendingMessage(true);
+    try {
+      await sendRFQMessage(
+        selectedRFQ.id,
+        user.uid,
+        user.displayName || 'Admin',
+        'admin',
+        newMessage.trim()
+      );
+      
+      setNewMessage('');
+      await loadMessages(selectedRFQ.id);
+      toast.success('Message sent!');
+      
+      // Update RFQ status to reviewing if it's new
+      if (selectedRFQ.status === 'new') {
+        await updateRFQStatus(selectedRFQ.id, 'reviewing');
+        loadRFQs();
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message');
+    } finally {
+      setSendingMessage(false);
     }
   };
 
@@ -270,7 +332,15 @@ export default function RFQsPage() {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            title="Reply to Customer"
+                            title="Direct Message"
+                            onClick={() => openMessagesDialog(rfq)}
+                          >
+                            <Mail className="h-4 w-4 text-blue-600" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            title="Send Email Reply"
                             onClick={() => openReplyDialog(rfq)}
                           >
                             <Reply className="h-4 w-4 text-green-600" />
@@ -317,7 +387,7 @@ export default function RFQsPage() {
       </Card>
 
       {/* RFQ Details Dialog */}
-      <Dialog open={!!selectedRFQ && !quoteDialog} onOpenChange={(open) => !open && setSelectedRFQ(null)}>
+      <Dialog open={!!selectedRFQ && !quoteDialog && !replyDialog && !messagesDialog} onOpenChange={(open) => !open && setSelectedRFQ(null)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>RFQ Details</DialogTitle>
@@ -490,8 +560,128 @@ export default function RFQsPage() {
         </DialogContent>
       </Dialog>
 
+      {/* Direct Messages Dialog */}
+      <Dialog open={messagesDialog} onOpenChange={(open) => {
+        setMessagesDialog(open);
+        if (!open) {
+          setSelectedRFQ(null);
+          setMessages([]);
+          setNewMessage('');
+        }
+      }}>
+        <DialogContent className="max-w-3xl max-h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="h-5 w-5" />
+              Direct Messages - RFQ #{selectedRFQ?.id.slice(0, 8)}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedRFQ && (
+            <div className="flex flex-col flex-1 min-h-0">
+              {/* Customer Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800 mb-4">
+                <div className="grid grid-cols-3 gap-2 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Customer:</span>
+                    <p className="font-medium">{selectedRFQ.customerName}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Product:</span>
+                    <p className="font-medium">{selectedRFQ.productName}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Quantity:</span>
+                    <p className="font-medium">{selectedRFQ.quantity} {selectedRFQ.unit}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Messages Area */}
+              <div className="flex-1 overflow-y-auto border rounded-lg p-4 mb-4 bg-gray-50 dark:bg-gray-900 min-h-[300px] max-h-[400px]">
+                {loadingMessages ? (
+                  <div className="flex items-center justify-center h-full">
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  </div>
+                ) : messages.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+                    <Mail className="h-12 w-12 mb-2 opacity-50" />
+                    <p>No messages yet</p>
+                    <p className="text-sm">Start the conversation below</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {messages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`flex ${msg.senderRole === 'admin' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-[70%] rounded-lg p-3 ${
+                            msg.senderRole === 'admin'
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-white dark:bg-gray-800 border'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-semibold">
+                              {msg.senderName}
+                            </span>
+                            <span className={`text-xs ${msg.senderRole === 'admin' ? 'text-blue-100' : 'text-muted-foreground'}`}>
+                              {formatMessageDate(msg.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Message Input */}
+              <div className="flex gap-2">
+                <Textarea
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type your message to the customer..."
+                  rows={3}
+                  className="flex-1"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!newMessage.trim() || sendingMessage}
+                  className="self-end"
+                >
+                  {sendingMessage ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Customer will see this message in their dashboard. Press Enter to send, Shift+Enter for new line.
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Reply Dialog */}
-      <Dialog open={replyDialog} onOpenChange={setReplyDialog}>
+      <Dialog open={replyDialog} onOpenChange={(open) => {
+        setReplyDialog(open);
+        if (!open) {
+          setReplySubject('');
+          setReplyMessage('');
+          setSelectedRFQ(null);
+        }
+      }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -546,7 +736,7 @@ export default function RFQsPage() {
                   required
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  This will open your default email client with the message pre-filled
+                  This will send an email directly to the customer
                 </p>
               </div>
 
@@ -596,18 +786,18 @@ export default function RFQsPage() {
                 </Button>
                 <Button 
                   onClick={handleSendReply} 
-                  disabled={!replyMessage || sendingReply}
+                  disabled={!replyMessage || !replySubject || sendingReply}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   {sendingReply ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Opening...
+                      Sending Email...
                     </>
                   ) : (
                     <>
-                      <Mail className="h-4 w-4 mr-2" />
-                      Open Email Client
+                      <Send className="h-4 w-4 mr-2" />
+                      Send Reply
                     </>
                   )}
                 </Button>

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AuthProvider } from '@/lib/contexts/auth-context'
+import { ChatProvider } from '@/contexts/chat-context'
 import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,8 +24,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AuthProvider>
-            {children}
-            <Toaster position="top-right" />
+            <ChatProvider>
+              {children}
+              <Toaster position="top-right" />
+            </ChatProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

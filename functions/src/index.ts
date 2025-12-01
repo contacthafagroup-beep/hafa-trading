@@ -395,6 +395,221 @@ export const generateDailyAnalytics = functions.pubsub
     return null;
   });
 
+// Send RFQ reply email
+export const sendRFQReply = functions.https.onCall(async (data, context) => {
+  // Check if user is authenticated and is admin
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+  }
+
+  const { to, subject, message, rfqId, customerName } = data;
+
+  if (!to || !subject || !message) {
+    throw new functions.https.HttpsError('invalid-argument', 'Missing required fields');
+  }
+
+  try {
+    // Send email
+    await transporter.sendMail({
+      from: `"Hafa Trading PLC" <${process.env.SMTP_USER}>`,
+      to: to,
+      subject: subject,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              color: #333;
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            .header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 20px;
+              text-align: center;
+              border-radius: 10px 10px 0 0;
+            }
+            .content {
+              background: #f9f9f9;
+              padding: 30px;
+              border-radius: 0 0 10px 10px;
+            }
+            .message-body {
+              background: white;
+              padding: 20px;
+              border-radius: 8px;
+              margin: 20px 0;
+              white-space: pre-wrap;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 30px;
+              padding-top: 20px;
+              border-top: 1px solid #ddd;
+              color: #666;
+              font-size: 14px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h2>Hafa Trading PLC</h2>
+            <p>Your Trusted Partner in Global Trade</p>
+          </div>
+          
+          <div class="content">
+            <div class="message-body">
+              ${message.replace(/\n/g, '<br>')}
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p><strong>Hafa Trading PLC</strong></p>
+            <p>Hossana, Ethiopia</p>
+            <p>Phone: +251 954 742 383</p>
+            <p>Email: contact@hafatrading.com</p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+              This email was sent in response to your quotation request.
+            </p>
+          </div>
+        </body>
+        </html>
+      `,
+      text: message,
+    });
+
+    console.log(`RFQ reply sent to ${to} for RFQ ${rfqId}`);
+
+    // Create notification for tracking
+    if (rfqId) {
+      await admin.firestore().collection('notifications').add({
+        userId: 'admin',
+        title: 'RFQ Reply Sent',
+        message: `Reply sent to ${customerName} for RFQ #${rfqId.slice(0, 8)}`,
+        type: 'rfq',
+        isRead: false,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
+    return { success: true, message: 'Email sent successfully' };
+  } catch (error) {
+    console.error('Error sending RFQ reply:', error);
+    throw new functions.https.HttpsError('internal', 'Failed to send email');
+  }
+});
+
+// Send Partnership reply email
+export const sendPartnershipReply = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+  }
+
+  const { to, subject, message, partnershipId, companyName } = data;
+
+  if (!to || !subject || !message) {
+    throw new functions.https.HttpsError('invalid-argument', 'Missing required fields');
+  }
+
+  try {
+    await transporter.sendMail({
+      from: `"Hafa Trading PLC - Partnerships" <${process.env.SMTP_USER}>`,
+      to: to,
+      subject: subject,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              color: #333;
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            .header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 20px;
+              text-align: center;
+              border-radius: 10px 10px 0 0;
+            }
+            .content {
+              background: #f9f9f9;
+              padding: 30px;
+              border-radius: 0 0 10px 10px;
+            }
+            .message-body {
+              background: white;
+              padding: 20px;
+              border-radius: 8px;
+              margin: 20px 0;
+              white-space: pre-wrap;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 30px;
+              padding-top: 20px;
+              border-top: 1px solid #ddd;
+              color: #666;
+              font-size: 14px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h2>Hafa Trading PLC</h2>
+            <p>Partnership Team</p>
+          </div>
+          
+          <div class="content">
+            <div class="message-body">
+              ${message.replace(/\n/g, '<br>')}
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p><strong>Hafa Trading PLC</strong></p>
+            <p>Hossana, Ethiopia</p>
+            <p>Phone: +251 954 742 383</p>
+            <p>Email: partnerships@hafatrading.com</p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+              This email was sent in response to your partnership application.
+            </p>
+          </div>
+        </body>
+        </html>
+      `,
+      text: message,
+    });
+
+    console.log(`Partnership reply sent to ${to} for partnership ${partnershipId}`);
+
+    if (partnershipId) {
+      await admin.firestore().collection('notifications').add({
+        userId: 'admin',
+        title: 'Partnership Reply Sent',
+        message: `Reply sent to ${companyName}`,
+        type: 'partnership',
+        isRead: false,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
+    return { success: true, message: 'Email sent successfully' };
+  } catch (error) {
+    console.error('Error sending partnership reply:', error);
+    throw new functions.https.HttpsError('internal', 'Failed to send email');
+  }
+});
+
 // WhatsApp notification (placeholder - requires WhatsApp Business API)
 export const sendWhatsAppNotification = functions.https.onCall(async (data, context) => {
   // Implement WhatsApp API integration here

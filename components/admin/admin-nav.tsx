@@ -14,7 +14,8 @@ import {
   Settings,
   BarChart3,
   FolderTree,
-  Building2
+  Building2,
+  UserCheck
 } from 'lucide-react';
 
 const navItems = [
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/admin/customers', label: 'Customers', icon: Users },
   { href: '/admin/suppliers', label: 'Suppliers', icon: Building2 },
   { href: '/admin/rfqs', label: 'RFQs', icon: MessageSquare },
+  { href: '/admin/partnerships', label: 'Partnerships', icon: UserCheck },
   { href: '/admin/shipments', label: 'Shipments', icon: Truck },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/categories', label: 'Categories', icon: FolderTree },

@@ -13,30 +13,26 @@ import {
 } from 'firebase/firestore';
 import { db } from './config';
 
-export interface RFQ {
+export interface Partnership {
   id: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  companyName?: string;
-  productName: string;
-  productId?: string;
-  quantity: number;
-  unit: string;
-  targetPrice?: number;
-  deliveryLocation: string;
-  deliveryDate?: string;
-  additionalRequirements?: string;
-  status: 'new' | 'reviewing' | 'quoted' | 'accepted' | 'rejected' | 'expired';
-  quotedPrice?: number;
-  quotedNotes?: string;
+  companyName: string;
+  contactPerson: string;
+  email: string;
+  phone: string;
+  country: string;
+  businessType: string;
+  productsInterested: string;
+  annualVolume?: string;
+  message?: string;
+  status: 'new' | 'reviewing' | 'approved' | 'rejected' | 'contacted';
+  notes?: string;
   createdAt: any;
   updatedAt: any;
 }
 
-const COLLECTION_NAME = 'rfqs';
+const COLLECTION_NAME = 'partnerships';
 
-export async function getAllRFQs(): Promise<RFQ[]> {
+export async function getAllPartnerships(): Promise<Partnership[]> {
   if (!db) {
     console.error('Firestore not initialized');
     return [];
@@ -47,14 +43,14 @@ export async function getAllRFQs(): Promise<RFQ[]> {
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    } as RFQ));
+    } as Partnership));
   } catch (error) {
-    console.error('Error getting RFQs:', error);
+    console.error('Error getting partnerships:', error);
     throw error;
   }
 }
 
-export async function getRFQById(id: string): Promise<RFQ | null> {
+export async function getPartnershipById(id: string): Promise<Partnership | null> {
   if (!db) {
     console.error('Firestore not initialized');
     return null;
@@ -67,53 +63,37 @@ export async function getRFQById(id: string): Promise<RFQ | null> {
       return {
         id: docSnap.id,
         ...docSnap.data()
-      } as RFQ;
+      } as Partnership;
     }
     return null;
   } catch (error) {
-    console.error('Error getting RFQ:', error);
+    console.error('Error getting partnership:', error);
     throw error;
   }
 }
 
-export async function createRFQ(data: Omit<RFQ, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+export async function createPartnership(data: Omit<Partnership, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
   if (!db) {
     throw new Error('Firestore not initialized');
   }
   try {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       ...data,
+      status: 'new',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
     return docRef.id;
   } catch (error) {
-    console.error('Error creating RFQ:', error);
+    console.error('Error creating partnership:', error);
     throw error;
   }
 }
 
-export async function updateRFQ(id: string, data: Partial<RFQ>): Promise<void> {
-  if (!db) {
-    throw new Error('Firestore not initialized');
-  }
-  try {
-    const docRef = doc(db, COLLECTION_NAME, id);
-    await updateDoc(docRef, {
-      ...data,
-      updatedAt: serverTimestamp()
-    });
-  } catch (error) {
-    console.error('Error updating RFQ:', error);
-    throw error;
-  }
-}
-
-export async function updateRFQStatus(
+export async function updatePartnershipStatus(
   id: string, 
-  status: RFQ['status'],
-  quotedPrice?: number,
-  quotedNotes?: string
+  status: Partnership['status'],
+  notes?: string
 ): Promise<void> {
   if (!db) {
     throw new Error('Firestore not initialized');
@@ -125,22 +105,18 @@ export async function updateRFQStatus(
       updatedAt: serverTimestamp()
     };
     
-    if (quotedPrice !== undefined) {
-      updateData.quotedPrice = quotedPrice;
-    }
-    
-    if (quotedNotes) {
-      updateData.quotedNotes = quotedNotes;
+    if (notes) {
+      updateData.notes = notes;
     }
     
     await updateDoc(docRef, updateData);
   } catch (error) {
-    console.error('Error updating RFQ status:', error);
+    console.error('Error updating partnership status:', error);
     throw error;
   }
 }
 
-export async function deleteRFQ(id: string): Promise<void> {
+export async function deletePartnership(id: string): Promise<void> {
   if (!db) {
     throw new Error('Firestore not initialized');
   }
@@ -148,12 +124,12 @@ export async function deleteRFQ(id: string): Promise<void> {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
   } catch (error) {
-    console.error('Error deleting RFQ:', error);
+    console.error('Error deleting partnership:', error);
     throw error;
   }
 }
 
-export function formatRFQDate(timestamp: any): string {
+export function formatPartnershipDate(timestamp: any): string {
   if (!timestamp) return 'N/A';
   
   try {
@@ -161,37 +137,38 @@ export function formatRFQDate(timestamp: any): string {
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   } catch (error) {
     return 'N/A';
   }
 }
 
-export async function sendRFQReplyEmail(
+export async function sendPartnershipReplyEmail(
   to: string,
   subject: string,
   message: string,
-  rfqId: string,
-  customerName: string
+  partnershipId: string,
+  companyName: string
 ): Promise<void> {
   try {
-    // Import functions dynamically to avoid initialization issues
     const { getFunctions, httpsCallable } = await import('firebase/functions');
     const functions = getFunctions();
-    const sendEmail = httpsCallable(functions, 'sendRFQReply');
+    const sendEmail = httpsCallable(functions, 'sendPartnershipReply');
     
     const result = await sendEmail({
       to,
       subject,
       message,
-      rfqId,
-      customerName
+      partnershipId,
+      companyName
     });
     
     console.log('Email sent successfully:', result);
   } catch (error) {
-    console.error('Error sending RFQ reply email:', error);
+    console.error('Error sending partnership reply email:', error);
     throw error;
   }
 }
