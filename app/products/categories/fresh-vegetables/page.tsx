@@ -880,17 +880,101 @@ export default function FreshVegetablesPage() {
             <Card className="overflow-hidden">
               <CardContent className="p-0">
                 <div className="aspect-video bg-gradient-to-br from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 relative">
-                  <iframe
-                    src="https://www.google.com/maps/d/embed?mid=1_vZ8K8K8K8K8K8K8K8K8K8K8K8K8K8K&ehbc=2E312F"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full h-full"
-                  />
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"></div>
+                  {/* Interactive Visual Map */}
+                  <div className="w-full h-full flex items-center justify-center p-8">
+                    <div className="relative w-full h-full max-w-4xl mx-auto">
+                      {/* Central Ethiopia */}
+                      <motion.div
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <div className="relative">
+                          <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white">
+                            🇪🇹
+                          </div>
+                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                            <div className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                              Ethiopia
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {/* Export Destinations */}
+                      {[
+                        { flag: '🇦🇪', name: 'UAE', position: 'top-[20%] right-[15%]', delay: 0 },
+                        { flag: '🇸🇦', name: 'Saudi', position: 'top-[15%] right-[25%]', delay: 0.1 },
+                        { flag: '🇬🇧', name: 'UK', position: 'top-[10%] left-[20%]', delay: 0.2 },
+                        { flag: '🇩🇪', name: 'Germany', position: 'top-[15%] left-[30%]', delay: 0.3 },
+                        { flag: '🇳🇱', name: 'Netherlands', position: 'top-[12%] left-[35%]', delay: 0.4 },
+                        { flag: '🇮🇳', name: 'India', position: 'bottom-[25%] right-[10%]', delay: 0.5 },
+                        { flag: '🇨🇳', name: 'China', position: 'top-[25%] right-[5%]', delay: 0.6 },
+                        { flag: '🇴🇲', name: 'Oman', position: 'top-[30%] right-[20%]', delay: 0.7 },
+                        { flag: '🇶🇦', name: 'Qatar', position: 'top-[25%] right-[22%]', delay: 0.8 },
+                      ].map((dest, index) => (
+                        <motion.div
+                          key={index}
+                          className={`absolute ${dest.position}`}
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: dest.delay, duration: 0.5 }}
+                        >
+                          <motion.div
+                            className="relative group cursor-pointer"
+                            whileHover={{ scale: 1.2 }}
+                          >
+                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-blue-500">
+                              {dest.flag}
+                            </div>
+                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">
+                                {dest.name}
+                              </div>
+                            </div>
+                            {/* Connection Line */}
+                            <svg className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none" style={{ zIndex: -1 }}>
+                              <motion.line
+                                x1="0"
+                                y1="0"
+                                x2={dest.position.includes('left') ? '200' : '-200'}
+                                y2={dest.position.includes('top') ? '100' : '-100'}
+                                stroke="#10b981"
+                                strokeWidth="2"
+                                strokeDasharray="5,5"
+                                initial={{ pathLength: 0 }}
+                                animate={{ pathLength: 1 }}
+                                transition={{ delay: dest.delay + 0.5, duration: 1 }}
+                              />
+                            </svg>
+                          </motion.div>
+                        </motion.div>
+                      ))}
+
+                      {/* Decorative Elements */}
+                      <div className="absolute inset-0 pointer-events-none">
+                        {[...Array(20)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-green-400 rounded-full"
+                            style={{
+                              left: `${Math.random() * 100}%`,
+                              top: `${Math.random() * 100}%`,
+                            }}
+                            animate={{
+                              scale: [0, 1, 0],
+                              opacity: [0, 1, 0],
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              delay: Math.random() * 2,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="p-6 bg-gradient-to-r from-green-600 to-blue-600 text-white">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
