@@ -31,7 +31,12 @@ import { ChatMessage, FileUpload } from '@/types/chat';
 import { validateFile, getFileType, formatFileSize } from '@/lib/chat-utils';
 import { uploadToCloudinary } from '@/lib/cloudinary-upload';
 import toast from 'react-hot-toast';
-import RecordRTC from 'recordrtc';
+
+// Dynamic import for RecordRTC to avoid SSR issues
+let RecordRTC: any = null;
+if (typeof window !== 'undefined') {
+  RecordRTC = require('recordrtc');
+}
 
 interface Message extends ChatMessage {
   read: boolean;
@@ -297,6 +302,11 @@ export default function AdminLiveChatPage() {
 
   // Voice recording
   const startRecording = async () => {
+    if (!RecordRTC) {
+      toast.error('Voice recording not available');
+      return;
+    }
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new RecordRTC(stream, {

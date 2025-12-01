@@ -20,7 +20,12 @@ import { validateFile, getFileType, formatFileSize } from '@/lib/chat-utils';
 import { uploadToCloudinary } from '@/lib/cloudinary-upload';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import RecordRTC from 'recordrtc';
+
+// Dynamic import for RecordRTC to avoid SSR issues
+let RecordRTC: any = null;
+if (typeof window !== 'undefined') {
+  RecordRTC = require('recordrtc');
+}
 
 export default function EnhancedChatBox() {
   const { isOpen, setIsOpen } = useChat();
@@ -199,6 +204,11 @@ export default function EnhancedChatBox() {
 
   // Voice recording
   const startRecording = async () => {
+    if (!RecordRTC) {
+      toast.error('Voice recording not available');
+      return;
+    }
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new RecordRTC(stream, {
