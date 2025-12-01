@@ -870,112 +870,142 @@ export default function FreshVegetablesPage() {
             <p className="text-lg text-muted-foreground">Trusted by importers across 20+ countries worldwide</p>
           </motion.div>
 
-          {/* World Map */}
+          {/* Global Reach Visualization */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
-            <Card className="overflow-hidden">
-              <CardContent className="p-0">
-                <div className="aspect-video bg-gradient-to-br from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 relative">
-                  {/* Interactive Visual Map */}
-                  <div className="w-full h-full flex items-center justify-center p-8">
-                    <div className="relative w-full h-full max-w-4xl mx-auto">
-                      {/* Central Ethiopia */}
-                      <motion.div
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        <div className="relative">
-                          <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white">
-                            🇪🇹
-                          </div>
-                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                            <div className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                              Ethiopia
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
+            <Card className="overflow-hidden border-2 border-green-200 dark:border-green-800">
+              <CardContent className="p-8">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold mb-2">🌍 Our Global Export Network</h3>
+                  <p className="text-muted-foreground">Connecting Ethiopian farms to markets worldwide</p>
+                </div>
 
-                      {/* Export Destinations */}
+                {/* Simple Grid Layout */}
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* GCC Countries */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-orange-600">🕌 GCC Markets</h4>
+                    <div className="space-y-3">
                       {[
-                        { flag: '🇦🇪', name: 'UAE', position: 'top-[20%] right-[15%]', delay: 0 },
-                        { flag: '🇸🇦', name: 'Saudi', position: 'top-[15%] right-[25%]', delay: 0.1 },
-                        { flag: '🇬🇧', name: 'UK', position: 'top-[10%] left-[20%]', delay: 0.2 },
-                        { flag: '🇩🇪', name: 'Germany', position: 'top-[15%] left-[30%]', delay: 0.3 },
-                        { flag: '🇳🇱', name: 'Netherlands', position: 'top-[12%] left-[35%]', delay: 0.4 },
-                        { flag: '🇮🇳', name: 'India', position: 'bottom-[25%] right-[10%]', delay: 0.5 },
-                        { flag: '🇨🇳', name: 'China', position: 'top-[25%] right-[5%]', delay: 0.6 },
-                        { flag: '🇴🇲', name: 'Oman', position: 'top-[30%] right-[20%]', delay: 0.7 },
-                        { flag: '🇶🇦', name: 'Qatar', position: 'top-[25%] right-[22%]', delay: 0.8 },
-                      ].map((dest, index) => (
+                        { flag: '🇦🇪', name: 'United Arab Emirates', volume: 'High' },
+                        { flag: '🇸🇦', name: 'Saudi Arabia', volume: 'High' },
+                        { flag: '🇴🇲', name: 'Oman', volume: 'Medium' },
+                        { flag: '🇶🇦', name: 'Qatar', volume: 'Medium' },
+                        { flag: '🇰🇼', name: 'Kuwait', volume: 'Medium' },
+                      ].map((country, idx) => (
                         <motion.div
-                          key={index}
-                          className={`absolute ${dest.position}`}
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: dest.delay, duration: 0.5 }}
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, x: 5 }}
                         >
-                          <motion.div
-                            className="relative group cursor-pointer"
-                            whileHover={{ scale: 1.2 }}
-                          >
-                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-blue-500">
-                              {dest.flag}
-                            </div>
-                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">
-                                {dest.name}
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : 'text-blue-600'}`}>
+                                  {country.volume} Volume
+                                </div>
                               </div>
-                            </div>
-                            {/* Connection Line */}
-                            <svg className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none" style={{ zIndex: -1 }}>
-                              <motion.line
-                                x1="0"
-                                y1="0"
-                                x2={dest.position.includes('left') ? '200' : '-200'}
-                                y2={dest.position.includes('top') ? '100' : '-100'}
-                                stroke="#10b981"
-                                strokeWidth="2"
-                                strokeDasharray="5,5"
-                                initial={{ pathLength: 0 }}
-                                animate={{ pathLength: 1 }}
-                                transition={{ delay: dest.delay + 0.5, duration: 1 }}
-                              />
-                            </svg>
-                          </motion.div>
+                            </CardContent>
+                          </Card>
                         </motion.div>
                       ))}
+                    </div>
+                  </div>
 
-                      {/* Decorative Elements */}
-                      <div className="absolute inset-0 pointer-events-none">
-                        {[...Array(20)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-green-400 rounded-full"
-                            style={{
-                              left: `${Math.random() * 100}%`,
-                              top: `${Math.random() * 100}%`,
-                            }}
-                            animate={{
-                              scale: [0, 1, 0],
-                              opacity: [0, 1, 0],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              delay: Math.random() * 2,
-                            }}
-                          />
-                        ))}
-                      </div>
+                  {/* European Countries */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-blue-600">🇪🇺 European Markets</h4>
+                    <div className="space-y-3">
+                      {[
+                        { flag: '🇳🇱', name: 'Netherlands', volume: 'High' },
+                        { flag: '🇬🇧', name: 'United Kingdom', volume: 'Medium' },
+                        { flag: '🇩🇪', name: 'Germany', volume: 'Medium' },
+                        { flag: '🇫🇷', name: 'France', volume: 'Growing' },
+                        { flag: '🇧🇪', name: 'Belgium', volume: 'Growing' },
+                      ].map((country, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: -20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -5 }}
+                        >
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : country.volume === 'Medium' ? 'text-blue-600' : 'text-orange-600'}`}>
+                                  {country.volume} Volume
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Asian Countries */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-red-600">🌏 Asian Markets</h4>
+                    <div className="space-y-3">
+                      {[
+                        { flag: '🇮🇳', name: 'India', volume: 'High' },
+                        { flag: '🇨🇳', name: 'China', volume: 'Growing' },
+                        { flag: '🇸🇬', name: 'Singapore', volume: 'Medium' },
+                        { flag: '🇲🇾', name: 'Malaysia', volume: 'Growing' },
+                        { flag: '🇯🇵', name: 'Japan', volume: 'Growing' },
+                      ].map((country, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, x: -5 }}
+                        >
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : 'text-orange-600'}`}>
+                                  {country.volume} Volume
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
                 </div>
+
+                {/* Ethiopia at Center */}
+                <motion.div
+                  className="mt-8 text-center"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-700 text-white px-8 py-4 rounded-full shadow-2xl">
+                    <span className="text-4xl">🇪🇹</span>
+                    <div className="text-left">
+                      <div className="font-bold text-lg">Ethiopia</div>
+                      <div className="text-sm text-green-100">Origin of Premium Vegetables</div>
+                    </div>
+                  </div>
+                </motion.div>
                 <div className="p-6 bg-gradient-to-r from-green-600 to-blue-600 text-white">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div>
