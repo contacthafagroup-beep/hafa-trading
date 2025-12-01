@@ -369,9 +369,9 @@ export default function EnhancedChatBox() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="fixed bottom-4 right-4 w-[min(400px,calc(100vw-2rem))] h-[min(600px,calc(100vh-2rem))] z-50"
-      {...getRootProps()}
     >
-      <Card className="h-full w-full flex flex-col shadow-2xl overflow-hidden">
+      <div {...getRootProps()} className="h-full w-full">
+        <Card className="h-full w-full flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-lg flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -540,6 +540,7 @@ export default function EnhancedChatBox() {
           </div>
         </div>
       </Card>
+      </div>
     </motion.div>
   );
 }
