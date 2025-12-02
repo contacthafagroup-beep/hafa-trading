@@ -15,12 +15,14 @@ import {
   BarChart3,
   FolderTree,
   Building2,
-  UserCheck
+  UserCheck,
+  Image
 } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/admin/product-gallery', label: 'Product Gallery', icon: Image },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/customers', label: 'Customers', icon: Users },
   { href: '/admin/suppliers', label: 'Suppliers', icon: Building2 },

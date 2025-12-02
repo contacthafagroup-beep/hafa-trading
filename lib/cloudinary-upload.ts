@@ -26,19 +26,28 @@ export async function uploadToCloudinary(
 
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        resolve({
-          url: response.secure_url,
-          thumbnailUrl: response.eager?.[0]?.secure_url || response.secure_url,
-          publicId: response.public_id
-        });
+        try {
+          const response = JSON.parse(xhr.responseText);
+          resolve({
+            url: response.secure_url,
+            thumbnailUrl: response.eager?.[0]?.secure_url || response.secure_url,
+            publicId: response.public_id
+          });
+        } catch (error) {
+          reject(new Error('Failed to parse upload response'));
+        }
       } else {
-        reject(new Error('Upload failed'));
+        try {
+          const errorResponse = JSON.parse(xhr.responseText);
+          reject(new Error(`Upload failed: ${errorResponse.error?.message || xhr.statusText}`));
+        } catch {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
+        }
       }
     });
 
     xhr.addEventListener('error', () => {
-      reject(new Error('Upload failed'));
+      reject(new Error('Network error during upload'));
     });
 
     xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`);

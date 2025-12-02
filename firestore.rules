@@ -9,7 +9,8 @@ service cloud.firestore {
     
     function isAdmin() {
       return isSignedIn() && 
-             (request.auth.token.email == 'admin@hafatrading.com' ||
+             (request.auth.token.email == 'tilahunmekbib345@gmail.com' ||
+              request.auth.token.email == 'admin@hafatrading.com' ||
               get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
     }
     
@@ -163,6 +164,14 @@ service cloud.firestore {
       allow read: if true;
       // Only admins can modify site content
       allow write: if isAdmin();
+    }
+    
+    // Product Gallery collection
+    match /productGallery/{galleryId} {
+      // Anyone can read gallery items
+      allow read: if true;
+      // Only admins can create, update, or delete gallery items
+      allow create, update, delete: if isAdmin();
     }
     
     // Default deny all other collections
