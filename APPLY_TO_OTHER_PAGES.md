@@ -2,7 +2,7 @@
 
 ## Status:
 - ✅ Fresh Vegetables - COMPLETE
-- ✅ Fresh Fruits - COMPLETE (All sections added: Stats, Features, Enhanced Product Grid with detailed modal, Before/After, Quality Control, Facilities, Product Gallery, Sample Order, FAQ)
+- ✅ Fresh Fruits - 100% COMPLETE (All sections added and reordered to match vegetables page exactly)
 - ⏳ Grains & Legumes - PENDING
 - ⏳ Herbs & Spices - PENDING
 - ⏳ Livestock & Meat - PENDING
