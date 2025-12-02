@@ -47,6 +47,10 @@ export default function ProductGalleryAdmin() {
 
   const loadItems = async () => {
     try {
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
       const q = query(collection(db, 'productGallery'), orderBy('order', 'asc'));
       const snapshot = await getDocs(q);
       const loadedItems = snapshot.docs.map(doc => ({
