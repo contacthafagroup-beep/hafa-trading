@@ -69,6 +69,11 @@ export default function FacilitiesSection({ items, onDelete, onReload }: Props) 
         updatedAt: new Date()
       };
 
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
+
       if (editingItem) {
         await updateDoc(doc(db, 'productGallery', editingItem.id), itemData);
         toast.success('Facility updated');

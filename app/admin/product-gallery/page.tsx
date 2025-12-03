@@ -71,6 +71,10 @@ export default function ProductGalleryAdmin() {
     if (!confirm(`Are you sure you want to delete "${item.name}"?`)) return;
 
     try {
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
       await deleteDoc(doc(db, 'productGallery', item.id));
       toast.success('Item deleted successfully');
       loadItems();

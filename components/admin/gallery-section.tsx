@@ -84,6 +84,11 @@ export default function GallerySection({ items, onDelete, onReload }: Props) {
 
       console.log('Saving to Firestore:', itemData);
 
+      if (!db) {
+        toast.error('Firebase not initialized');
+        return;
+      }
+
       if (editingItem) {
         await updateDoc(doc(db, 'productGallery', editingItem.id), itemData);
         toast.success('Gallery item updated');
