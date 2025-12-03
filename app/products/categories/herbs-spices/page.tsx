@@ -8,13 +8,73 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { ArrowLeft, CheckCircle, Package, Play, MapPin, Award, Download, Phone, Mail, MessageCircle, FileText, Info, Leaf, ThermometerSnowflake, Calendar, Scale, ShieldCheck } from 'lucide-react';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+
+interface GalleryItem {
+  id: string;
+  section: string;
+  category?: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  emoji: string;
+  order: number;
+  productName?: string;
+  beforeTitle?: string;
+  beforeDesc?: string;
+  beforeIcon?: string;
+  beforeFeatures?: string[];
+  beforeImageUrl?: string;
+  afterTitle?: string;
+  afterDesc?: string;
+  afterIcon?: string;
+  afterFeatures?: string[];
+  afterImageUrl?: string;
+  color?: string;
+  facilityFeatures?: string[];
+  createdAt: Date;
+}
 
 export default function HerbsSpicesPage() {
   const [activeVideo, setActiveVideo] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [beforeAfterItems, setBeforeAfterItems] = useState<GalleryItem[]>([]);
+  const [facilityItems, setFacilityItems] = useState<GalleryItem[]>([]);
+  const [loadingGallery, setLoadingGallery] = useState(true);
+
+  useEffect(() => {
+    loadGalleryItems();
+  }, []);
+
+  const loadGalleryItems = async () => {
+    try {
+      if (!db) {
+        setLoadingGallery(false);
+        return;
+      }
+
+      const q = query(collection(db, 'productGallery'), orderBy('order', 'asc'));
+      const snapshot = await getDocs(q);
+      const items = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date()
+      })) as GalleryItem[];
+
+      setGalleryItems(items.filter(item => item.section === 'gallery'));
+      setBeforeAfterItems(items.filter(item => item.section === 'beforeAfter'));
+      setFacilityItems(items.filter(item => item.section === 'facilities'));
+    } catch (error) {
+      console.error('Error loading gallery:', error);
+    } finally {
+      setLoadingGallery(false);
+    }
+  };
 
   const freshHerbs = [
     { 
@@ -837,6 +897,560 @@ export default function HerbsSpicesPage() {
         </div>
       </section>
 
+      {/* From Farm to Export - Our Process */}
+      <section className="py-16 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+        {/* Animated Background Icons */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          {['🌿', '➡️', '📦', '✨', '🚜', '🏆'].map((icon, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-9xl"
+              animate={{
+                x: [0, 20, 0],
+                y: [0, -20, 0],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{
+                duration: 8 + i,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.3
+              }}
+              style={{ left: `${10 + i * 15}%`, top: `${(i * 25) % 70}%` }}
+            >
+              {icon}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-5xl"
+              >
+                🌿
+              </motion.div>
+              <motion.div
+                animate={{ x: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="text-4xl"
+              >
+                ➡️
+              </motion.div>
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                className="text-5xl"
+              >
+                📦
+              </motion.div>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-orange-600 to-green-600 bg-clip-text text-transparent">
+              From Farm to Export - Our Process
+            </h2>
+            <p className="text-lg text-muted-foreground">See the transformation from harvest to premium export-ready herbs & spices</p>
+          </motion.div>
+
+          {/* Process Steps */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                step: 1,
+                icon: '🌱',
+                title: 'Harvest',
+                desc: 'Fresh herbs picked at peak aroma, spices harvested at optimal maturity',
+                color: 'from-green-500 to-emerald-500'
+              },
+              {
+                step: 2,
+                icon: '☀️',
+                title: 'Drying & Processing',
+                desc: 'Traditional sun-drying or controlled dehydration to preserve natural properties',
+                color: 'from-orange-500 to-amber-500'
+              },
+              {
+                step: 3,
+                icon: '🔬',
+                title: 'Quality Testing',
+                desc: 'Lab analysis for purity, moisture content, and essential oil levels',
+                color: 'from-blue-500 to-cyan-500'
+              },
+              {
+                step: 4,
+                icon: '✅',
+                title: 'Sorting & Grading',
+                desc: 'Manual inspection and grading by size, color, and quality standards',
+                color: 'from-purple-500 to-pink-500'
+              },
+              {
+                step: 5,
+                icon: '📦',
+                title: 'Hygienic Packaging',
+                desc: 'Food-grade, moisture-proof packaging with tamper-evident sealing',
+                color: 'from-red-500 to-rose-500'
+              },
+              {
+                step: 6,
+                icon: '✈️',
+                title: 'Export',
+                desc: 'Temperature-controlled storage and fast shipping to global markets',
+                color: 'from-indigo-500 to-blue-500'
+              }
+            ].map((process, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="h-full hover:shadow-2xl transition-all border-2 border-purple-100 dark:border-purple-900 overflow-hidden">
+                  <div className={`h-2 bg-gradient-to-r ${process.color}`}></div>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">
+                        {process.step}
+                      </div>
+                      <div className="text-5xl">{process.icon}</div>
+                    </div>
+                    <h3 className="font-bold text-xl mb-2 text-purple-700 dark:text-purple-400">{process.title}</h3>
+                    <p className="text-sm text-muted-foreground">{process.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Before & After Comparisons */}
+          <div className="space-y-8 mb-12">
+            {loadingGallery ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+                <p className="mt-4 text-muted-foreground">Loading...</p>
+              </div>
+            ) : beforeAfterItems.length > 0 ? (
+              beforeAfterItems.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                >
+                  <Card className="overflow-hidden border-2 border-purple-200 dark:border-purple-800">
+                    <div className={`h-2 bg-gradient-to-r ${item.color || 'from-purple-500 to-orange-500'}`}></div>
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <span className="text-5xl">{item.emoji}</span>
+                        <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-400">{item.productName}</h3>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-6 relative">
+                        {/* Before */}
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          className="relative"
+                        >
+                          <div className="absolute -top-3 -left-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+                            BEFORE
+                          </div>
+                          <Card className="h-full bg-blue-50 dark:bg-blue-950 border-2 border-blue-200 dark:border-blue-800">
+                            <CardContent className="p-6">
+                              {item.beforeImageUrl ? (
+                                <div className="aspect-video mb-4 rounded-lg overflow-hidden shadow-lg border-2 border-blue-300">
+                                  <img src={item.beforeImageUrl} alt={item.beforeTitle} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                </div>
+                              ) : (
+                                <motion.div 
+                                  className="text-6xl mb-4 text-center"
+                                  animate={{ scale: [1, 1.1, 1] }}
+                                  transition={{ duration: 2, repeat: Infinity }}
+                                >
+                                  {item.beforeIcon}
+                                </motion.div>
+                              )}
+                              <h4 className="font-bold text-lg mb-2 text-center">{item.beforeTitle}</h4>
+                              <p className="text-sm text-muted-foreground mb-4 text-center">{item.beforeDesc}</p>
+                              <div className="space-y-2">
+                                {item.beforeFeatures?.map((feature, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 text-sm">
+                                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                    <span>{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+
+                        {/* Arrow */}
+                        <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                          <motion.div
+                            animate={{ x: [0, 10, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                            className="text-4xl"
+                          >
+                            ➡️
+                          </motion.div>
+                        </div>
+
+                        {/* After */}
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          className="relative"
+                        >
+                          <div className="absolute -top-3 -right-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+                            AFTER
+                          </div>
+                          <Card className="h-full bg-purple-50 dark:bg-purple-950 border-2 border-purple-200 dark:border-purple-800">
+                            <CardContent className="p-6">
+                              {item.afterImageUrl ? (
+                                <div className="aspect-video mb-4 rounded-lg overflow-hidden shadow-lg border-2 border-purple-300">
+                                  <img src={item.afterImageUrl} alt={item.afterTitle} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                </div>
+                              ) : (
+                                <motion.div 
+                                  className="text-6xl mb-4 text-center"
+                                  animate={{ scale: [1, 1.1, 1] }}
+                                  transition={{ duration: 2, repeat: Infinity }}
+                                >
+                                  {item.afterIcon}
+                                </motion.div>
+                              )}
+                              <h4 className="font-bold text-lg mb-2 text-center">{item.afterTitle}</h4>
+                              <p className="text-sm text-muted-foreground mb-4 text-center">{item.afterDesc}</p>
+                              <div className="space-y-2">
+                                {item.afterFeatures?.map((feature, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 text-sm">
+                                    <CheckCircle className="w-4 h-4 text-purple-600" />
+                                    <span>{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))
+            ) : (
+              <Card>
+                <CardContent className="p-12 text-center text-muted-foreground">
+                  <p>No before & after items yet. <Link href="/admin/product-gallery" className="text-purple-600 hover:underline">Add from admin panel</Link></p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Quality Control Process */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <div className="text-center mb-8">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+                className="text-5xl mb-3 inline-block"
+              >
+                🔬
+              </motion.div>
+              <h3 className="text-2xl font-bold mb-2">Quality Control Process</h3>
+              <p className="text-muted-foreground">Rigorous testing at every stage</p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4">
+              {[
+                { icon: '🧪', title: 'Lab Testing', desc: 'Purity & contaminant analysis' },
+                { icon: '💧', title: 'Moisture Check', desc: 'Optimal moisture content' },
+                { icon: '🌡️', title: 'Temperature Control', desc: 'Proper storage conditions' },
+                { icon: '⚖️', title: 'Weight Verification', desc: 'Accurate measurements' }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Card className="text-center hover:shadow-lg transition-all border-2 border-purple-100 dark:border-purple-900">
+                    <CardContent className="p-6">
+                      <div className="text-4xl mb-3">{item.icon}</div>
+                      <h4 className="font-bold mb-1">{item.title}</h4>
+                      <p className="text-xs text-muted-foreground">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Our Facilities */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            {/* Animated Background Icons */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none overflow-hidden">
+              {['🏭', '🌾', '❄️', '🚚', '⚙️', '🔧'].map((icon, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute text-8xl"
+                  animate={{
+                    y: [0, -25, 0],
+                    rotate: [0, 15, -15, 0],
+                    scale: [1, 1.15, 1]
+                  }}
+                  transition={{
+                    duration: 7 + i,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: i * 0.4
+                  }}
+                  style={{ left: `${5 + i * 16}%`, top: `${(i * 30) % 60}%` }}
+                >
+                  {icon}
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="text-center mb-8 relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  className="text-5xl"
+                >
+                  ⚙️
+                </motion.div>
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                  className="text-5xl"
+                >
+                  🏭
+                </motion.div>
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-5xl"
+                >
+                  ❄️
+                </motion.div>
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">
+                Our Facilities
+              </h3>
+            </div>
+
+            {loadingGallery ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+                <p className="mt-4 text-muted-foreground">Loading...</p>
+              </div>
+            ) : facilityItems.length > 0 ? (
+              <div className="grid md:grid-cols-3 gap-6">
+                {facilityItems.map((facility, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Card className="h-full hover:shadow-2xl transition-all border-2 border-purple-100 dark:border-purple-900">
+                      <CardContent className="p-6">
+                        <div className="relative mb-6 group">
+                          <div className="aspect-video bg-gradient-to-br from-purple-100 to-orange-100 dark:from-purple-950 dark:to-orange-950 rounded-lg flex items-center justify-center overflow-hidden shadow-lg">
+                            {facility.imageUrl ? (
+                              <>
+                                <img src={facility.imageUrl} alt={facility.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              </>
+                            ) : (
+                              <motion.span 
+                                className="text-8xl"
+                                animate={{ rotate: [0, 5, -5, 0] }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                              >
+                                {facility.emoji}
+                              </motion.span>
+                            )}
+                          </div>
+                          <div className="absolute top-3 left-3 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full text-2xl shadow-xl border-2 border-purple-200 dark:border-purple-700">
+                            {facility.emoji}
+                          </div>
+                        </div>
+                        <h4 className="font-bold text-lg mb-2 text-purple-700 dark:text-purple-400">{facility.name}</h4>
+                        <p className="text-sm text-muted-foreground mb-4">{facility.description}</p>
+                        <div className="space-y-2">
+                          {facility.facilityFeatures?.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm">
+                              <CheckCircle className="h-4 w-4 text-purple-600" />
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="p-12 text-center text-muted-foreground">
+                  <p>No facilities yet. <Link href="/admin/product-gallery" className="text-purple-600 hover:underline">Add from admin panel</Link></p>
+                </CardContent>
+              </Card>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Product Gallery */}
+      <section className="py-16 bg-white dark:bg-gray-950 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-6xl mb-4 inline-block"
+            >
+              📷
+            </motion.div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">
+              Product Gallery
+            </h2>
+            <p className="text-lg text-muted-foreground">Real photos of our premium herbs & spices</p>
+          </motion.div>
+
+          {loadingGallery ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+              <p className="mt-4 text-muted-foreground">Loading gallery...</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {(['Fresh Harvest', 'Processing', 'Export Ready'] as const).map((category, gIndex) => {
+                const categoryItems = galleryItems.filter(item => item.category === category);
+                
+                return (
+                  <motion.div
+                    key={category}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: gIndex * 0.1 }}
+                  >
+                    <Card className="h-full border-2 border-purple-100 dark:border-purple-900 relative overflow-hidden">
+                      {/* Animated gradient background */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-orange-50 to-purple-50 dark:from-purple-950 dark:via-orange-950 dark:to-purple-950 opacity-50"></div>
+                      
+                      <CardContent className="p-6 relative z-10">
+                        <div className="flex items-center justify-center gap-2 mb-4">
+                          <motion.div
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                          >
+                            {category === 'Fresh Harvest' ? '🌱' : category === 'Processing' ? '⚙️' : '📦'}
+                          </motion.div>
+                          <h4 className="font-bold text-lg text-center text-purple-700 dark:text-purple-400">
+                            {category}
+                          </h4>
+                          <motion.div
+                            animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            ✨
+                          </motion.div>
+                        </div>
+                        <div className="space-y-4">
+                          {categoryItems.length > 0 ? (
+                            categoryItems.map((item, iIndex) => (
+                              <motion.div
+                                key={item.id}
+                                whileHover={{ scale: 1.03 }}
+                                className="cursor-pointer"
+                              >
+                                <Card className="hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden group">
+                                  <CardContent className="p-0">
+                                    <div className="aspect-video bg-gradient-to-br from-purple-100 to-orange-100 dark:from-purple-950 dark:to-orange-950 flex items-center justify-center overflow-hidden relative">
+                                      {item.imageUrl ? (
+                                        <img 
+                                          src={item.imageUrl} 
+                                          alt={item.name}
+                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                      ) : (
+                                        <span className="text-7xl group-hover:scale-110 transition-transform duration-300">{item.emoji}</span>
+                                      )}
+                                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
+                                    <div className="p-4">
+                                      <h5 className="font-bold text-base mb-2 text-purple-700 dark:text-purple-400">{item.name}</h5>
+                                      <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              </motion.div>
+                            ))
+                          ) : (
+                            <div className="text-center py-8 text-muted-foreground">
+                              <p className="text-sm">No items yet</p>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <Card className="inline-block bg-gradient-to-r from-purple-50 to-orange-50 dark:from-purple-950 dark:to-orange-950 border-2 border-purple-200 dark:border-purple-800">
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground mb-3">Want to see more photos?</p>
+                <Link href="/rfq">
+                  <Button className="bg-purple-600 hover:bg-purple-700">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Request Product Samples
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Video Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
@@ -903,7 +1517,7 @@ export default function HerbsSpicesPage() {
         </div>
       </section>
 
-      {/* Photo Carousel */}
+      {/* Photo Carousel - Facilities */}
       <section className="py-16 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4">
           <motion.div
@@ -916,25 +1530,55 @@ export default function HerbsSpicesPage() {
             <p className="text-lg text-muted-foreground">From harvest to export</p>
           </motion.div>
 
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory">
-            {carouselImages.map((image, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex-shrink-0 w-64 snap-center"
-              >
-                <Card className="hover:shadow-xl transition-all">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-7xl mb-4">{image.emoji}</div>
-                    <h3 className="font-bold">{image.title}</h3>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+          {loadingGallery ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+              <p className="mt-4 text-muted-foreground">Loading...</p>
+            </div>
+          ) : facilityItems.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {facilityItems.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.03 }}
+                >
+                  <Card className="h-full hover:shadow-xl transition-all border-2 border-purple-100 dark:border-purple-900">
+                    <CardContent className="p-6">
+                      {item.imageUrl ? (
+                        <div className="aspect-video mb-4 rounded-lg overflow-hidden shadow-lg">
+                          <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                        </div>
+                      ) : (
+                        <div className="text-7xl mb-4 text-center">{item.emoji}</div>
+                      )}
+                      <h3 className="font-bold text-lg mb-2 text-center text-purple-700 dark:text-purple-400">{item.name}</h3>
+                      <p className="text-sm text-muted-foreground text-center mb-4">{item.description}</p>
+                      {item.facilityFeatures && item.facilityFeatures.length > 0 && (
+                        <div className="space-y-2">
+                          {item.facilityFeatures.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm">
+                              <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="p-12 text-center text-muted-foreground">
+                <p>No facility photos yet. <Link href="/admin/product-gallery" className="text-purple-600 hover:underline">Add from admin panel</Link></p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </section>
 
