@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, CheckCircle, Package, Play, MapPin, Award, Download, Phone, Mail, MessageCircle, FileText, Info, Leaf, ThermometerSnowflake, Calendar, Scale, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Package, Play, MapPin, Award, Download, Phone, Mail, MessageCircle, FileText, Info, Leaf, ThermometerSnowflake, Calendar, Scale, ShieldCheck, Truck } from 'lucide-react';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 import { useState, useEffect } from 'react';
@@ -57,6 +57,10 @@ export default function HerbsSpicesPage() {
   const [destination, setDestination] = useState('');
   const [shippingMethod, setShippingMethod] = useState('sea');
   const [estimatedPrice, setEstimatedPrice] = useState<number | null>(null);
+  
+  // Partnership State
+  const [isPartnershipFormOpen, setIsPartnershipFormOpen] = useState(false);
+  const [isScheduleCallOpen, setIsScheduleCallOpen] = useState(false);
 
   useEffect(() => {
     loadGalleryItems();
@@ -2541,6 +2545,445 @@ export default function HerbsSpicesPage() {
         </div>
       </section>
 
+      {/* Partnership Opportunities */}
+      <section className="py-20 bg-gradient-to-br from-amber-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          {['🤝', '🌍', '💼', '🏆', '📈', '⭐', '💰', '🎯'].map((icon, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-9xl"
+              animate={{
+                y: [0, -40, 0],
+                rotate: [0, 360],
+                scale: [1, 1.3, 1]
+              }}
+              transition={{
+                duration: 10 + i * 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.6
+              }}
+              style={{ left: `${5 + i * 12}%`, top: `${(i * 20) % 70}%` }}
+            >
+              {icon}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-7xl"
+              >
+                🤝
+              </motion.div>
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="text-6xl"
+              >
+                💼
+              </motion.div>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-600 via-green-600 to-teal-600 bg-clip-text text-transparent">
+              Partnership Opportunities
+            </h2>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+              Join our global network of distributors and grow your business with exclusive benefits
+            </p>
+          </motion.div>
+
+          {/* Become a Distributor */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-2">
+              <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity }}>
+                🌍
+              </motion.span>
+              Become a Distributor
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+              {[
+                {
+                  icon: '📋',
+                  title: 'Apply',
+                  desc: 'Submit your application with business details',
+                  step: '1'
+                },
+                {
+                  icon: '🔍',
+                  title: 'Review',
+                  desc: 'We evaluate your market potential and capabilities',
+                  step: '2'
+                },
+                {
+                  icon: '✅',
+                  title: 'Partner',
+                  desc: 'Sign agreement and start receiving exclusive benefits',
+                  step: '3'
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  <Card className="h-full border-2 border-amber-200 dark:border-amber-800 hover:shadow-2xl transition-all relative overflow-hidden">
+                    <div className="absolute top-3 right-3 w-12 h-12 bg-gradient-to-br from-amber-600 to-green-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+                      {item.step}
+                    </div>
+                    <CardContent className="p-6 text-center">
+                      <motion.div
+                        className="text-6xl mb-4"
+                        animate={{ scale: [1, 1.15, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+                      >
+                        {item.icon}
+                      </motion.div>
+                      <h4 className="font-bold text-xl mb-2 text-amber-700 dark:text-amber-400">{item.title}</h4>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-amber-600 to-green-600 hover:from-amber-700 hover:to-green-700 text-white"
+                onClick={() => setIsPartnershipFormOpen(true)}
+              >
+                <FileText className="h-5 w-5 mr-2" />
+                Apply for Partnership
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Long-term Contract Benefits */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-2">
+              <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                🏆
+              </motion.span>
+              Long-term Contract Benefits
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: '💰',
+                  title: 'Priority Pricing',
+                  desc: 'Locked-in rates protected from market fluctuations',
+                  color: 'from-amber-500 to-yellow-500'
+                },
+                {
+                  icon: '📦',
+                  title: 'Guaranteed Supply',
+                  desc: 'Reserved inventory even during peak seasons',
+                  color: 'from-green-500 to-teal-500'
+                },
+                {
+                  icon: '🚚',
+                  title: 'Flexible Logistics',
+                  desc: 'Customized shipping schedules and consolidation',
+                  color: 'from-teal-500 to-cyan-500'
+                },
+                {
+                  icon: '🎯',
+                  title: 'Marketing Support',
+                  desc: 'Co-branded materials and promotional assistance',
+                  color: 'from-lime-500 to-green-500'
+                }
+              ].map((benefit, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Card className="h-full border-2 border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all overflow-hidden">
+                    <div className={`h-2 bg-gradient-to-r ${benefit.color}`}></div>
+                    <CardContent className="p-6 text-center">
+                      <motion.div
+                        className="text-6xl mb-4"
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      >
+                        {benefit.icon}
+                      </motion.div>
+                      <h4 className="font-bold text-lg mb-2">{benefit.title}</h4>
+                      <p className="text-sm text-muted-foreground">{benefit.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Volume Discount Tiers */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-2">
+              <motion.span animate={{ y: [0, -10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                📈
+              </motion.span>
+              Volume Discount Tiers
+            </h3>
+            <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {[
+                {
+                  tier: 'Bronze',
+                  volume: '5-10 tons/month',
+                  discount: '5%',
+                  icon: '🥉',
+                  color: 'from-amber-400 to-amber-600',
+                  benefits: ['Standard pricing', 'Monthly invoicing', 'Email support']
+                },
+                {
+                  tier: 'Silver',
+                  volume: '10-25 tons/month',
+                  discount: '10%',
+                  icon: '🥈',
+                  color: 'from-slate-400 to-slate-600',
+                  benefits: ['Priority pricing', 'Flexible payment', 'Phone support', 'Quarterly reviews']
+                },
+                {
+                  tier: 'Gold',
+                  volume: '25-50 tons/month',
+                  discount: '15%',
+                  icon: '🥇',
+                  color: 'from-yellow-400 to-amber-600',
+                  benefits: ['Best pricing', 'Extended credit', 'Dedicated manager', 'Monthly reviews', 'Marketing support'],
+                  popular: true
+                },
+                {
+                  tier: 'Platinum',
+                  volume: '50+ tons/month',
+                  discount: '20%+',
+                  icon: '💎',
+                  color: 'from-teal-400 to-green-600',
+                  benefits: ['Custom pricing', 'Exclusive terms', 'VIP support', 'Weekly reviews', 'Full marketing', 'Territory rights']
+                }
+              ].map((tier, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  <Card className={`h-full border-2 ${tier.popular ? 'border-amber-500 dark:border-amber-400 shadow-2xl' : 'border-gray-200 dark:border-gray-700'} hover:shadow-2xl transition-all relative overflow-hidden`}>
+                    {tier.popular && (
+                      <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-green-500 text-white px-4 py-1 text-xs font-bold rounded-bl-lg">
+                        MOST POPULAR
+                      </div>
+                    )}
+                    <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+                    <CardContent className="p-6 text-center">
+                      <motion.div
+                        className="text-6xl mb-3"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                      >
+                        {tier.icon}
+                      </motion.div>
+                      <h4 className="font-bold text-2xl mb-2">{tier.tier}</h4>
+                      <p className="text-sm text-muted-foreground mb-3">{tier.volume}</p>
+                      <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-4">
+                        {tier.discount}
+                      </div>
+                      <div className="text-xs text-muted-foreground mb-4">Discount</div>
+                      <div className="space-y-2 text-left">
+                        {tier.benefits.map((benefit, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-xs">
+                            <CheckCircle className="h-3 w-3 text-green-600 flex-shrink-0 mt-0.5" />
+                            <span>{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Exclusive Territory Rights */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h3 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-2">
+              <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity }}>
+                🗺️
+              </motion.span>
+              Exclusive Territory Rights
+            </h3>
+            <div className="max-w-5xl mx-auto">
+              <Card className="border-2 border-teal-200 dark:border-teal-800 shadow-2xl">
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="font-bold text-2xl mb-4 flex items-center gap-2">
+                        <span className="text-4xl">🎯</span>
+                        What You Get
+                      </h4>
+                      <div className="space-y-3">
+                        {[
+                          'Exclusive distribution rights in your territory',
+                          'Protection from competing distributors',
+                          'First access to new products',
+                          'Territory-specific marketing materials',
+                          'Local market insights and support',
+                          'Renewable contract terms'
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <CheckCircle className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold text-2xl mb-4 flex items-center gap-2">
+                        <span className="text-4xl">📋</span>
+                        Requirements
+                      </h4>
+                      <div className="space-y-3">
+                        {[
+                          'Minimum 25 tons/month commitment',
+                          'Established distribution network',
+                          'Cold storage facilities',
+                          'Import license and certifications',
+                          'Financial stability verification',
+                          '2-year minimum contract'
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-teal-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 bg-gradient-to-r from-teal-50 to-green-50 dark:from-teal-950 dark:to-green-950 rounded-lg p-6 border-2 border-teal-200 dark:border-teal-800">
+                    <div className="flex items-start gap-3">
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="text-4xl"
+                      >
+                        🌟
+                      </motion.div>
+                      <div>
+                        <h5 className="font-bold text-lg mb-2">Available Territories</h5>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          We're currently seeking exclusive distributors in:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {['🇬🇧 UK', '🇩🇪 Germany', '🇫🇷 France', '🇮🇹 Italy', '🇪🇸 Spain', '🇳🇱 Netherlands', '🇸🇦 Saudi Arabia', '🇦🇪 UAE', '🇶🇦 Qatar', '🇰🇼 Kuwait', '🇨🇳 China', '🇯🇵 Japan'].map((territory, idx) => (
+                            <span key={idx} className="bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm border border-teal-200 dark:border-teal-800">
+                              {territory}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+
+          {/* Final CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <Card className="bg-gradient-to-r from-amber-600 via-green-600 to-teal-600 text-white border-0 max-w-4xl mx-auto shadow-2xl">
+              <CardContent className="p-10">
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 360] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="text-7xl mb-4"
+                >
+                  🤝
+                </motion.div>
+                <h3 className="text-3xl font-bold mb-4">Ready to Partner With Us?</h3>
+                <p className="text-lg text-amber-50 mb-6 max-w-2xl mx-auto">
+                  Join our network of successful distributors and unlock exclusive benefits, competitive pricing, and territory rights
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-amber-700 hover:bg-amber-50"
+                    onClick={() => {
+                      alert('Partnership Guide PDF will be downloaded. In production, this would download a real PDF file.');
+                    }}
+                  >
+                    <Download className="h-5 w-5 mr-2" />
+                    Download Partnership Guide
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-white text-white hover:bg-white/10"
+                    onClick={() => setIsScheduleCallOpen(true)}
+                  >
+                    <Phone className="h-5 w-5 mr-2" />
+                    Schedule a Call
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-white text-white hover:bg-white/10"
+                    onClick={() => setIsPartnershipFormOpen(true)}
+                  >
+                    <Mail className="h-5 w-5 mr-2" />
+                    Contact Partnership Team
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Video Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
@@ -2806,6 +3249,428 @@ export default function HerbsSpicesPage() {
         </div>
       </section>
 
+      {/* Export Markets & Destinations */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌍 Our Global Export Markets</h2>
+            <p className="text-lg text-muted-foreground">Trusted by importers across 25+ countries worldwide</p>
+          </motion.div>
+
+          {/* Global Reach Visualization */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <Card className="overflow-hidden border-2 border-amber-200 dark:border-amber-800">
+              <CardContent className="p-8">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold mb-2">🌍 Our Global Spice Network</h3>
+                  <p className="text-muted-foreground">Connecting Ethiopian herbs & spices to markets worldwide</p>
+                </div>
+
+                {/* Simple Grid Layout */}
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* GCC Countries */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-amber-600">🕌 GCC Markets</h4>
+                    <div className="space-y-3">
+                      {[
+                        { flag: '🇦🇪', name: 'United Arab Emirates', volume: 'High' },
+                        { flag: '🇸🇦', name: 'Saudi Arabia', volume: 'High' },
+                        { flag: '🇴🇲', name: 'Oman', volume: 'Medium' },
+                        { flag: '🇶🇦', name: 'Qatar', volume: 'Medium' },
+                        { flag: '🇰🇼', name: 'Kuwait', volume: 'Medium' },
+                      ].map((country, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, x: 5 }}
+                        >
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : 'text-blue-600'}`}>
+                                  {country.volume} Volume
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* European Countries */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-blue-600">🇪🇺 European Markets</h4>
+                    <div className="space-y-3">
+                      {[
+                        { flag: '🇳🇱', name: 'Netherlands', volume: 'High' },
+                        { flag: '🇬🇧', name: 'United Kingdom', volume: 'High' },
+                        { flag: '🇩🇪', name: 'Germany', volume: 'Medium' },
+                        { flag: '🇫🇷', name: 'France', volume: 'Growing' },
+                        { flag: '🇮🇹', name: 'Italy', volume: 'Growing' },
+                      ].map((country, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: -20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -5 }}
+                        >
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : country.volume === 'Medium' ? 'text-blue-600' : 'text-orange-600'}`}>
+                                  {country.volume} Volume
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Asian & Other Markets */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-4 text-center text-teal-600">🌏 Asian & Other Markets</h4>
+                    <div className="space-y-3">
+                      {[
+                        { flag: '🇮🇳', name: 'India', volume: 'High' },
+                        { flag: '🇨🇳', name: 'China', volume: 'Growing' },
+                        { flag: '🇯🇵', name: 'Japan', volume: 'Medium' },
+                        { flag: '🇺🇸', name: 'United States', volume: 'Growing' },
+                        { flag: '🇦🇺', name: 'Australia', volume: 'Growing' },
+                      ].map((country, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                          whileHover={{ scale: 1.05, x: -5 }}
+                        >
+                          <Card className="hover:shadow-lg transition-all cursor-pointer">
+                            <CardContent className="p-3 flex items-center gap-3">
+                              <span className="text-3xl">{country.flag}</span>
+                              <div className="flex-1">
+                                <div className="font-semibold text-sm">{country.name}</div>
+                                <div className={`text-xs ${country.volume === 'High' ? 'text-green-600' : 'text-orange-600'}`}>
+                                  {country.volume} Volume
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ethiopia at Center */}
+                <motion.div
+                  className="mt-8 text-center"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-green-700 text-white px-8 py-4 rounded-full shadow-2xl">
+                    <span className="text-4xl">🇪🇹</span>
+                    <div className="text-left">
+                      <div className="font-bold text-lg">Ethiopia</div>
+                      <div className="text-sm text-amber-100">Origin of Premium Herbs & Spices</div>
+                    </div>
+                  </div>
+                </motion.div>
+                <div className="p-6 bg-gradient-to-r from-amber-600 to-green-600 text-white">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div>
+                      <div className="text-3xl font-bold">25+</div>
+                      <div className="text-sm text-amber-100">Countries</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">5</div>
+                      <div className="text-sm text-amber-100">Continents</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">300+</div>
+                      <div className="text-sm text-amber-100">Tons/Month</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">100%</div>
+                      <div className="text-sm text-amber-100">Quality Assured</div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Top Importing Countries */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h3 className="text-2xl font-bold text-center mb-8">🏆 Top Importing Countries</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                { flag: '🇦🇪', name: 'UAE', region: 'GCC', volume: 'High' },
+                { flag: '🇸🇦', name: 'Saudi Arabia', region: 'GCC', volume: 'High' },
+                { flag: '🇮🇳', name: 'India', region: 'Asia', volume: 'High' },
+                { flag: '🇳🇱', name: 'Netherlands', region: 'Europe', volume: 'High' },
+                { flag: '🇬🇧', name: 'United Kingdom', region: 'Europe', volume: 'High' },
+                { flag: '🇴🇲', name: 'Oman', region: 'GCC', volume: 'Medium' },
+                { flag: '🇶🇦', name: 'Qatar', region: 'GCC', volume: 'Medium' },
+                { flag: '🇩🇪', name: 'Germany', region: 'Europe', volume: 'Medium' },
+                { flag: '🇯🇵', name: 'Japan', region: 'Asia', volume: 'Medium' },
+                { flag: '🇺🇸', name: 'USA', region: 'Americas', volume: 'Growing' }
+              ].map((country, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Card className="hover:shadow-xl transition-all border-2 border-amber-100 dark:border-amber-900 cursor-pointer">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-5xl mb-2">{country.flag}</div>
+                      <h4 className="font-bold text-sm mb-1">{country.name}</h4>
+                      <div className="text-xs text-muted-foreground mb-1">{country.region}</div>
+                      <div className={`text-xs font-semibold px-2 py-1 rounded-full inline-block ${
+                        country.volume === 'High' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400' :
+                        country.volume === 'Medium' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-400' :
+                        'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-400'
+                      }`}>
+                        {country.volume} Volume
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Market-Specific Requirements */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h3 className="text-2xl font-bold text-center mb-8">📋 Market-Specific Requirements</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  region: 'GCC Markets',
+                  icon: '🕌',
+                  countries: 'UAE, Saudi, Qatar, Oman, Kuwait',
+                  requirements: [
+                    'Halal certification preferred',
+                    'GCC standardization compliance',
+                    'Arabic labeling required',
+                    'Premium quality focus',
+                    'Moisture content control'
+                  ],
+                  specialties: ['Black Cumin', 'Turmeric', 'Cardamom'],
+                  color: 'from-amber-500 to-orange-500'
+                },
+                {
+                  region: 'European Union',
+                  icon: '🇪🇺',
+                  countries: 'UK, Germany, Netherlands, France',
+                  requirements: [
+                    'EU organic certification',
+                    'Strict pesticide limits',
+                    'Traceability required',
+                    'Aflatoxin testing',
+                    'Sustainability focus'
+                  ],
+                  specialties: ['Organic Spices', 'Fresh Herbs', 'Ginger'],
+                  color: 'from-blue-500 to-indigo-500'
+                },
+                {
+                  region: 'Asian Markets',
+                  icon: '🌏',
+                  countries: 'India, China, Japan, Singapore',
+                  requirements: [
+                    'Competitive pricing',
+                    'Bulk quantities',
+                    'Flexible packaging',
+                    'Quick turnaround',
+                    'Local language docs'
+                  ],
+                  specialties: ['Chili Powder', 'Ginger', 'Turmeric'],
+                  color: 'from-teal-500 to-green-500'
+                }
+              ].map((market, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                >
+                  <Card className="h-full hover:shadow-2xl transition-all border-2 border-amber-100 dark:border-amber-900 overflow-hidden">
+                    <div className={`h-2 bg-gradient-to-r ${market.color}`}></div>
+                    <CardContent className="p-6">
+                      <div className="text-6xl mb-3 text-center">{market.icon}</div>
+                      <h4 className="font-bold text-xl mb-2 text-center text-amber-700 dark:text-amber-400">{market.region}</h4>
+                      <p className="text-xs text-center text-muted-foreground mb-4 italic">{market.countries}</p>
+                      
+                      <div className="mb-4">
+                        <div className="font-semibold text-sm mb-2 flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          Requirements:
+                        </div>
+                        <ul className="space-y-1">
+                          {market.requirements.map((req, idx) => (
+                            <li key={idx} className="text-xs flex items-start gap-2">
+                              <span className="text-green-600 mt-0.5">•</span>
+                              <span>{req}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="border-t pt-3">
+                        <div className="font-semibold text-sm mb-2">Popular Products:</div>
+                        <div className="flex flex-wrap gap-1">
+                          {market.specialties.map((specialty, idx) => (
+                            <span key={idx} className="text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-full">
+                              {specialty}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Success Stories by Region */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-bold text-center mb-8">🌟 Regional Success Stories</h3>
+            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  region: 'GCC Success',
+                  flag: '🇦🇪',
+                  client: 'Dubai Spice Trading Co.',
+                  story: 'Supplied 20 tons of premium black cumin monthly for 3 years. Our consistent quality and competitive pricing helped them become the leading spice distributor in the UAE.',
+                  products: ['Black Cumin', 'Turmeric', 'Cardamom'],
+                  achievement: '250% growth in orders',
+                  duration: '3+ years partnership',
+                  color: 'from-amber-500 to-orange-500'
+                },
+                {
+                  region: 'European Success',
+                  flag: '🇬🇧',
+                  client: 'London Organic Herbs Ltd',
+                  story: 'First Ethiopian supplier to meet their strict organic standards. Now supplying 15 tons monthly of certified organic herbs and spices to major UK retailers.',
+                  products: ['Organic Ginger', 'Fresh Herbs', 'Turmeric'],
+                  achievement: 'EU Organic Certified',
+                  duration: '2+ years partnership',
+                  color: 'from-blue-500 to-indigo-500'
+                },
+                {
+                  region: 'Asian Success',
+                  flag: '🇮🇳',
+                  client: 'Mumbai Spice Importers',
+                  story: 'Competitive pricing and bulk supply capabilities made us their preferred Ethiopian supplier. Handling 40+ tons monthly of various spices for the Indian market.',
+                  products: ['Chili Powder', 'Ginger', 'Turmeric'],
+                  achievement: '400% volume increase',
+                  duration: '18 months partnership',
+                  color: 'from-teal-500 to-green-500'
+                },
+                {
+                  region: 'Americas Success',
+                  flag: '🇺🇸',
+                  client: 'New York Gourmet Spices',
+                  story: 'Premium quality Ethiopian spices for high-end restaurants and specialty stores. Our unique flavor profiles and consistent supply helped them expand to 50+ locations.',
+                  products: ['Black Cumin', 'Cardamom', 'Fresh Herbs'],
+                  achievement: 'Premium market entry',
+                  duration: '1+ year partnership',
+                  color: 'from-purple-500 to-pink-500'
+                }
+              ].map((story, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                >
+                  <Card className="h-full hover:shadow-2xl transition-all border-2 border-amber-100 dark:border-amber-900 overflow-hidden">
+                    <div className={`h-2 bg-gradient-to-r ${story.color}`}></div>
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-5xl">{story.flag}</span>
+                        <div>
+                          <h4 className="font-bold text-lg text-amber-700 dark:text-amber-400">{story.region}</h4>
+                          <p className="text-sm font-semibold text-muted-foreground">{story.client}</p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-sm mb-4 leading-relaxed">{story.story}</p>
+                      
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="bg-green-50 dark:bg-green-950 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                          <div className="text-xs text-muted-foreground mb-1">Achievement</div>
+                          <div className="font-bold text-sm text-green-700 dark:text-green-400">{story.achievement}</div>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-950 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <div className="text-xs text-muted-foreground mb-1">Duration</div>
+                          <div className="font-bold text-sm text-blue-700 dark:text-blue-400">{story.duration}</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs font-semibold mb-2">Key Products:</div>
+                        <div className="flex flex-wrap gap-1">
+                          {story.products.map((product, idx) => (
+                            <span key={idx} className="text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-full">
+                              {product}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Downloadables */}
       <section className="py-16 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4">
@@ -2839,6 +3704,337 @@ export default function HerbsSpicesPage() {
                       <Download className="mr-2 h-4 w-4" />
                       Download
                     </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Supply Chain Process */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🔄 Our Supply Chain Process</h2>
+            <p className="text-lg text-muted-foreground">From harvest to export in 7 quality-controlled steps</p>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-7 gap-4">
+              {[
+                { step: 1, icon: '🌾', title: 'Harvest', desc: 'Peak maturity collection' },
+                { step: 2, icon: '🚜', title: 'Transport', desc: 'Quick farm transfer' },
+                { step: 3, icon: '🧹', title: 'Cleaning', desc: 'Remove impurities' },
+                { step: 4, icon: '☀️', title: 'Drying', desc: 'Optimal moisture control' },
+                { step: 5, icon: '✅', title: 'Sorting', desc: 'Grade by quality' },
+                { step: 6, icon: '📦', title: 'Packing', desc: 'Export-grade packaging' },
+                { step: 7, icon: '✈️', title: 'Export', desc: 'Air or sea freight' }
+              ].map((process, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Card className="h-full text-center hover:shadow-xl transition-all border-2 border-amber-100 dark:border-amber-900">
+                    <CardContent className="p-4">
+                      <div className="w-10 h-10 rounded-full bg-amber-600 text-white flex items-center justify-center mx-auto mb-2 font-bold">
+                        {process.step}
+                      </div>
+                      <div className="text-4xl mb-2">{process.icon}</div>
+                      <h3 className="font-bold text-sm mb-1">{process.title}</h3>
+                      <p className="text-xs text-muted-foreground">{process.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Packaging Options */}
+      <section className="py-16 bg-gradient-to-b from-amber-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Package className="h-16 w-16 text-amber-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">📦 Flexible Packaging Options</h2>
+            <p className="text-lg text-muted-foreground">Customized packaging to preserve freshness and meet market requirements</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              { 
+                icon: '📦', 
+                name: 'Carton Boxes', 
+                desc: '5kg, 10kg, 25kg options',
+                features: ['Moisture proof', 'Stackable', 'Branded']
+              },
+              { 
+                icon: '🎒', 
+                name: 'Vacuum Bags', 
+                desc: '500g, 1kg, 5kg sizes',
+                features: ['Airtight', 'Extended shelf-life', 'Aroma retention']
+              },
+              { 
+                icon: '🎁', 
+                name: 'Retail Packs', 
+                desc: '50g, 100g, 250g packs',
+                features: ['Consumer ready', 'Labeled', 'Attractive design']
+              },
+              { 
+                icon: '🛢️', 
+                name: 'Bulk Drums', 
+                desc: 'Large volume orders',
+                features: ['Cost effective', 'Industrial grade', 'Sealed']
+              }
+            ].map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Card className="h-full hover:shadow-xl transition-all border-2 border-amber-100 dark:border-amber-900">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-6xl mb-3">{pkg.icon}</div>
+                    <h3 className="font-bold text-lg mb-2 text-amber-700 dark:text-amber-400">{pkg.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">{pkg.desc}</p>
+                    <div className="space-y-1">
+                      {pkg.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center justify-center gap-2 text-xs">
+                          <CheckCircle className="h-3 w-3 text-green-600" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Shipping Methods */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Truck className="h-16 w-16 text-amber-600 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🚚 Shipping & Logistics</h2>
+            <p className="text-lg text-muted-foreground">Multiple shipping options to suit your needs</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                icon: '✈️',
+                method: 'Air Freight',
+                time: '3-5 days',
+                best: 'Fresh herbs, urgent orders',
+                features: ['Fastest delivery', 'Temperature controlled', 'Premium quality', 'Express service'],
+                color: 'from-blue-500 to-cyan-500'
+              },
+              {
+                icon: '🚢',
+                method: 'Sea Freight',
+                time: '15-30 days',
+                best: 'Dried spices, large volumes',
+                features: ['Cost effective', 'Bulk orders', 'Container shipping', 'Economical'],
+                color: 'from-amber-500 to-orange-500'
+              },
+              {
+                icon: '🚛',
+                method: 'Land Transport',
+                time: '1-7 days',
+                best: 'Regional deliveries',
+                features: ['Flexible routes', 'Door-to-door', 'Regional markets', 'Quick turnaround'],
+                color: 'from-green-500 to-teal-500'
+              }
+            ].map((shipping, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="h-full hover:shadow-2xl transition-all border-2 border-amber-100 dark:border-amber-900 overflow-hidden">
+                  <div className={`h-2 bg-gradient-to-r ${shipping.color}`}></div>
+                  <CardContent className="p-6">
+                    <div className="text-6xl mb-4 text-center">{shipping.icon}</div>
+                    <h3 className="font-bold text-xl mb-2 text-center text-amber-700 dark:text-amber-400">{shipping.method}</h3>
+                    <div className="text-center mb-4">
+                      <div className="inline-block bg-amber-100 dark:bg-amber-900 px-3 py-1 rounded-full text-sm font-semibold text-amber-700 dark:text-amber-400">
+                        {shipping.time}
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4 text-center italic">Best for: {shipping.best}</p>
+                    <div className="space-y-2">
+                      {shipping.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 bg-gradient-to-b from-amber-50 to-white dark:from-gray-900 dark:to-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">💬 What Our Clients Say</h2>
+            <p className="text-lg text-muted-foreground">Trusted by spice importers worldwide</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                name: 'Fatima Al-Mansoori',
+                company: 'Dubai Spice Trading Co.',
+                country: '🇦🇪 UAE',
+                text: 'Outstanding quality black cumin! The aroma and purity are exceptional. Hafa Trading has become our exclusive Ethiopian supplier for premium spices.',
+                rating: 5
+              },
+              {
+                name: 'James Mitchell',
+                company: 'London Organic Herbs Ltd',
+                country: '🇬🇧 UK',
+                text: 'Reliable partner for organic herbs and spices. Their quality control and certifications meet all EU standards. Highly recommend for European markets.',
+                rating: 5
+              },
+              {
+                name: 'Rajesh Kumar',
+                company: 'Mumbai Spice Importers',
+                country: '🇮🇳 India',
+                text: 'Best quality turmeric and ginger from Ethiopia. Competitive pricing and consistent supply. Their team is professional and responsive.',
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Card className="h-full hover:shadow-xl transition-all border-2 border-amber-100 dark:border-amber-900">
+                  <CardContent className="p-6">
+                    <div className="flex gap-1 mb-3">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <span key={i} className="text-yellow-400 text-xl">⭐</span>
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
+                    <div className="border-t pt-4">
+                      <p className="font-bold text-amber-700 dark:text-amber-400">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                      <p className="text-sm font-semibold mt-1">{testimonial.country}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">❓ Frequently Asked Questions</h2>
+            <p className="text-lg text-muted-foreground">Everything you need to know about our herbs & spices</p>
+          </motion.div>
+
+          <div className="max-w-3xl mx-auto space-y-4">
+            {[
+              {
+                q: 'What is the minimum order quantity for herbs and spices?',
+                a: 'MOQ varies by product: typically 50kg-500kg for most herbs and spices. Bulk orders (1+ ton) receive volume discounts. Contact us for specific requirements.'
+              },
+              {
+                q: 'How do you maintain freshness and aroma during shipping?',
+                a: 'We use vacuum-sealed packaging and moisture-proof containers. For fresh herbs, we offer air freight with temperature control. Dried spices are packed in airtight bags to preserve aroma.'
+              },
+              {
+                q: 'What quality certifications do you provide?',
+                a: 'Phytosanitary certificate, Certificate of Origin, Quality analysis report, Organic certification (for organic products), and Halal certification upon request.'
+              },
+              {
+                q: 'Can you provide samples before bulk orders?',
+                a: 'Yes! We can send 100-500g samples via air courier. Sample costs are fully deductible from your first commercial order over $1000.'
+              },
+              {
+                q: 'What are your payment terms?',
+                a: 'We accept T/T (Telegraphic Transfer), L/C at sight, and Western Union. For established clients, we can discuss 30-60 day credit terms.'
+              },
+              {
+                q: 'Do you test for aflatoxin and pesticide residues?',
+                a: 'Yes, all our products undergo rigorous testing for aflatoxin, pesticide residues, and heavy metals. We provide lab certificates with each shipment.'
+              },
+              {
+                q: 'Which ports do you ship from?',
+                a: 'Primarily from Addis Ababa Bole Airport (air freight) and Djibouti Port (sea freight). We handle all export documentation and customs clearance.'
+              },
+              {
+                q: 'Can you provide custom packaging and private labeling?',
+                a: 'Absolutely! We offer custom packaging sizes, branded labels, and private labeling services for orders over 500kg. Design support available.'
+              }
+            ].map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-lg transition-all">
+                  <CardContent className="p-6">
+                    <h3 className="font-bold text-lg mb-2 text-amber-700 dark:text-amber-400 flex items-start gap-2">
+                      <span className="text-2xl">❓</span>
+                      {faq.q}
+                    </h3>
+                    <p className="text-muted-foreground pl-8">{faq.a}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -3132,6 +4328,224 @@ export default function HerbsSpicesPage() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Partnership Application Dialog */}
+      <Dialog open={isPartnershipFormOpen} onOpenChange={setIsPartnershipFormOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <span className="text-3xl">🤝</span>
+              Partnership Application
+            </DialogTitle>
+          </DialogHeader>
+
+          <form className="space-y-6" onSubmit={(e) => {
+            e.preventDefault();
+            alert('Partnership application submitted! Our team will contact you within 48 hours.');
+            setIsPartnershipFormOpen(false);
+          }}>
+            <div className="bg-amber-50 dark:bg-amber-950 p-4 rounded-lg border-2 border-amber-200 dark:border-amber-800">
+              <h4 className="font-bold mb-2 flex items-center gap-2">
+                <span className="text-xl">🌟</span>
+                Exclusive Partnership Benefits
+              </h4>
+              <div className="grid md:grid-cols-2 gap-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-amber-600" />
+                  <span>Volume discounts up to 20%</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-amber-600" />
+                  <span>Territory protection rights</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-amber-600" />
+                  <span>Priority shipping & support</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-amber-600" />
+                  <span>Marketing & training support</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="company">Company Name *</Label>
+                  <Input id="company" placeholder="Your Company Ltd" required className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="contact">Contact Person *</Label>
+                  <Input id="contact" placeholder="John Doe" required className="mt-1" />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="email">Email *</Label>
+                  <Input id="email" type="email" placeholder="contact@company.com" required className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone *</Label>
+                  <Input id="phone" placeholder="+1 XXX XXX XXXX" required className="mt-1" />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="country">Country *</Label>
+                  <Input id="country" placeholder="United States" required className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="business-type">Business Type *</Label>
+                  <Select required>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select type..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="distributor">Distributor</SelectItem>
+                      <SelectItem value="importer">Importer</SelectItem>
+                      <SelectItem value="retailer">Retailer</SelectItem>
+                      <SelectItem value="wholesaler">Wholesaler</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="products">Products Interested In *</Label>
+                <Input id="products" placeholder="e.g., Black Cumin, Turmeric, Ginger" required className="mt-1" />
+              </div>
+
+              <div>
+                <Label htmlFor="volume">Expected Monthly Volume</Label>
+                <Input id="volume" placeholder="e.g., 10-25 tons/month" className="mt-1" />
+              </div>
+
+              <div>
+                <Label htmlFor="message">Tell Us About Your Business</Label>
+                <Textarea 
+                  id="message" 
+                  placeholder="Share your business experience, distribution network, and partnership goals..."
+                  rows={4}
+                  className="mt-1 resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg border border-green-200 dark:border-green-800">
+              <h4 className="font-bold mb-2 text-sm">📋 Next Steps:</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• We'll review your application within 48 hours</li>
+                <li>• Schedule a video call to discuss partnership details</li>
+                <li>• Conduct due diligence and market assessment</li>
+                <li>• Finalize agreement and start partnership</li>
+              </ul>
+            </div>
+
+            <div className="flex gap-3">
+              <Button 
+                type="submit" 
+                className="flex-1 bg-gradient-to-r from-amber-600 to-green-600 hover:from-amber-700 hover:to-green-700"
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                Submit Application
+              </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => setIsPartnershipFormOpen(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Schedule Call Dialog */}
+      <Dialog open={isScheduleCallOpen} onOpenChange={setIsScheduleCallOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <span className="text-3xl">📞</span>
+              Schedule a Partnership Call
+            </DialogTitle>
+          </DialogHeader>
+
+          <form className="space-y-6" onSubmit={(e) => {
+            e.preventDefault();
+            alert('Call scheduled! You will receive a confirmation email shortly.');
+            setIsScheduleCallOpen(false);
+          }}>
+            <div className="bg-teal-50 dark:bg-teal-950 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
+              <p className="text-sm">
+                <strong>💼 What to expect:</strong> A 30-minute video call with our partnership team to discuss your business goals, market potential, and exclusive benefits.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="call-name">Full Name *</Label>
+                  <Input id="call-name" placeholder="John Doe" required className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="call-email">Email *</Label>
+                  <Input id="call-email" type="email" placeholder="john@company.com" required className="mt-1" />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="call-phone">Phone *</Label>
+                  <Input id="call-phone" placeholder="+1 XXX XXX XXXX" required className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="call-company">Company</Label>
+                  <Input id="call-company" placeholder="Your Company Ltd" className="mt-1" />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="preferred-date">Preferred Date & Time *</Label>
+                <Input id="preferred-date" type="datetime-local" required className="mt-1" />
+              </div>
+
+              <div>
+                <Label htmlFor="call-notes">Additional Notes</Label>
+                <Textarea 
+                  id="call-notes" 
+                  placeholder="Any specific topics you'd like to discuss..."
+                  rows={3}
+                  className="mt-1 resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button 
+                type="submit" 
+                className="flex-1 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                Schedule Call
+              </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => setIsScheduleCallOpen(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
 
