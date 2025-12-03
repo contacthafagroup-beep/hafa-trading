@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, CheckCircle, Package, Play, MapPin, Award, Download, Phone, Mail, MessageCircle, FileText, Info, Leaf, ThermometerSnowflake, Calendar, Scale, ShieldCheck } from 'lucide-react';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
@@ -46,6 +50,8 @@ export default function HerbsSpicesPage() {
   const [beforeAfterItems, setBeforeAfterItems] = useState<GalleryItem[]>([]);
   const [facilityItems, setFacilityItems] = useState<GalleryItem[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(true);
+  const [isSampleOrderOpen, setIsSampleOrderOpen] = useState(false);
+  const [selectedSamplePack, setSelectedSamplePack] = useState<string>('');
 
   useEffect(() => {
     loadGalleryItems();
@@ -1451,6 +1457,368 @@ export default function HerbsSpicesPage() {
         </div>
       </section>
 
+      {/* Sample Order Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          {['📦', '✨', '🎁', '👍', '⭐', '💼'].map((icon, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-8xl"
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 360],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.5
+              }}
+              style={{ left: `${i * 15}%`, top: `${(i * 25) % 70}%` }}
+            >
+              {icon}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-6xl"
+              >
+                📦
+              </motion.div>
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                className="text-5xl"
+              >
+                ✨
+              </motion.div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-orange-600 to-pink-600 bg-clip-text text-transparent">
+              Order Sample Packs
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Try before you buy! Get quality samples delivered to evaluate our premium herbs & spices
+            </p>
+          </motion.div>
+
+          {/* How to Order Samples */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+              <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity }}>
+                🔄
+              </motion.span>
+              How to Order Samples
+            </h3>
+            <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              {[
+                { step: '1', icon: '📝', title: 'Choose Products', desc: 'Select herbs & spices you want to sample' },
+                { step: '2', icon: '💳', title: 'Pay Sample Fee', desc: 'Cover shipping & handling costs' },
+                { step: '3', icon: '📦', title: 'We Ship', desc: 'Samples sent via express courier' },
+                { step: '4', icon: '✅', title: 'Evaluate', desc: 'Test quality & place bulk order' }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Card className="h-full hover:shadow-2xl transition-all border-2 border-purple-100 dark:border-purple-900 relative overflow-hidden">
+                    <div className="absolute top-2 right-2 w-10 h-10 bg-gradient-to-br from-purple-600 to-orange-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
+                      {item.step}
+                    </div>
+                    <CardContent className="p-6 text-center">
+                      <motion.div
+                        className="text-6xl mb-4"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                      >
+                        {item.icon}
+                      </motion.div>
+                      <h4 className="font-bold text-lg mb-2">{item.title}</h4>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Sample Pricing */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+              <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                💰
+              </motion.span>
+              Sample Pricing
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  name: 'Basic Pack',
+                  price: '$59',
+                  icon: '📦',
+                  items: ['3 herb/spice types', '100g each', 'Standard shipping', '5-7 days delivery'],
+                  color: 'from-purple-500 to-indigo-500'
+                },
+                {
+                  name: 'Premium Pack',
+                  price: '$99',
+                  icon: '🎁',
+                  items: ['5 herb/spice types', '250g each', 'Express shipping', '3-4 days delivery', 'Quality certificates'],
+                  color: 'from-orange-500 to-pink-500',
+                  popular: true
+                },
+                {
+                  name: 'Custom Pack',
+                  price: 'Custom',
+                  icon: '⭐',
+                  items: ['Your choice', 'Custom quantities', 'Priority shipping', '2-3 days delivery', 'Full documentation'],
+                  color: 'from-red-500 to-rose-500'
+                }
+              ].map((pack, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  <Card className={`h-full hover:shadow-2xl transition-all border-2 ${pack.popular ? 'border-purple-500 dark:border-purple-400' : 'border-gray-200 dark:border-gray-700'} relative overflow-hidden`}>
+                    {pack.popular && (
+                      <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-1 text-xs font-bold rounded-bl-lg">
+                        POPULAR
+                      </div>
+                    )}
+                    <div className={`h-2 bg-gradient-to-r ${pack.color}`}></div>
+                    <CardContent className="p-6 text-center">
+                      <motion.div
+                        className="text-6xl mb-4"
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      >
+                        {pack.icon}
+                      </motion.div>
+                      <h4 className="font-bold text-2xl mb-2">{pack.name}</h4>
+                      <div className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-6">
+                        {pack.price}
+                      </div>
+                      <div className="space-y-3 mb-6">
+                        {pack.items.map((item, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Button 
+                        className={`w-full bg-gradient-to-r ${pack.color} text-white hover:opacity-90`}
+                        onClick={() => {
+                          setSelectedSamplePack(pack.name);
+                          setIsSampleOrderOpen(true);
+                        }}
+                      >
+                        Order Sample
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Sample Pack Contents */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+              <motion.span animate={{ y: [0, -5, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                📋
+              </motion.span>
+              What's Included in Sample Packs
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <Card className="border-2 border-purple-100 dark:border-purple-900">
+                <CardContent className="p-6">
+                  <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    <span className="text-3xl">🌿</span>
+                    Fresh Samples
+                  </h4>
+                  <div className="space-y-3">
+                    {['Hand-picked premium grade', 'Properly packaged & labeled', 'Aroma-sealed containers', 'Harvest/processing date', 'Storage instructions'].map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm">
+                        <div className="w-2 h-2 bg-purple-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-orange-100 dark:border-orange-900">
+                <CardContent className="p-6">
+                  <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    <span className="text-3xl">📄</span>
+                    Documentation
+                  </h4>
+                  <div className="space-y-3">
+                    {['Product specifications sheet', 'Quality test results', 'Pricing information', 'Bulk order form', 'Company profile'].map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm">
+                        <div className="w-2 h-2 bg-orange-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+
+          {/* Testimonials */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+              <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                ⭐
+              </motion.span>
+              What Sample Recipients Say
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {[
+                {
+                  name: 'Ahmed Al-Rashid',
+                  company: 'Dubai Spice Trading',
+                  country: '🇦🇪 UAE',
+                  rating: 5,
+                  text: 'The black cumin quality exceeded our expectations. We immediately placed a bulk order for 5 tons!',
+                  image: '👨‍💼'
+                },
+                {
+                  name: 'Sarah Johnson',
+                  company: 'UK Organic Herbs',
+                  country: '🇬🇧 UK',
+                  rating: 5,
+                  text: 'Professional packaging, excellent aroma. The documentation made our import process smooth.',
+                  image: '👩‍💼'
+                },
+                {
+                  name: 'Mohammed Hassan',
+                  company: 'Saudi Spice Co.',
+                  country: '🇸🇦 Saudi Arabia',
+                  rating: 5,
+                  text: 'Best sample service in the industry. Fast delivery and premium quality herbs & spices.',
+                  image: '👨‍💼'
+                }
+              ].map((testimonial, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.03, y: -5 }}
+                >
+                  <Card className="h-full hover:shadow-xl transition-all border-2 border-yellow-100 dark:border-yellow-900">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="text-5xl">{testimonial.image}</div>
+                        <div>
+                          <h5 className="font-bold">{testimonial.name}</h5>
+                          <p className="text-xs text-muted-foreground">{testimonial.company}</p>
+                          <p className="text-xs">{testimonial.country}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 mb-3">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <motion.span
+                            key={i}
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 1, repeat: Infinity, delay: i * 0.1 }}
+                            className="text-yellow-500"
+                          >
+                            ⭐
+                          </motion.span>
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground italic">"{testimonial.text}"</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Card className="bg-gradient-to-r from-purple-600 to-orange-600 text-white border-0 max-w-3xl mx-auto">
+              <CardContent className="p-8">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-6xl mb-4"
+                >
+                  🎁
+                </motion.div>
+                <h3 className="text-2xl font-bold mb-3">Ready to Try Our Premium Herbs & Spices?</h3>
+                <p className="mb-6 text-purple-100">Order a sample pack today and experience the quality yourself!</p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <Button 
+                    size="lg" 
+                    variant="secondary" 
+                    className="bg-white text-purple-600 hover:bg-gray-100"
+                    onClick={() => setIsSampleOrderOpen(true)}
+                  >
+                    <Mail className="h-5 w-5 mr-2" />
+                    Request Sample
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                    <Phone className="h-5 w-5 mr-2" />
+                    Call Us
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Video Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
@@ -1922,6 +2290,126 @@ export default function HerbsSpicesPage() {
               </div>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Sample Order Dialog */}
+      <Dialog open={isSampleOrderOpen} onOpenChange={setIsSampleOrderOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <span className="text-3xl">📦</span>
+              Order Sample Pack
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-6 mt-4">
+            {selectedSamplePack && (
+              <div className="bg-purple-50 dark:bg-purple-950 p-4 rounded-lg border-2 border-purple-200 dark:border-purple-800">
+                <p className="text-sm text-muted-foreground">Selected Pack:</p>
+                <p className="font-bold text-lg text-purple-700 dark:text-purple-400">{selectedSamplePack}</p>
+              </div>
+            )}
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="s-name">Full Name *</Label>
+                <Input id="s-name" placeholder="John Doe" required />
+              </div>
+              <div>
+                <Label htmlFor="s-company">Company Name *</Label>
+                <Input id="s-company" placeholder="Your Company Ltd" required />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="s-email">Email *</Label>
+                <Input id="s-email" type="email" placeholder="john@company.com" required />
+              </div>
+              <div>
+                <Label htmlFor="s-phone">Phone *</Label>
+                <Input id="s-phone" type="tel" placeholder="+1 234 567 8900" required />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="s-country">Country *</Label>
+              <Select>
+                <SelectTrigger id="s-country">
+                  <SelectValue placeholder="Select your country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="uae">🇦🇪 United Arab Emirates</SelectItem>
+                  <SelectItem value="saudi">🇸🇦 Saudi Arabia</SelectItem>
+                  <SelectItem value="uk">🇬🇧 United Kingdom</SelectItem>
+                  <SelectItem value="usa">🇺🇸 United States</SelectItem>
+                  <SelectItem value="india">🇮🇳 India</SelectItem>
+                  <SelectItem value="other">🌍 Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="s-address">Shipping Address *</Label>
+              <Textarea 
+                id="s-address" 
+                placeholder="Full shipping address including postal code" 
+                rows={3}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="s-products">Products Interested In *</Label>
+              <Textarea 
+                id="s-products" 
+                placeholder="e.g., Black Cumin, Turmeric, Ginger, Fresh Herbs..." 
+                rows={3}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="s-quantity">Expected Monthly Volume</Label>
+              <Select>
+                <SelectTrigger id="s-quantity">
+                  <SelectValue placeholder="Select expected volume" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="100-500">100-500 kg/month</SelectItem>
+                  <SelectItem value="500-1000">500-1000 kg/month</SelectItem>
+                  <SelectItem value="1000-5000">1-5 tons/month</SelectItem>
+                  <SelectItem value="5000+">5+ tons/month</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="s-notes">Additional Notes</Label>
+              <Textarea 
+                id="s-notes" 
+                placeholder="Any special requirements or questions..." 
+                rows={3}
+              />
+            </div>
+
+            <div className="bg-yellow-50 dark:bg-yellow-950 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <p className="text-sm text-muted-foreground">
+                <strong>Note:</strong> Sample fees are deductible from your first bulk order. We'll contact you within 24 hours to confirm details and arrange payment.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button className="flex-1 bg-purple-600 hover:bg-purple-700">
+                <Mail className="mr-2 h-4 w-4" />
+                Submit Request
+              </Button>
+              <Button variant="outline" className="flex-1" onClick={() => setIsSampleOrderOpen(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 
