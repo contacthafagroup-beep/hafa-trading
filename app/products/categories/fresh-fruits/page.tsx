@@ -3239,6 +3239,116 @@ export default function FreshFruitsPage() {
         </div>
       </section>
 
+      {/* Regional Success Stories */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌟 Regional Success Stories</h2>
+            <p className="text-lg text-muted-foreground">Trusted partnerships across the globe</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                region: 'GCC Success',
+                flag: '🇦🇪',
+                client: 'Dubai Premium Fruits',
+                story: 'Supplied 30 tons of premium avocados and mangoes monthly for 2 years. Consistent quality and perfect ripeness helped them become the leading fruit distributor in Dubai.',
+                products: ['Avocados', 'Mangoes', 'Oranges'],
+                achievement: '250% growth in orders',
+                duration: '2+ years partnership',
+                color: 'from-orange-500 to-amber-500'
+              },
+              {
+                region: 'European Success',
+                flag: '🇳🇱',
+                client: 'Amsterdam Organic Fruits',
+                story: 'First Ethiopian fruit supplier to meet their strict organic standards. Now supplying 20 tons monthly of certified organic fruits to major EU retailers.',
+                products: ['Organic Avocados', 'Berries', 'Citrus'],
+                achievement: 'EU Organic Certified',
+                duration: '18 months partnership',
+                color: 'from-blue-500 to-indigo-500'
+              },
+              {
+                region: 'Asian Success',
+                flag: '🇮🇳',
+                client: 'Mumbai Fresh Imports',
+                story: 'Competitive pricing and bulk supply capabilities won us this major contract. Supplying 80+ tons of bananas and pineapples monthly to Indian retail chains.',
+                products: ['Bananas', 'Pineapples', 'Watermelons'],
+                achievement: '80+ tons monthly',
+                duration: '3+ years partnership',
+                color: 'from-red-500 to-pink-500'
+              },
+              {
+                region: 'Middle East Success',
+                flag: '🇸🇦',
+                client: 'Riyadh Fruit Wholesale',
+                story: 'Started with a 3-ton trial order, now our largest fruit client in Saudi Arabia. Our premium mangoes are their bestselling item across 40+ retail locations.',
+                products: ['Mangoes', 'Oranges', 'Melons'],
+                achievement: '40+ retail locations',
+                duration: '2.5 years partnership',
+                color: 'from-green-500 to-emerald-500'
+              }
+            ].map((success, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Card className="h-full hover:shadow-2xl transition-all border-2 border-orange-100 dark:border-orange-900 overflow-hidden">
+                  <div className={`h-2 bg-gradient-to-r ${success.color}`}></div>
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="text-5xl">{success.flag}</div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-lg text-orange-700 dark:text-orange-400 mb-1">{success.region}</h4>
+                        <p className="text-sm font-semibold text-muted-foreground">{success.client}</p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed italic">
+                      "{success.story}"
+                    </p>
+
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-xs font-semibold text-muted-foreground mb-1">Products Supplied:</div>
+                        <div className="flex flex-wrap gap-1">
+                          {success.products.map((product, idx) => (
+                            <span key={idx} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full">
+                              {product}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 pt-3 border-t">
+                        <div>
+                          <div className="text-xs text-muted-foreground">Achievement</div>
+                          <div className="text-sm font-bold text-orange-600">{success.achievement}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground">Duration</div>
+                          <div className="text-sm font-bold text-blue-600">{success.duration}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Downloadables */}
       <section className="py-16 bg-gradient-to-b from-orange-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4">
@@ -3326,381 +3436,6 @@ export default function FreshFruitsPage() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Export Markets & Destinations */}
-      <section className="py-16 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">🌍 Our Global Export Markets</h2>
-            <p className="text-lg text-muted-foreground">Trusted by importers across 25+ countries worldwide</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <Card className="overflow-hidden border-2 border-orange-200 dark:border-orange-800">
-              <CardContent className="p-8">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold mb-2">🌍 Our Global Export Network</h3>
-                  <p className="text-muted-foreground">Connecting Ethiopian orchards to markets worldwide</p>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {/* GCC Countries */}
-                  <div>
-                    <h4 className="font-bold text-lg mb-4 text-center text-orange-600">🕌 GCC Markets</h4>
-                    <div className="space-y-3">
-                      {[
-                        { flag: '🇦🇪', name: 'United Arab Emirates', volume: 'High' },
-                        { flag: '🇸🇦', name: 'Saudi Arabia', volume: 'High' },
-                        { flag: '🇴🇲', name: 'Oman', volume: 'Medium' },
-                        { flag: '🇶🇦', name: 'Qatar', volume: 'Medium' },
-                        { flag: '🇰🇼', name: 'Kuwait', volume: 'Medium' },
-                      ].map((country, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: idx * 0.1 }}
-                          whileHover={{ scale: 1.05, x: 5 }}
-                        >
-                          <Card className="hover:shadow-lg transition-all cursor-pointer">
-                            <CardContent className="p-3 flex items-center gap-3">
-                              <span className="text-3xl">{country.flag}</span>
-                              <div className="flex-1">
-                                <div className="font-semibold text-sm">{country.name}</div>
-                                <div className={`text-xs ${country.volume === 'High' ? 'text-orange-600' : 'text-blue-600'}`}>
-                                  {country.volume} Volume
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* European Countries */}
-                  <div>
-                    <h4 className="font-bold text-lg mb-4 text-center text-blue-600">🇪🇺 European Markets</h4>
-                    <div className="space-y-3">
-                      {[
-                        { flag: '🇳🇱', name: 'Netherlands', volume: 'High' },
-                        { flag: '🇬🇧', name: 'United Kingdom', volume: 'Medium' },
-                        { flag: '🇩🇪', name: 'Germany', volume: 'Medium' },
-                        { flag: '🇫🇷', name: 'France', volume: 'Growing' },
-                        { flag: '🇧🇪', name: 'Belgium', volume: 'Growing' },
-                      ].map((country, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, y: -20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: idx * 0.1 }}
-                          whileHover={{ scale: 1.05, y: -5 }}
-                        >
-                          <Card className="hover:shadow-lg transition-all cursor-pointer">
-                            <CardContent className="p-3 flex items-center gap-3">
-                              <span className="text-3xl">{country.flag}</span>
-                              <div className="flex-1">
-                                <div className="font-semibold text-sm">{country.name}</div>
-                                <div className={`text-xs ${country.volume === 'High' ? 'text-orange-600' : country.volume === 'Medium' ? 'text-blue-600' : 'text-amber-600'}`}>
-                                  {country.volume} Volume
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Asian Countries */}
-                  <div>
-                    <h4 className="font-bold text-lg mb-4 text-center text-red-600">🌏 Asian Markets</h4>
-                    <div className="space-y-3">
-                      {[
-                        { flag: '🇮🇳', name: 'India', volume: 'High' },
-                        { flag: '🇨🇳', name: 'China', volume: 'Growing' },
-                        { flag: '🇸🇬', name: 'Singapore', volume: 'Medium' },
-                        { flag: '🇲🇾', name: 'Malaysia', volume: 'Growing' },
-                        { flag: '🇯🇵', name: 'Japan', volume: 'Growing' },
-                      ].map((country, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, x: 20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: idx * 0.1 }}
-                          whileHover={{ scale: 1.05, x: -5 }}
-                        >
-                          <Card className="hover:shadow-lg transition-all cursor-pointer">
-                            <CardContent className="p-3 flex items-center gap-3">
-                              <span className="text-3xl">{country.flag}</span>
-                              <div className="flex-1">
-                                <div className="font-semibold text-sm">{country.name}</div>
-                                <div className={`text-xs ${country.volume === 'High' ? 'text-orange-600' : 'text-amber-600'}`}>
-                                  {country.volume} Volume
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="mt-8 text-center"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-orange-700 text-white px-8 py-4 rounded-full shadow-2xl">
-                    <span className="text-4xl">🇪🇹</span>
-                    <div className="text-left">
-                      <div className="font-bold text-lg">Ethiopia</div>
-                      <div className="text-sm text-orange-100">Origin of Premium Fruits</div>
-                    </div>
-                  </div>
-                </motion.div>
-                <div className="p-6 bg-gradient-to-r from-orange-600 to-amber-600 text-white">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div>
-                      <div className="text-3xl font-bold">25+</div>
-                      <div className="text-sm text-orange-100">Countries</div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold">4</div>
-                      <div className="text-sm text-orange-100">Continents</div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold">300+</div>
-                      <div className="text-sm text-orange-100">Tons/Month</div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold">100%</div>
-                      <div className="text-sm text-orange-100">On-Time Delivery</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Market-Specific Requirements */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h3 className="text-2xl font-bold text-center mb-8">📋 Market-Specific Requirements</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  region: 'GCC Markets',
-                  icon: '🕌',
-                  countries: 'UAE, Saudi, Qatar, Oman, Kuwait',
-                  requirements: [
-                    'Halal certification preferred',
-                    'GCC standardization compliance',
-                    'Arabic labeling required',
-                    'Cold chain mandatory',
-                    'Premium quality focus'
-                  ],
-                  specialties: ['Avocados', 'Mangoes', 'Oranges'],
-                  color: 'from-amber-500 to-orange-500'
-                },
-                {
-                  region: 'European Union',
-                  icon: '🇪🇺',
-                  countries: 'UK, Germany, Netherlands, France',
-                  requirements: [
-                    'EU organic certification',
-                    'Strict pesticide limits',
-                    'Traceability required',
-                    'Long shelf-life needed',
-                    'Sustainability focus'
-                  ],
-                  specialties: ['Organic avocados', 'Berries', 'Citrus'],
-                  color: 'from-blue-500 to-indigo-500'
-                },
-                {
-                  region: 'Asian Markets',
-                  icon: '🌏',
-                  countries: 'India, China, Singapore, Malaysia',
-                  requirements: [
-                    'Competitive pricing',
-                    'Bulk quantities',
-                    'Flexible packaging',
-                    'Quick turnaround',
-                    'Local language docs'
-                  ],
-                  specialties: ['Bananas', 'Pineapples', 'Watermelons'],
-                  color: 'from-red-500 to-pink-500'
-                }
-              ].map((market, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                >
-                  <Card className="h-full hover:shadow-2xl transition-all border-2 border-orange-100 dark:border-orange-900 overflow-hidden">
-                    <div className={`h-2 bg-gradient-to-r ${market.color}`}></div>
-                    <CardContent className="p-6">
-                      <div className="text-6xl mb-3 text-center">{market.icon}</div>
-                      <h4 className="font-bold text-xl mb-2 text-center text-orange-700 dark:text-orange-400">{market.region}</h4>
-                      <p className="text-xs text-center text-muted-foreground mb-4 italic">{market.countries}</p>
-                      
-                      <div className="mb-4">
-                        <div className="font-semibold text-sm mb-2 flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-orange-600" />
-                          Requirements:
-                        </div>
-                        <ul className="space-y-1">
-                          {market.requirements.map((req, idx) => (
-                            <li key={idx} className="text-xs flex items-start gap-2">
-                              <span className="text-orange-600 mt-0.5">•</span>
-                              <span>{req}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="border-t pt-3">
-                        <div className="font-semibold text-sm mb-2">Popular Products:</div>
-                        <div className="flex flex-wrap gap-1">
-                          {market.specialties.map((specialty, idx) => (
-                            <span key={idx} className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-400 px-2 py-1 rounded-full">
-                              {specialty}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Success Stories by Region */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl font-bold text-center mb-8">🌟 Regional Success Stories</h3>
-            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              {[
-                {
-                  region: 'GCC Success',
-                  flag: '🇦🇪',
-                  client: 'Dubai Premium Fruits',
-                  story: 'Supplied 30 tons of premium avocados and mangoes monthly for 2 years. Consistent quality and perfect ripeness helped them become the leading fruit distributor in Dubai.',
-                  products: ['Avocados', 'Mangoes', 'Oranges'],
-                  achievement: '250% growth in orders',
-                  duration: '2+ years partnership',
-                  color: 'from-orange-500 to-amber-500'
-                },
-                {
-                  region: 'European Success',
-                  flag: '🇳🇱',
-                  client: 'Amsterdam Organic Fruits',
-                  story: 'First Ethiopian fruit supplier to meet their strict organic standards. Now supplying 20 tons monthly of certified organic fruits to major EU retailers.',
-                  products: ['Organic Avocados', 'Berries', 'Citrus'],
-                  achievement: 'EU Organic Certified',
-                  duration: '18 months partnership',
-                  color: 'from-blue-500 to-indigo-500'
-                },
-                {
-                  region: 'Asian Success',
-                  flag: '🇮🇳',
-                  client: 'Mumbai Fresh Imports',
-                  story: 'Competitive pricing and bulk supply capabilities won us this major contract. Supplying 80+ tons of bananas and pineapples monthly to Indian retail chains.',
-                  products: ['Bananas', 'Pineapples', 'Watermelons'],
-                  achievement: '80+ tons monthly',
-                  duration: '3+ years partnership',
-                  color: 'from-red-500 to-pink-500'
-                },
-                {
-                  region: 'Middle East Success',
-                  flag: '🇸🇦',
-                  client: 'Riyadh Fruit Wholesale',
-                  story: 'Started with a 3-ton trial order, now our largest fruit client in Saudi Arabia. Our premium mangoes are their bestselling item across 40+ retail locations.',
-                  products: ['Mangoes', 'Oranges', 'Melons'],
-                  achievement: '40+ retail locations',
-                  duration: '2.5 years partnership',
-                  color: 'from-green-500 to-emerald-500'
-                }
-              ].map((success, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <Card className="h-full hover:shadow-2xl transition-all border-2 border-orange-100 dark:border-orange-900 overflow-hidden">
-                    <div className={`h-2 bg-gradient-to-r ${success.color}`}></div>
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="text-5xl">{success.flag}</div>
-                        <div className="flex-1">
-                          <h4 className="font-bold text-lg text-orange-700 dark:text-orange-400 mb-1">{success.region}</h4>
-                          <p className="text-sm font-semibold text-muted-foreground">{success.client}</p>
-                        </div>
-                      </div>
-
-                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed italic">
-                        "{success.story}"
-                      </p>
-
-                      <div className="space-y-3">
-                        <div>
-                          <div className="text-xs font-semibold text-muted-foreground mb-1">Products Supplied:</div>
-                          <div className="flex flex-wrap gap-1">
-                            {success.products.map((product, idx) => (
-                              <span key={idx} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full">
-                                {product}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3 pt-3 border-t">
-                          <div>
-                            <div className="text-xs text-muted-foreground">Achievement</div>
-                            <div className="text-sm font-bold text-orange-600">{success.achievement}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-muted-foreground">Duration</div>
-                            <div className="text-sm font-bold text-blue-600">{success.duration}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </section>
 
