@@ -2095,6 +2095,109 @@ export default function HerbsSpicesPage() {
             </div>
           </motion.div>
 
+          {/* Competitive Pricing */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h3 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-2">
+              <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 3, repeat: Infinity }}>
+                💰
+              </motion.span>
+              Competitive Pricing vs Other Origins
+            </h3>
+            
+            <div className="max-w-6xl mx-auto">
+              <Card className="bg-gradient-to-br from-purple-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 border-2 border-purple-200 dark:border-purple-800 mb-8">
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-4 gap-6 text-center">
+                    {[
+                      { label: 'Labor Costs', saving: '40-60%', icon: '👷' },
+                      { label: 'Land Costs', saving: '50-70%', icon: '🏞️' },
+                      { label: 'Processing Costs', saving: '35-55%', icon: '⚙️' },
+                      { label: 'Energy Costs', saving: '30-50%', icon: '⚡' }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <motion.div
+                          className="text-5xl mb-3"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                        >
+                          {item.icon}
+                        </motion.div>
+                        <div className="text-3xl font-bold text-purple-700 dark:text-purple-400 mb-2">{item.saving}</div>
+                        <div className="text-sm text-muted-foreground">Lower {item.label}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: 'vs. European Suppliers',
+                    savings: '25-35%',
+                    icon: '🇪🇺',
+                    benefits: ['Lower production costs', 'Favorable exchange rates', 'Reduced overhead']
+                  },
+                  {
+                    title: 'vs. Asian Suppliers',
+                    savings: '15-25%',
+                    icon: '🌏',
+                    benefits: ['Better quality standards', 'Shorter shipping to EU/ME', 'Authentic varieties']
+                  },
+                  {
+                    title: 'vs. American Suppliers',
+                    savings: '30-40%',
+                    icon: '🌎',
+                    benefits: ['Significantly lower costs', 'Competitive freight rates', 'Year-round availability']
+                  }
+                ].map((comparison, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Card className="h-full bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-800 hover:shadow-2xl hover:border-orange-400 transition-all">
+                      <CardContent className="p-6 text-center">
+                        <motion.div
+                          className="text-6xl mb-4"
+                          animate={{ rotate: [0, 10, -10, 0] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        >
+                          {comparison.icon}
+                        </motion.div>
+                        <h4 className="font-bold text-lg mb-3 text-orange-700 dark:text-orange-400">{comparison.title}</h4>
+                        <div className="text-4xl font-bold text-purple-700 dark:text-purple-400 mb-4">{comparison.savings}</div>
+                        <div className="text-xs text-muted-foreground mb-4">Average Cost Savings</div>
+                        <div className="space-y-2">
+                          {comparison.benefits.map((benefit, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm">
+                              <CheckCircle className="h-3 w-3 text-purple-600 flex-shrink-0" />
+                              <span className="text-muted-foreground text-left">{benefit}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
           {/* Final CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
