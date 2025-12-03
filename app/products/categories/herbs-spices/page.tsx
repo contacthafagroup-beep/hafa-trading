@@ -52,6 +52,11 @@ export default function HerbsSpicesPage() {
   const [loadingGallery, setLoadingGallery] = useState(true);
   const [isSampleOrderOpen, setIsSampleOrderOpen] = useState(false);
   const [selectedSamplePack, setSelectedSamplePack] = useState<string>('');
+  const [selectedHerbSpice, setSelectedHerbSpice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [destination, setDestination] = useState('');
+  const [shippingMethod, setShippingMethod] = useState('sea');
+  const [estimatedPrice, setEstimatedPrice] = useState<number | null>(null);
 
   useEffect(() => {
     loadGalleryItems();
@@ -2233,6 +2238,306 @@ export default function HerbsSpicesPage() {
               </CardContent>
             </Card>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing Calculator/Estimator */}
+      <section className="py-20 bg-gradient-to-br from-purple-50 via-orange-50 to-pink-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          {['💰', '📊', '🧮', '💵', '📈', '✨'].map((icon, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-9xl"
+              animate={{
+                y: [0, -30, 0],
+                rotate: [0, 360],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.5
+              }}
+              style={{ left: `${i * 15}%`, top: `${(i * 25) % 70}%` }}
+            >
+              {icon}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <motion.div
+                animate={{ scale: [1, 1.3, 1], rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-6xl"
+              >
+                💰
+              </motion.div>
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-5xl"
+              >
+                🧮
+              </motion.div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-orange-600 to-pink-600 bg-clip-text text-transparent">
+              Instant Price Estimator
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Get a rough quote instantly! Select your product, quantity, and destination
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Calculator Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-2 border-purple-200 dark:border-purple-800 shadow-2xl">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity }}>
+                      📊
+                    </motion.span>
+                    Calculate Your Estimate
+                  </h3>
+
+                  <form className="space-y-6" onSubmit={(e) => {
+                    e.preventDefault();
+                    
+                    // Simple pricing calculation for herbs & spices
+                    const basePrice = selectedHerbSpice === 'black-cumin' ? 18 : 
+                                     selectedHerbSpice === 'turmeric' ? 11 : 
+                                     selectedHerbSpice === 'ginger' ? 13 : 
+                                     selectedHerbSpice === 'cardamom' ? 30 : 
+                                     selectedHerbSpice === 'fresh-herbs' ? 14 : 12;
+                    
+                    const qty = parseFloat(quantity) || 0;
+                    const shippingCost = shippingMethod === 'air' ? 3 : 0.8;
+                    const destinationMultiplier = destination === 'europe' ? 1.2 : 
+                                                 destination === 'middle-east' ? 1.0 : 
+                                                 destination === 'asia' ? 1.3 : 
+                                                 destination === 'africa' ? 0.9 : 1.0;
+                    
+                    const total = (basePrice * qty + (shippingCost * qty)) * destinationMultiplier;
+                    setEstimatedPrice(Math.round(total));
+                  }}>
+                    <div className="space-y-2">
+                      <Label htmlFor="herb-spice" className="text-base font-semibold">
+                        Select Herb/Spice *
+                      </Label>
+                      <Select value={selectedHerbSpice} onValueChange={setSelectedHerbSpice} required>
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder="Choose a product..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="black-cumin">⚫ Black Cumin ($15-22/kg)</SelectItem>
+                          <SelectItem value="turmeric">🟡 Turmeric ($8-14/kg)</SelectItem>
+                          <SelectItem value="ginger">🫚 Ginger ($10-16/kg)</SelectItem>
+                          <SelectItem value="cardamom">🟢 Cardamom ($25-35/kg)</SelectItem>
+                          <SelectItem value="fresh-herbs">🌿 Fresh Herbs ($12-18/kg)</SelectItem>
+                          <SelectItem value="chili">🌶️ Chili Powder ($10-18/kg)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="quantity" className="text-base font-semibold">
+                        Quantity (kg) *
+                      </Label>
+                      <Input
+                        id="quantity"
+                        type="number"
+                        placeholder="e.g., 500"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        min="50"
+                        step="50"
+                        className="h-12"
+                        required
+                      />
+                      <p className="text-xs text-muted-foreground">Minimum order: 50 kg</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="destination" className="text-base font-semibold">
+                        Destination *
+                      </Label>
+                      <Select value={destination} onValueChange={setDestination} required>
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder="Select destination..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="middle-east">🇦🇪 Middle East (UAE, Saudi, etc.)</SelectItem>
+                          <SelectItem value="europe">🇪🇺 Europe (UK, Germany, etc.)</SelectItem>
+                          <SelectItem value="asia">🌏 Asia (China, India, etc.)</SelectItem>
+                          <SelectItem value="africa">🌍 Africa (Kenya, Egypt, etc.)</SelectItem>
+                          <SelectItem value="americas">🌎 Americas (USA, Canada, etc.)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold">Shipping Method *</Label>
+                      <div className="grid grid-cols-2 gap-4">
+                        <Card 
+                          className={`cursor-pointer transition-all ${shippingMethod === 'sea' ? 'border-2 border-purple-600 bg-purple-50 dark:bg-purple-950' : 'border-2 hover:border-purple-300'}`}
+                          onClick={() => setShippingMethod('sea')}
+                        >
+                          <CardContent className="p-4 text-center">
+                            <div className="text-3xl mb-2">🚢</div>
+                            <div className="font-semibold">Sea Freight</div>
+                            <div className="text-xs text-muted-foreground">Economical</div>
+                          </CardContent>
+                        </Card>
+                        <Card 
+                          className={`cursor-pointer transition-all ${shippingMethod === 'air' ? 'border-2 border-purple-600 bg-purple-50 dark:bg-purple-950' : 'border-2 hover:border-purple-300'}`}
+                          onClick={() => setShippingMethod('air')}
+                        >
+                          <CardContent className="p-4 text-center">
+                            <div className="text-3xl mb-2">✈️</div>
+                            <div className="font-semibold">Air Freight</div>
+                            <div className="text-xs text-muted-foreground">Fast</div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+
+                    <Button 
+                      type="submit" 
+                      className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-orange-600 hover:from-purple-700 hover:to-orange-700"
+                    >
+                      <motion.span
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        💰
+                      </motion.span>
+                      <span className="ml-2">Calculate Estimate</span>
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Results & Info */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              {/* Estimated Price Display */}
+              <Card className="border-2 border-orange-200 dark:border-orange-800 shadow-xl">
+                <CardContent className="p-8">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 3, repeat: Infinity }}>
+                      📈
+                    </motion.span>
+                    Your Estimate
+                  </h3>
+                  
+                  {estimatedPrice !== null ? (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="text-center"
+                    >
+                      <div className="text-5xl font-bold text-purple-700 dark:text-purple-400 mb-2">
+                        ${estimatedPrice.toLocaleString()}
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">Estimated Total Cost (USD)</p>
+                      <div className="bg-purple-50 dark:bg-purple-950 p-4 rounded-lg">
+                        <p className="text-xs text-muted-foreground">
+                          This is a rough estimate. Final pricing depends on current market rates, exact specifications, and order timing.
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="text-6xl mb-4"
+                      >
+                        🧮
+                      </motion.div>
+                      <p>Fill in the form to see your estimate</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Important Notes */}
+              <Card className="border-2 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-950">
+                <CardContent className="p-6">
+                  <h4 className="font-bold mb-3 flex items-center gap-2">
+                    <span className="text-2xl">⚠️</span>
+                    Important Notes
+                  </h4>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-yellow-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <span>Prices are estimates and subject to change based on market conditions</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-yellow-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <span>Final prices may vary based on season, quality grade, and market conditions</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-yellow-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <span>Shipping costs are approximate and depend on actual freight rates</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-yellow-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <span>Contact us for accurate quotes and volume discounts</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Why Use This Tool */}
+              <Card className="border-2 border-purple-200 dark:border-purple-800">
+                <CardContent className="p-6">
+                  <h4 className="font-bold mb-3 flex items-center gap-2">
+                    <span className="text-2xl">💡</span>
+                    Why Use This Tool?
+                  </h4>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <span>Get instant ballpark figures</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <span>Compare different products</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <span>Plan your budget effectively</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <span>No commitment required</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </section>
 
