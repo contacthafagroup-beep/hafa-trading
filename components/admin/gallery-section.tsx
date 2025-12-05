@@ -16,18 +16,19 @@ import toast from 'react-hot-toast';
 
 interface GalleryItem {
   id: string;
-  section: string;
-  category?: string;
+  section: 'gallery' | 'beforeAfter' | 'facilities';
+  category?: 'Fresh Harvest' | 'Processing' | 'Export Ready';
   name: string;
   description: string;
   imageUrl: string;
   emoji: string;
   order: number;
+  createdAt?: Date;
 }
 
 interface Props {
   items: GalleryItem[];
-  onDelete: (item: GalleryItem) => void;
+  onDelete: (item: GalleryItem) => Promise<void>;
   onReload: () => void;
 }
 

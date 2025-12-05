@@ -65,6 +65,10 @@ export default function FreshFruitsPage() {
 
   const loadAllItems = async () => {
     try {
+      if (!db) {
+        setLoadingGallery(false);
+        return;
+      }
       const q = query(collection(db, 'productGallery'), orderBy('order', 'asc'));
       const snapshot = await getDocs(q);
       const items = snapshot.docs.map(doc => ({

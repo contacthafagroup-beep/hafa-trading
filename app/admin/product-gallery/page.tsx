@@ -32,7 +32,7 @@ interface GalleryItem {
   afterFeatures?: string[];
   color?: string;
   facilityFeatures?: string[];
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export default function ProductGalleryAdmin() {

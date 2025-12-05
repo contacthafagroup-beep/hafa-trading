@@ -69,6 +69,10 @@ export default function FreshVegetablesPage() {
 
   const loadAllItems = async () => {
     try {
+      if (!db) {
+        setLoadingGallery(false);
+        return;
+      }
       console.log('Loading gallery items from Firestore...');
       const q = query(collection(db, 'productGallery'), orderBy('order', 'asc'));
       const snapshot = await getDocs(q);
