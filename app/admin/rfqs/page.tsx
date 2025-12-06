@@ -130,13 +130,11 @@ export default function RFQsPage() {
   };
 
   const handleSendMessage = async () => {
-    // Get current user directly from Firebase Auth
-    const currentUser = auth?.currentUser || user;
-    
     console.log('=== handleSendMessage START ===');
     console.log('selectedRFQ:', selectedRFQ?.id);
-    console.log('user from context:', user?.uid);
-    console.log('currentUser from auth:', currentUser?.uid);
+    console.log('user from context:', user);
+    console.log('auth object:', auth);
+    console.log('auth.currentUser:', auth?.currentUser);
     console.log('newMessage:', newMessage);
     console.log('newMessage.trim():', newMessage.trim());
     
@@ -146,9 +144,14 @@ export default function RFQsPage() {
       return;
     }
     
+    // Get current user - try multiple sources
+    const currentUser = auth?.currentUser || user;
+    
     if (!currentUser) {
       console.log('FAILED: User not authenticated');
-      toast.error('User not authenticated');
+      console.log('Tried auth.currentUser:', auth?.currentUser);
+      console.log('Tried user from context:', user);
+      toast.error('User not authenticated. Please refresh the page and try again.');
       return;
     }
     
@@ -159,15 +162,10 @@ export default function RFQsPage() {
     }
     
     console.log('All validations passed, sending message...');
+    console.log('Using user:', { uid: currentUser.uid, displayName: currentUser.displayName });
+    
     setSendingMessage(true);
     try {
-      console.log('Calling sendRFQMessage with:', {
-        rfqId: selectedRFQ.id,
-        userId: currentUser.uid,
-        userName: currentUser.displayName || 'Admin',
-        message: newMessage.trim()
-      });
-      
       await sendRFQMessage(
         selectedRFQ.id,
         currentUser.uid,
