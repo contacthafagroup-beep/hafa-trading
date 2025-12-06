@@ -338,7 +338,9 @@ export const onShipmentUpdated = functions.firestore
   });
 
 // Update product view count
-export const incrementProductViews = functions.https.onCall(async (data, context) => {
+export const incrementProductViews = functions.https.onCall({
+  cors: ['https://hafa-trading-te78.vercel.app', 'https://hafatrading.com', 'http://localhost:3000']
+}, async (data, context) => {
   const { productId } = data;
   
   if (!productId) {
@@ -396,7 +398,9 @@ export const generateDailyAnalytics = functions.pubsub
   });
 
 // Send RFQ reply email
-export const sendRFQReply = functions.https.onCall(async (data, context) => {
+export const sendRFQReply = functions.https.onCall({
+  cors: ['https://hafa-trading-te78.vercel.app', 'https://hafatrading.com', 'http://localhost:3000']
+}, async (data, context) => {
   // Check if user is authenticated and is admin
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
@@ -505,7 +509,9 @@ export const sendRFQReply = functions.https.onCall(async (data, context) => {
 });
 
 // Send Partnership reply email
-export const sendPartnershipReply = functions.https.onCall(async (data, context) => {
+export const sendPartnershipReply = functions.https.onCall({
+  cors: ['https://hafa-trading-te78.vercel.app', 'https://hafatrading.com', 'http://localhost:3000']
+}, async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
   }
@@ -611,7 +617,9 @@ export const sendPartnershipReply = functions.https.onCall(async (data, context)
 });
 
 // WhatsApp notification (placeholder - requires WhatsApp Business API)
-export const sendWhatsAppNotification = functions.https.onCall(async (data, context) => {
+export const sendWhatsAppNotification = functions.https.onCall({
+  cors: ['https://hafa-trading-te78.vercel.app', 'https://hafatrading.com', 'http://localhost:3000']
+}, async (data, context) => {
   // Implement WhatsApp API integration here
   // This is a placeholder function
   console.log('WhatsApp notification requested:', data);
