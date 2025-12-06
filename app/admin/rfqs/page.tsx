@@ -129,7 +129,19 @@ export default function RFQsPage() {
   };
 
   const handleSendMessage = async () => {
-    if (!selectedRFQ || !newMessage.trim() || !user) {
+    console.log('handleSendMessage called', { newMessage, trimmed: newMessage.trim(), length: newMessage.trim().length });
+    
+    if (!selectedRFQ) {
+      toast.error('No RFQ selected');
+      return;
+    }
+    
+    if (!user) {
+      toast.error('User not authenticated');
+      return;
+    }
+    
+    if (!newMessage || !newMessage.trim()) {
       toast.error('Please enter a message');
       return;
     }
