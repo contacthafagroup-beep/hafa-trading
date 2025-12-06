@@ -131,7 +131,7 @@ export default function RFQsPage() {
 
   const handleSendMessage = async () => {
     // Get current user directly from Firebase Auth
-    const currentUser = auth.currentUser || user;
+    const currentUser = auth?.currentUser || user;
     
     console.log('=== handleSendMessage START ===');
     console.log('selectedRFQ:', selectedRFQ?.id);
