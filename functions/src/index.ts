@@ -6,11 +6,11 @@ admin.initializeApp();
 
 // Email transporter configuration
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false,
   auth: {
-    user: process.env.SMTP_USER,
+    user: process.env.SMTP_USER || 'contact.hafagroup@gmail.com',
     pass: process.env.SMTP_PASSWORD,
   },
 });
@@ -28,7 +28,7 @@ export const onUserCreated = functions.auth.user().onCreate(async (user) => {
   try {
     // Send welcome email
     await transporter.sendMail({
-      from: `"Hafa Trading PLC" <${process.env.SMTP_USER}>`,
+      from: `"Hafa Trading PLC" <${process.env.SMTP_USER || 'contact.hafagroup@gmail.com'}>`,
       to: email,
       subject: 'Welcome to Hafa Trading PLC! 🎉',
       html: `
@@ -415,7 +415,7 @@ export const sendRFQReply = functions.https.onCall({
   try {
     // Send email
     await transporter.sendMail({
-      from: `"Hafa Trading PLC" <${process.env.SMTP_USER}>`,
+      from: `"Hafa Trading PLC" <${process.env.SMTP_USER || 'contact.hafagroup@gmail.com'}>`,
       to: to,
       subject: subject,
       html: `
@@ -524,7 +524,7 @@ export const sendPartnershipReply = functions.https.onCall({
 
   try {
     await transporter.sendMail({
-      from: `"Hafa Trading PLC - Partnerships" <${process.env.SMTP_USER}>`,
+      from: `"Hafa Trading PLC - Partnerships" <${process.env.SMTP_USER || 'contact.hafagroup@gmail.com'}>`,
       to: to,
       subject: subject,
       html: `
