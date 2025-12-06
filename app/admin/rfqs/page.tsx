@@ -12,6 +12,7 @@ import { getAllRFQs, updateRFQStatus, deleteRFQ, formatRFQDate, sendRFQReplyEmai
 import { getRFQMessages, sendRFQMessage, formatMessageDate, RFQMessage } from '@/lib/firebase/rfq-messages';
 import { formatCurrency } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
+import { auth } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
 
 export default function RFQsPage() {
@@ -129,33 +130,53 @@ export default function RFQsPage() {
   };
 
   const handleSendMessage = async () => {
-    console.log('handleSendMessage called', { newMessage, trimmed: newMessage.trim(), length: newMessage.trim().length });
+    // Get current user directly from Firebase Auth
+    const currentUser = auth.currentUser || user;
+    
+    console.log('=== handleSendMessage START ===');
+    console.log('selectedRFQ:', selectedRFQ?.id);
+    console.log('user from context:', user?.uid);
+    console.log('currentUser from auth:', currentUser?.uid);
+    console.log('newMessage:', newMessage);
+    console.log('newMessage.trim():', newMessage.trim());
     
     if (!selectedRFQ) {
+      console.log('FAILED: No RFQ selected');
       toast.error('No RFQ selected');
       return;
     }
     
-    if (!user) {
+    if (!currentUser) {
+      console.log('FAILED: User not authenticated');
       toast.error('User not authenticated');
       return;
     }
     
     if (!newMessage || !newMessage.trim()) {
+      console.log('FAILED: Message is empty');
       toast.error('Please enter a message');
       return;
     }
     
+    console.log('All validations passed, sending message...');
     setSendingMessage(true);
     try {
+      console.log('Calling sendRFQMessage with:', {
+        rfqId: selectedRFQ.id,
+        userId: currentUser.uid,
+        userName: currentUser.displayName || 'Admin',
+        message: newMessage.trim()
+      });
+      
       await sendRFQMessage(
         selectedRFQ.id,
-        user.uid,
-        user.displayName || 'Admin',
+        currentUser.uid,
+        currentUser.displayName || 'Admin',
         'admin',
         newMessage.trim()
       );
       
+      console.log('Message sent successfully!');
       setNewMessage('');
       await loadMessages(selectedRFQ.id);
       toast.success('Message sent!');
@@ -170,6 +191,7 @@ export default function RFQsPage() {
       toast.error('Failed to send message');
     } finally {
       setSendingMessage(false);
+      console.log('=== handleSendMessage END ===');
     }
   };
 
@@ -654,25 +676,13 @@ export default function RFQsPage() {
               <div className="flex gap-2">
                 <textarea
                   value={newMessage}
-                  onChange={(e) => {
-                    console.log('Textarea onChange:', e.target.value);
-                    setNewMessage(e.target.value);
-                  }}
+                  onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type your message to the customer..."
                   rows={3}
                   className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
                 />
                 <Button
-                  onClick={() => {
-                    console.log('Button clicked, newMessage:', newMessage);
-                    handleSendMessage();
-                  }}
+                  onClick={handleSendMessage}
                   disabled={sendingMessage}
                   className="self-end"
                 >
