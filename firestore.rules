@@ -72,6 +72,45 @@ service cloud.firestore {
       allow list: if isAdmin();
     }
     
+    // RFQ Messages collection
+    match /rfqMessages/{messageId} {
+      // Users can read messages for their own RFQs
+      allow read: if isSignedIn() && 
+                     (resource.data.userId == request.auth.uid || isAdmin());
+      // Users and admins can create messages
+      allow create: if isSignedIn();
+      // Only admins can update or delete messages
+      allow update, delete: if isAdmin();
+      // Admins can list all messages
+      allow list: if isAdmin();
+    }
+    
+    // Partnerships collection
+    match /partnerships/{partnershipId} {
+      // Anyone can create partnership applications
+      allow create: if true;
+      // Users can read their own partnerships
+      allow read: if isSignedIn() && 
+                     (resource.data.email == request.auth.token.email || isAdmin());
+      // Only admins can update or delete partnerships
+      allow update, delete: if isAdmin();
+      // Admins can list all partnerships
+      allow list: if isAdmin();
+    }
+    
+    // Partnership Messages collection
+    match /partnershipMessages/{messageId} {
+      // Users can read messages for their own partnerships
+      allow read: if isSignedIn() && 
+                     (resource.data.senderId == request.auth.uid || isAdmin());
+      // Users and admins can create messages
+      allow create: if isSignedIn();
+      // Only admins can update or delete messages
+      allow update, delete: if isAdmin();
+      // Admins can list all messages
+      allow list: if isAdmin();
+    }
+    
     // Shipments collection
     match /shipments/{shipmentId} {
       // Users can read their own shipments
