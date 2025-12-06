@@ -667,7 +667,7 @@ export default function RFQsPage() {
                 />
                 <Button
                   onClick={handleSendMessage}
-                  disabled={!newMessage.trim() || sendingMessage}
+                  disabled={sendingMessage}
                   className="self-end"
                 >
                   {sendingMessage ? (
