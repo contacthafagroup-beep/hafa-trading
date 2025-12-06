@@ -652,12 +652,15 @@ export default function RFQsPage() {
 
               {/* Message Input */}
               <div className="flex gap-2">
-                <Textarea
+                <textarea
                   value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
+                  onChange={(e) => {
+                    console.log('Textarea onChange:', e.target.value);
+                    setNewMessage(e.target.value);
+                  }}
                   placeholder="Type your message to the customer..."
                   rows={3}
-                  className="flex-1"
+                  className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -666,7 +669,10 @@ export default function RFQsPage() {
                   }}
                 />
                 <Button
-                  onClick={handleSendMessage}
+                  onClick={() => {
+                    console.log('Button clicked, newMessage:', newMessage);
+                    handleSendMessage();
+                  }}
                   disabled={sendingMessage}
                   className="self-end"
                 >
