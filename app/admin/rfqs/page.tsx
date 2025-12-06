@@ -74,7 +74,7 @@ export default function RFQsPage() {
   };
 
   const handleSendReply = async () => {
-    if (!selectedRFQ || !replyMessage || !replySubject) {
+    if (!selectedRFQ || !replyMessage.trim() || !replySubject.trim()) {
       toast.error('Please fill in all required fields');
       return;
     }
@@ -786,7 +786,7 @@ export default function RFQsPage() {
                 </Button>
                 <Button 
                   onClick={handleSendReply} 
-                  disabled={!replyMessage || !replySubject || sendingReply}
+                  disabled={!replyMessage.trim() || !replySubject.trim() || sendingReply}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   {sendingReply ? (
