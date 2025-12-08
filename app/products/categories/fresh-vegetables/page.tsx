@@ -742,15 +742,49 @@ export default function FreshVegetablesPage() {
             <p className="text-lg text-muted-foreground">See the transformation from harvest to premium export-ready products</p>
           </motion.div>
 
-          {/* Before & After Comparisons */}
+          {/* Before & After Comparisons - Static Data */}
           <div className="space-y-8 mb-12">
-            {loadingGallery ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-                <p className="mt-4 text-muted-foreground">Loading...</p>
-              </div>
-            ) : beforeAfterItems.length > 0 ? (
-              beforeAfterItems.map((item, index) => (
+            {[
+              {
+                emoji: '🥬',
+                productName: 'Fresh Cabbage',
+                color: 'from-green-400 to-emerald-600',
+                beforeIcon: '🌱',
+                beforeTitle: 'Fresh from Farm',
+                beforeDesc: 'Harvested at peak freshness',
+                beforeFeatures: ['Hand-picked', 'Morning harvest', 'Field fresh'],
+                afterIcon: '📦',
+                afterTitle: 'Export Ready',
+                afterDesc: 'Graded, cleaned, and packed',
+                afterFeatures: ['Quality graded', 'Vacuum packed', 'Temperature controlled']
+              },
+              {
+                emoji: '🥕',
+                productName: 'Premium Carrots',
+                color: 'from-orange-400 to-red-600',
+                beforeIcon: '🌾',
+                beforeTitle: 'Raw Harvest',
+                beforeDesc: 'Straight from the field',
+                beforeFeatures: ['Organic grown', 'No pesticides', 'Rich soil'],
+                afterIcon: '✨',
+                afterTitle: 'Market Ready',
+                afterDesc: 'Sorted and packaged',
+                afterFeatures: ['Size sorted', 'Washed & cleaned', 'Export packaging']
+              },
+              {
+                emoji: '🧅',
+                productName: 'Red Onions',
+                color: 'from-purple-400 to-pink-600',
+                beforeIcon: '🌿',
+                beforeTitle: 'Farm Fresh',
+                beforeDesc: 'Naturally grown',
+                beforeFeatures: ['Sun dried', 'Cured properly', 'Quality checked'],
+                afterIcon: '🎁',
+                afterTitle: 'Ready to Ship',
+                afterDesc: 'Packed for export',
+                afterFeatures: ['Mesh bags', 'Labeled', 'Container ready']
+              }
+            ].map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -855,14 +889,7 @@ export default function FreshVegetablesPage() {
                   </CardContent>
                 </Card>
               </motion.div>
-            ))
-            ) : (
-              <Card>
-                <CardContent className="p-12 text-center text-muted-foreground">
-                  <p>No before & after items yet. <Link href="/admin/product-gallery" className="text-blue-600 hover:underline">Add from admin panel</Link></p>
-                </CardContent>
-              </Card>
-            )}
+            ))}
           </div>
 
           {/* Quality Control Process Photos */}
