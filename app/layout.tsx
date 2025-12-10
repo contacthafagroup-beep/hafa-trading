@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { AuthProvider } from '@/lib/contexts/auth-context'
 import { ChatProvider } from '@/contexts/chat-context'
 import { Toaster } from 'react-hot-toast'
+import ConditionalLiveChat from '@/components/conditional-live-chat'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <AuthProvider>
             <ChatProvider>
               {children}
+              <ConditionalLiveChat />
               <Toaster position="top-right" />
             </ChatProvider>
           </AuthProvider>
