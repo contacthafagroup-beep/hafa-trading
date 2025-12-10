@@ -753,10 +753,12 @@ export default function FreshVegetablesPage() {
                 beforeTitle: 'Fresh from Farm',
                 beforeDesc: 'Harvested at peak freshness',
                 beforeFeatures: ['Hand-picked', 'Morning harvest', 'Field fresh'],
+                beforeImageUrl: undefined,
                 afterIcon: '📦',
                 afterTitle: 'Export Ready',
                 afterDesc: 'Graded, cleaned, and packed',
-                afterFeatures: ['Quality graded', 'Vacuum packed', 'Temperature controlled']
+                afterFeatures: ['Quality graded', 'Vacuum packed', 'Temperature controlled'],
+                afterImageUrl: undefined
               },
               {
                 emoji: '🥕',
@@ -766,10 +768,12 @@ export default function FreshVegetablesPage() {
                 beforeTitle: 'Raw Harvest',
                 beforeDesc: 'Straight from the field',
                 beforeFeatures: ['Organic grown', 'No pesticides', 'Rich soil'],
+                beforeImageUrl: undefined,
                 afterIcon: '✨',
                 afterTitle: 'Market Ready',
                 afterDesc: 'Sorted and packaged',
-                afterFeatures: ['Size sorted', 'Washed & cleaned', 'Export packaging']
+                afterFeatures: ['Size sorted', 'Washed & cleaned', 'Export packaging'],
+                afterImageUrl: undefined
               },
               {
                 emoji: '🧅',
@@ -779,10 +783,12 @@ export default function FreshVegetablesPage() {
                 beforeTitle: 'Farm Fresh',
                 beforeDesc: 'Naturally grown',
                 beforeFeatures: ['Sun dried', 'Cured properly', 'Quality checked'],
+                beforeImageUrl: undefined,
                 afterIcon: '🎁',
                 afterTitle: 'Ready to Ship',
                 afterDesc: 'Packed for export',
-                afterFeatures: ['Mesh bags', 'Labeled', 'Container ready']
+                afterFeatures: ['Mesh bags', 'Labeled', 'Container ready'],
+                afterImageUrl: undefined
               }
             ].map((item, index) => (
               <motion.div
