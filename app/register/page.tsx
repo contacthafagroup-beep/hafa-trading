@@ -89,7 +89,7 @@ export default function RegisterPage() {
               </motion.div>
               <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
               <p className="text-muted-foreground">
-                Join Hafa Trading and start chatting with our team
+                Join us to access exclusive features and chat support
               </p>
             </CardHeader>
             <CardContent>
@@ -112,7 +112,7 @@ export default function RegisterPage() {
                     <Input
                       id="name"
                       type="text"
-                      placeholder="John Doe"
+                      placeholder="Your full name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="pl-10"
@@ -226,15 +226,16 @@ export default function RegisterPage() {
                         )}
                       </button>
                     </div>
-                      </div>
-                    )}
                   </div>
+                  {confirmPassword && password !== confirmPassword && (
+                    <p className="text-xs text-red-600">Passwords do not match</p>
+                  )}
                 </div>
 
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-                  disabled={loading}
+                  disabled={loading || password !== confirmPassword || password.length < 6}
                 >
                   {loading ? (
                     <motion.div
@@ -254,7 +255,7 @@ export default function RegisterPage() {
                 <div className="text-center text-sm">
                   <span className="text-muted-foreground">Already have an account? </span>
                   <Link href="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
-                    Login
+                    Sign In
                   </Link>
                 </div>
               </form>
